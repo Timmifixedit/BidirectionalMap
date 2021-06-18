@@ -181,6 +181,25 @@ namespace BiMap {
             inverse->clear();
         }
 
+        bool operator ==(const BiMapImpl &other) const {
+            if (size() != other.size()) {
+                return false;
+            }
+
+            for (const auto &[k ,v] : other) {
+                auto res = find(k);
+                if (res == end() || res->second != v) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        bool operator!=(const BiMapImpl &other) const {
+            return !(*this == other);
+        }
+
     private:
         ForwardMapPtr forward;
         InverseMapPtr inverse;
@@ -273,6 +292,14 @@ namespace BiMap {
             // swap only data pointers, inverse access pointers remain unchanged
             std::swap(biMap->forward, other.biMap->forward);
             std::swap(biMap->inverse, other.biMap->inverse);
+        }
+
+        bool operator==(const BidirectionalMap &other) const {
+            return *biMap == *other.biMap;
+        }
+
+        bool operator!=(const BidirectionalMap &other) const {
+            return !(*this == other);
         }
 
     private:
