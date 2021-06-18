@@ -8,42 +8,54 @@
 #include <memory>
 
 namespace BiMap {
+
     template<typename T, typename U>
-    class BidirectionalMap {
-    public:
+    class BidirectionalMap;
+
+    template<typename T, typename U>
+    class BiMapImpl {
         using ForwardKey = T;
         using InverseKey = U;
-    private:
         using ForwardMap = std::unordered_map<T, const U*>;
         using InverseMap = std::unordered_map<U, const T*>;
         using ForwardMapPtr = std::shared_ptr<ForwardMap>;
         using InverseMapPtr = std::shared_ptr<InverseMap>;
-        explicit BidirectionalMap(BidirectionalMap<InverseKey , ForwardKey > &inverseMap) :
-                forward(inverseMap.inverse), inverse(inverseMap.forward) {}
+        using InverseBiMap = BiMapImpl<InverseKey, ForwardKey>;
+        using InverseBiMapPtr = std::shared_ptr<InverseBiMap>;
+        friend InverseBiMap;
+        friend class BidirectionalMap<T, U>;
+        friend class BidirectionalMap<U, T>;
 
-        enum class Dummy {
-            D
+        enum class Construct {
+            Empty
         };
 
-        explicit constexpr BidirectionalMap(Dummy) : forward(nullptr), inverse(nullptr) {}
+        explicit constexpr BiMapImpl(Construct) : forward(nullptr), inverse(nullptr), inverseAccess(nullptr) {}
 
-        static void swap(BidirectionalMap &m1, BidirectionalMap &m2) {
+        static void swap(BiMapImpl &m1, BiMapImpl &m2) {
             std::swap(m1.forward, m2.forward);
             std::swap(m1.inverse, m2.inverse);
         }
+
+        BiMapImpl() : forward(std::make_shared<ForwardMap>()), inverse(std::make_shared<InverseMap>()),
+            inverseAccess(nullptr) {}
+
+        BiMapImpl(ForwardMapPtr f, InverseMapPtr i, InverseBiMapPtr invAcc) : forward(std::move(f)),
+            inverse(std::move(i)), inverseAccess(invAcc) {}
 
     public:
         class Iterator {
         public:
             using IteratorType = decltype(std::declval<ForwardMap>().cbegin());
             using ValueType = std::pair<const ForwardKey&, const InverseKey&>;
+            friend class BiMapImpl;
 
             Iterator() = default;
 
             explicit Iterator(IteratorType it) : it(it),
                 val(this->it == IteratorType() ? nullptr : std::make_shared<ValueType>(it->first, *it->second)) {}
 
-            explicit Iterator(const BidirectionalMap &map) : Iterator(map.forward->begin()) {}
+            explicit Iterator(const BiMapImpl &map) : Iterator(map.forward->begin()) {}
 
             Iterator &operator++() {
                 ++it;
@@ -73,26 +85,20 @@ namespace BiMap {
             }
 
         private:
-            friend class BidirectionalMap;
+            //friend class BiMapImpl;
             IteratorType it;
             std::shared_ptr<ValueType> val;
         };
 
-        BidirectionalMap() : forward(std::make_shared<ForwardMap>()), inverse(std::make_shared<InverseMap>()) {}
+        BiMapImpl(const BiMapImpl &other) = delete;
 
-        BidirectionalMap(const BidirectionalMap &other) : forward(std::make_shared<ForwardMap>(*other.forward)),
-            inverse(std::make_shared<InverseMap>(*other.inverse)) {}
+        BiMapImpl(BiMapImpl &&other) noexcept = delete;
 
-        BidirectionalMap(BidirectionalMap &&other) noexcept : BidirectionalMap(Dummy::D) {
-            swap(*this, other);
-        }
+        BiMapImpl &operator=(BiMapImpl &&other) = delete;
 
-        BidirectionalMap &operator=(BidirectionalMap other) {
-            swap(*this, other);
-            return *this;
-        }
+        BiMapImpl &operator=(const BiMapImpl &other) = delete;
 
-        ~BidirectionalMap() = default;
+        ~BiMapImpl() = default;
 
         template<typename ...ARGS>
         auto emplace(ARGS &&...args) -> std::pair<Iterator, bool> {
@@ -123,9 +129,12 @@ namespace BiMap {
             inverse->reserve(n);
         }
 
-        auto invert() noexcept(noexcept(BidirectionalMap<InverseKey, ForwardKey>(*this)))
-            -> BidirectionalMap<InverseKey, ForwardKey> {
-            return BidirectionalMap<InverseKey, ForwardKey>(*this);
+        auto invert() -> BiMapImpl<InverseKey, ForwardKey> & {
+            return *inverseAccess;
+        }
+
+        auto invert() const -> const BiMapImpl<InverseKey, ForwardKey> & {
+            return *inverseAccess;
         }
 
         Iterator begin() const noexcept(noexcept(Iterator(*this))) {
@@ -167,10 +176,107 @@ namespace BiMap {
             return first;
         }
 
+        void clear() {
+            forward->clear();
+            inverse->clear();
+        }
+
     private:
         ForwardMapPtr forward;
         InverseMapPtr inverse;
-        friend class BidirectionalMap<InverseKey, ForwardKey>;
+        InverseBiMapPtr inverseAccess;
+    };
+
+    template<typename T, typename U>
+    class BidirectionalMap {
+    private:
+        using BMImpl = BiMapImpl<T, U>;
+        using iBMImpl = BiMapImpl<U, T>;
+        using BMImplPtr = std::shared_ptr<BMImpl>;
+
+        void swap(BidirectionalMap &a, BidirectionalMap &b) {
+            // swap only data pointers, inverse access pointers remain unchanged
+            std::swap(a.biMap->forward, b.biMap->forward);
+            std::swap(a.biMap->inverse, b.biMap->inverse);
+        }
+
+    public:
+        BidirectionalMap() : biMap(new BMImpl) {
+            constructPair();
+        }
+
+        BidirectionalMap(const BidirectionalMap &other) : biMap(new BMImpl(BMImpl::Construct::Empty)) {
+            copyResources(other);
+            constructPair();
+        }
+
+        BidirectionalMap(BidirectionalMap &&other) noexcept : BidirectionalMap() {
+            swap(*this, other);
+        }
+
+
+        BidirectionalMap &operator=(BidirectionalMap other) {
+            swap(*this, other);
+            return *this;
+        }
+
+        ~BidirectionalMap() {
+            // break reference cycle
+            if (nullptr != biMap) {
+                biMap->inverseAccess = nullptr;
+            }
+        }
+
+        // converters
+
+        BidirectionalMap(const BMImpl &map) : biMap(new BMImpl(BMImpl::Construct::Empty)) {
+            copyResources(map);
+            constructPair();
+        }
+
+        operator BMImpl &() {
+            return *biMap;
+        };
+
+        operator const BMImpl &() const {
+            return *biMap;
+        }
+
+        // access
+
+        BMImpl *operator->() noexcept {
+            return biMap.get();
+        }
+
+        const BMImpl *operator->() const noexcept {
+            return biMap.get();
+        }
+
+        BMImpl &operator*() noexcept {
+            return *biMap;
+        }
+
+        const BMImpl &operator*() const noexcept {
+            return *biMap;
+        }
+
+    private:
+        void constructPair() {
+            auto inverse = std::shared_ptr<iBMImpl>(new iBMImpl(biMap->inverse, biMap->forward, biMap));
+            biMap->inverseAccess = inverse;
+        }
+
+
+        void copyResources(const BMImpl &other) {
+            biMap->forward = std::make_shared<typename BMImpl::ForwardMap>(*other.forward);
+            biMap->inverse = std::make_shared<typename BMImpl::InverseMap>(*other.inverse);
+        }
+
+        void copyResources(const BidirectionalMap &other) {
+            copyResources(*other.biMap);
+        }
+
+        BMImplPtr biMap;
     };
 }
 
