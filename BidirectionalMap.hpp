@@ -194,11 +194,6 @@ namespace BiMap {
         using InverseMap = BiMapImpl<U, T>;
         using MapPtr = std::shared_ptr<Map>;
 
-        void swap(BidirectionalMap &a, BidirectionalMap &b) {
-            // swap only data pointers, inverse access pointers remain unchanged
-            std::swap(a.biMap->forward, b.biMap->forward);
-            std::swap(a.biMap->inverse, b.biMap->inverse);
-        }
 
     public:
 
@@ -214,12 +209,12 @@ namespace BiMap {
         }
 
         BidirectionalMap(BidirectionalMap &&other) noexcept : BidirectionalMap() {
-            swap(*this, other);
+            swap(other);
         }
 
 
         BidirectionalMap &operator=(BidirectionalMap other) {
-            swap(*this, other);
+            swap(other);
             return *this;
         }
 
@@ -271,6 +266,13 @@ namespace BiMap {
 
         typename Map::Iterator end() const noexcept(noexcept(biMap->end())) {
             return biMap->end();
+        }
+
+
+        void swap(BidirectionalMap &other) {
+            // swap only data pointers, inverse access pointers remain unchanged
+            std::swap(biMap->forward, other.biMap->forward);
+            std::swap(biMap->inverse, other.biMap->inverse);
         }
 
     private:
