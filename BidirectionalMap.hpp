@@ -206,6 +206,8 @@ namespace BiMap {
             constructPair();
         }
 
+        // copy, move, destruct
+
         BidirectionalMap(const BidirectionalMap &other) : biMap(new Map(Map::Construct::Empty)) {
             copyResources(other);
             constructPair();
@@ -260,6 +262,8 @@ namespace BiMap {
         const Map &operator*() const noexcept {
             return *biMap;
         }
+
+        // Iterators for convenience
 
         typename Map::Iterator begin() const noexcept(noexcept(biMap->begin())) {
             return biMap->begin();
