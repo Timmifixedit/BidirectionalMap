@@ -15,8 +15,15 @@ int main() {
     test.invert().emplace(8, "moin");
     print(test);
     auto it = test.begin();
-    test.erase(it);
+    std::cout << it->second << std::endl;
+    it = test.erase(it);
     print(test);
     print(test.invert());
+    const int &elem = it->second;
+    ++it;
+    std::cout << elem << std::endl;
+    if (it != test.end()) {
+        std::cout << it->first << std::endl;
+    }
 }
 

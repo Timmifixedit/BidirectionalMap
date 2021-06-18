@@ -40,13 +40,19 @@ namespace BiMap {
 
             Iterator() = default;
 
-            explicit Iterator(const BidirectionalMap &map) noexcept(noexcept(map.forward->begin())) :
-                    it(map.forward->begin()) {}
+            explicit Iterator(IteratorType it) : it(it),
+                val(this->it == IteratorType() ? nullptr : std::make_shared<ValueType>(it->first, *it->second)) {}
 
-            explicit Iterator(IteratorType it) noexcept : it(it) {}
+            explicit Iterator(const BidirectionalMap &map) : Iterator(map.forward->begin()) {}
 
-            Iterator &operator++() noexcept(noexcept(++std::declval<IteratorType>())) {
+            Iterator &operator++() {
                 ++it;
+                if (it != IteratorType()) {
+                    val = std::make_shared<ValueType>(it->first, *it->second);
+                } else {
+                    val = nullptr;
+                }
+
                 return *this;
             }
 
@@ -58,17 +64,18 @@ namespace BiMap {
                 return !(*this == other);
             }
 
-            ValueType operator*() const noexcept(noexcept(ValueType(it->first, *it->second))) {
-                return {it->first, *it->second};
+            ValueType operator*() const  {
+                return *val;
             }
 
-            auto operator->() const noexcept -> IteratorType {
-                return it;
+            auto operator->() const noexcept {
+                return val.get();
             }
 
         private:
             friend class BidirectionalMap;
             IteratorType it;
+            std::shared_ptr<ValueType> val;
         };
 
         BidirectionalMap() : forward(std::make_shared<ForwardMap>()), inverse(std::make_shared<InverseMap>()) {}
@@ -138,7 +145,7 @@ namespace BiMap {
                 return pos;
             }
 
-            inverse->erase(inverse->find(*pos->second));
+            inverse->erase(inverse->find(pos->second));
             return Iterator(forward->erase(pos.it));
         }
 
