@@ -2,8 +2,8 @@
 #include <string>
 #include "BidirectionalMap.hpp"
 
-template<typename T, typename U>
-void print(const BiMap::BiMapImpl<T, U> &m) {
+template<typename MAP>
+void print(const MAP &m) {
     for (const auto &[v1, v2] : m) {
         std::cout << "val1: " << v1 << ", val2: " << v2 << std::endl;
     }
@@ -25,5 +25,6 @@ int main() {
     BiMap::BidirectionalMap converted = moved->invert();
     converted->clear();
     print(*moved);
+    print(moved);
 }
 

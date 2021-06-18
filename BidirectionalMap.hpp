@@ -190,9 +190,9 @@ namespace BiMap {
     template<typename T, typename U>
     class BidirectionalMap {
     private:
-        using BMImpl = BiMapImpl<T, U>;
-        using iBMImpl = BiMapImpl<U, T>;
-        using BMImplPtr = std::shared_ptr<BMImpl>;
+        using Map = BiMapImpl<T, U>;
+        using InverseMap = BiMapImpl<U, T>;
+        using MapPtr = std::shared_ptr<Map>;
 
         void swap(BidirectionalMap &a, BidirectionalMap &b) {
             // swap only data pointers, inverse access pointers remain unchanged
@@ -201,11 +201,12 @@ namespace BiMap {
         }
 
     public:
-        BidirectionalMap() : biMap(new BMImpl) {
+
+        BidirectionalMap() : biMap(new Map) {
             constructPair();
         }
 
-        BidirectionalMap(const BidirectionalMap &other) : biMap(new BMImpl(BMImpl::Construct::Empty)) {
+        BidirectionalMap(const BidirectionalMap &other) : biMap(new Map(Map::Construct::Empty)) {
             copyResources(other);
             constructPair();
         }
@@ -229,54 +230,62 @@ namespace BiMap {
 
         // converters
 
-        BidirectionalMap(const BMImpl &map) : biMap(new BMImpl(BMImpl::Construct::Empty)) {
+        BidirectionalMap(const Map &map) : biMap(new Map(Map::Construct::Empty)) {
             copyResources(map);
             constructPair();
         }
 
-        operator BMImpl &() {
+        operator Map &() {
             return *biMap;
         };
 
-        operator const BMImpl &() const {
+        operator const Map &() const {
             return *biMap;
         }
 
         // access
 
-        BMImpl *operator->() noexcept {
+        Map *operator->() noexcept {
             return biMap.get();
         }
 
-        const BMImpl *operator->() const noexcept {
+        const Map *operator->() const noexcept {
             return biMap.get();
         }
 
-        BMImpl &operator*() noexcept {
+        Map &operator*() noexcept {
             return *biMap;
         }
 
-        const BMImpl &operator*() const noexcept {
+        const Map &operator*() const noexcept {
             return *biMap;
+        }
+
+        typename Map::Iterator begin() const noexcept(noexcept(biMap->begin())) {
+            return biMap->begin();
+        }
+
+        typename Map::Iterator end() const noexcept(noexcept(biMap->end())) {
+            return biMap->end();
         }
 
     private:
         void constructPair() {
-            auto inverse = std::shared_ptr<iBMImpl>(new iBMImpl(biMap->inverse, biMap->forward, biMap));
+            auto inverse = std::shared_ptr<InverseMap>(new InverseMap(biMap->inverse, biMap->forward, biMap));
             biMap->inverseAccess = inverse;
         }
 
 
-        void copyResources(const BMImpl &other) {
-            biMap->forward = std::make_shared<typename BMImpl::ForwardMap>(*other.forward);
-            biMap->inverse = std::make_shared<typename BMImpl::InverseMap>(*other.inverse);
+        void copyResources(const Map &other) {
+            biMap->forward = std::make_shared<typename Map::ForwardMap>(*other.forward);
+            biMap->inverse = std::make_shared<typename Map::InverseMap>(*other.inverse);
         }
 
         void copyResources(const BidirectionalMap &other) {
             copyResources(*other.biMap);
         }
 
-        BMImplPtr biMap;
+        MapPtr biMap;
     };
 }
 
