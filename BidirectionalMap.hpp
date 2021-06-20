@@ -25,11 +25,11 @@ namespace BiMap::implementation {
         }
 
         AllocOncePointer(AllocOncePointer &&other) noexcept : AllocOncePointer() {
-            swap(*this, other);
+            swap(other);
         }
 
         AllocOncePointer &operator=(AllocOncePointer other) {
-            swap(*this, other);
+            swap(other);
             return *this;
         }
 
@@ -84,11 +84,12 @@ namespace BiMap {
         explicit BidirectionalMap(InverseBiMap &inverseMap) :
                 forward(inverseMap.inverse), inverse(inverseMap.forward), inverseAccess(&inverseMap) {}
 
-        enum class Dummy {
-            D
+        enum class Construct {
+            Empty
         };
 
-        explicit constexpr BidirectionalMap(Dummy) : forward(nullptr), inverse(nullptr) {}
+        explicit constexpr BidirectionalMap(Construct) : forward(nullptr), inverse(nullptr),
+                                                         inverseAccess(static_cast<InverseBiMap*>(nullptr)) {}
 
     public:
         class Iterator {
@@ -145,18 +146,16 @@ namespace BiMap {
         void swap(BidirectionalMap &other) {
             std::swap(this->forward, other.forward);
             std::swap(this->inverse, other.inverse);
-            using implementation::swap;
-            std::swap(this->inverseAccess, other.inverseAccess);
-            // this->inverseAccess.swap(other.inverseAccess);
+            this->inverseAccess.swap(other.inverseAccess);
         }
 
 
-        BidirectionalMap(BidirectionalMap &&other) noexcept : BidirectionalMap(Dummy::D) {
-            swap(*this, other);
+        BidirectionalMap(BidirectionalMap &&other) noexcept : BidirectionalMap(Construct::Empty) {
+            swap(other);
         }
 
         BidirectionalMap &operator=(BidirectionalMap other) {
-            swap(*this, other);
+            swap(other);
             return *this;
         }
 
