@@ -62,6 +62,27 @@ TEST(BidirectionalMap, find) {
     EXPECT_EQ(it, test.end());
 }
 
+TEST(BidirectionalMap, ctor_initializer) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> test = {{"Test", 1}, {"SecondItem", 2}};
+    EXPECT_FALSE(test.empty());
+    EXPECT_EQ(test.size(), 2);
+    checkValues(test.find("Test"), "Test", 1);
+    checkValues(test.find("SecondItem"), "SecondItem", 2);
+}
+
+TEST(BidirectionalMap, ctor_initialize_from_container) {
+    using namespace BiMap;
+    std::unordered_map<std::string, int> tmp = {{"Test", 1}, {"SecondItem", 2}};
+    auto tmpCopy = tmp;
+    BidirectionalMap<std::string, int> test(tmp.begin(), tmp.end());
+    EXPECT_EQ(tmp, tmpCopy);
+    EXPECT_FALSE(test.empty());
+    EXPECT_EQ(test.size(), 2);
+    checkValues(test.find("Test"), "Test", 1);
+    checkValues(test.find("SecondItem"), "SecondItem", 2);
+}
+
 TEST(BidirectionalMap, erase) {
     using namespace BiMap;
     BidirectionalMap<std::string, int> test;

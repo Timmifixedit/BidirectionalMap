@@ -155,6 +155,17 @@ namespace BiMap {
         BidirectionalMap() : forward(std::make_shared<ForwardMap>()), inverse(std::make_shared<InverseMap>()),
                              inverseAccess(*this) {}
 
+        template<typename InputIt>
+        BidirectionalMap(InputIt start, InputIt end) : BidirectionalMap() {
+            while (start != end) {
+                emplace(*start);
+                ++start;
+            }
+        }
+
+        BidirectionalMap(std::initializer_list<std::pair<ForwardKey, InverseKey>> init) :
+            BidirectionalMap(init.begin(), init.end()) {}
+
         BidirectionalMap(const BidirectionalMap &other) : forward(std::make_shared<ForwardMap>(*other.forward)),
                                                           inverse(std::make_shared<InverseMap>(*other.inverse)),
                                                           inverseAccess(*this) {}
