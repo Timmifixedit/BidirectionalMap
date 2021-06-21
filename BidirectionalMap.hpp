@@ -74,14 +74,15 @@ namespace BiMap::implementation {
 
 namespace BiMap {
     template<typename ForwardKey, typename InverseKey,
-        template<typename T, typename U>typename Map = std::unordered_map>
+            template<typename T, typename U> typename ForwardMapType = std::unordered_map,
+            template<typename T, typename U> typename InverseMapType = std::unordered_map>
     class BidirectionalMap {
     private:
-        using ForwardMap = Map<ForwardKey, const InverseKey *>;
-        using InverseMap = Map<InverseKey, const ForwardKey *>;
+        using ForwardMap = ForwardMapType<ForwardKey, const InverseKey *>;
+        using InverseMap = InverseMapType<InverseKey, const ForwardKey *>;
         using ForwardMapPtr = std::shared_ptr<ForwardMap>;
         using InverseMapPtr = std::shared_ptr<InverseMap>;
-        using InverseBiMap = BidirectionalMap<InverseKey, ForwardKey, Map>;
+        using InverseBiMap = BidirectionalMap<InverseKey, ForwardKey, InverseMapType, ForwardMapType>;
         friend InverseBiMap;
         using InversBiMapPtr = implementation::AllocOncePointer<InverseBiMap>;
 
