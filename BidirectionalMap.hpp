@@ -208,15 +208,15 @@ namespace BiMap {
             return {Iterator(it, *forward), true};
         }
 
-        [[nodiscard]] auto size() const noexcept {
+        [[nodiscard]] auto size() const noexcept(noexcept(forward->size())) {
             return forward->size();
         }
 
-        [[nodiscard]] bool empty() const {
+        [[nodiscard]] bool empty() const noexcept(noexcept(forward->empty())) {
             return forward->empty();
         }
 
-        void reserve(std::size_t n) {
+        void reserve(std::size_t n) noexcept(noexcept(forward->reserve(n)) && noexcept(inverse->reserve(n))) {
             forward->reserve(n);
             inverse->reserve(n);
         }
@@ -233,7 +233,7 @@ namespace BiMap {
             return Iterator(*this);
         }
 
-        Iterator end() const noexcept(noexcept(Iterator())) {
+        constexpr Iterator end() const noexcept(noexcept(Iterator())) {
             return Iterator();
         }
 
@@ -283,7 +283,7 @@ namespace BiMap {
             return true;
         }
 
-        bool operator!=(const BidirectionalMap &other) const {
+        bool operator!=(const BidirectionalMap &other) const noexcept(noexcept(*this == other)) {
             return !(*this == other);
         }
 
