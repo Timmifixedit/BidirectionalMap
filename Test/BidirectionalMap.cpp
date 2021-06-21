@@ -113,13 +113,8 @@ TEST(BidirectionalMap, erase_by_key) {
 
 TEST(BidirectionalMap, erase_range) {
     using namespace BiMap;
-    BidirectionalMap<std::string, int, std::map> test;
-    test.emplace("Item1", 123);
-    test.emplace("Item2", 456);
-    test.emplace("Item3", 789);
-    test.emplace("Item4", 1123);
-    test.emplace("Item5", 1456);
-    test.emplace("Item6", 1789);
+    BidirectionalMap<std::string, int, std::map> test = {{"Item1", 123}, {"Item2", 456}, {"Item3", 789},
+                                                         {"Item4", 1123}, {"Item5", 1456}, {"Item6", 1789}};
     auto start = test.begin();
     ++start;
     auto end = start;
@@ -132,14 +127,8 @@ TEST(BidirectionalMap, erase_range) {
 
 TEST(BidirectionalMap, iterate) {
     using namespace BiMap;
-    BidirectionalMap<std::string, int> test;
-    std::unordered_map<std::string, int> lookup;
-    test.emplace("Item1", 123);
-    test.emplace("Item2", 456);
-    test.emplace("Item3", 789);
-    lookup.emplace("Item1", 123);
-    lookup.emplace("Item2", 456);
-    lookup.emplace("Item3", 789);
+    BidirectionalMap<std::string, int, std::map> test = {{"Item1", 123}, {"Item2", 456}, {"Item3", 789}};
+    std::unordered_map<std::string, int> lookup = {{"Item1", 123}, {"Item2", 456}, {"Item3", 789}};
     for (auto it = test.begin(); it != test.end(); ++it) {
         auto lookupRes = lookup.find(it->first);
         checkValues(it, lookupRes->first, lookupRes->second);
@@ -151,13 +140,8 @@ TEST(BidirectionalMap, iterate) {
 
 TEST(BidirectionalMap, iterate_with_erase) {
     using namespace BiMap;
-    BidirectionalMap<std::string, int> test;
-    std::unordered_map<std::string, int> lookup;
-    test.emplace("Item1", 123);
-    test.emplace("Item2", 456);
-    test.emplace("Item3", 789);
-    lookup.emplace("Item1", 123);
-    lookup.emplace("Item3", 789);
+    BidirectionalMap<std::string, int, std::map> test = {{"Item1", 123}, {"Item2", 456}, {"Item3", 789}};
+    std::unordered_map<std::string, int> lookup = {{"Item1", 123}, {"Item3", 789}};
     for (auto it = test.begin(); it != test.end(); ++it) {
         if (it->first == "Item2") {
             it = test.erase(it);
@@ -256,4 +240,3 @@ TEST(BidirectionalMap, inverse_access_identity) {
     EXPECT_EQ(test.size(), 4);
     checkValues(test.find("abc"), "abc", 17);
 }
-
