@@ -148,6 +148,7 @@ TEST(BidirectionalMap, iterate) {
 
     EXPECT_TRUE(lookup.empty());
 }
+
 TEST(BidirectionalMap, iterate_with_erase) {
     using namespace BiMap;
     BidirectionalMap<std::string, int> test;
@@ -169,4 +170,17 @@ TEST(BidirectionalMap, iterate_with_erase) {
 
     EXPECT_TRUE(lookup.empty());
     EXPECT_EQ(test.size(), 2);
+}
+
+TEST(BidirectionalMap, comparison) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    BidirectionalMap<std::string, int> test1 = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    BidirectionalMap<std::string, int> test2 = {{"Test", 123}, {"Stuff", 789}};
+    BidirectionalMap<std::string, int> test3 = {{"Test", 0}, {"NewItem", 456}, {"Stuff", 789}};
+    BidirectionalMap<std::string, int> test4 = {{"Testing", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    EXPECT_EQ(original, test1);
+    EXPECT_NE(original, test2);
+    EXPECT_NE(original, test3);
+    EXPECT_NE(original, test4);
 }
