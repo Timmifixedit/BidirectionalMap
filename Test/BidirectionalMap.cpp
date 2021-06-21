@@ -216,6 +216,7 @@ TEST(BidirectionalMap, asignment) {
     overwritten = std::move(original);
     EXPECT_EQ(overwritten, copy);
 }
+
 TEST(BidirectionalMap, clear) {
     using namespace BiMap;
     BidirectionalMap<std::string, int> test = {{"Test", 123}};
@@ -224,3 +225,35 @@ TEST(BidirectionalMap, clear) {
     EXPECT_EQ(test.size(), 0);
     EXPECT_EQ(test.find("Test"), test.end());
 }
+
+TEST(BidirectionalMap, inverse_access_content) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> test = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    const auto &inverse = test.invert();
+    EXPECT_EQ(inverse.size(), 3);
+    checkValues(inverse.find(123), 123, "Test");
+    checkValues(inverse.find(456), 456, "NewItem");
+    checkValues(inverse.find(789), 789, "Stuff");
+}
+
+TEST(BidirectionalMap, inverse_access_emplace) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> test = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    auto &inverse = test.invert();
+    inverse.emplace(17, "Inverse");
+    EXPECT_EQ(inverse.size(), 4);
+    EXPECT_EQ(test.size(), 4);
+    checkValues(test.find("Inverse"), "Inverse", 17);
+    checkValues(inverse.find(17), 17, "Inverse");
+}
+
+TEST(BidirectionalMap, inverse_access_identity) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> test = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    auto &same = test.invert().invert();
+    EXPECT_EQ(test, same);
+    same.emplace("abc", 17);
+    EXPECT_EQ(test.size(), 4);
+    checkValues(test.find("abc"), "abc", 17);
+}
+
