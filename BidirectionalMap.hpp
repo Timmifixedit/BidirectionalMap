@@ -7,6 +7,7 @@
 
 #include <unordered_map>
 #include <memory>
+#include <optional>
 
 namespace BiMap::implementation {
     template<typename T>
@@ -104,14 +105,31 @@ namespace BiMap {
             using IteratorType = decltype(std::declval<ForwardMap>().cbegin());
             using ValueType = std::pair<const ForwardKey &, const InverseKey &>;
 
-            Iterator() noexcept(noexcept(IteratorType())) : it(), val(nullptr), container(nullptr), end(true) {}
+            Iterator() noexcept(noexcept(IteratorType())) : it(), val(std::nullopt), container(nullptr), end(true) {}
 
-            explicit Iterator(IteratorType it, const ForwardMap &container) :
-                    it(it),
-                    val(this->it == container.end() ? nullptr : std::make_shared<ValueType>(it->first, *it->second)),
-                    container(&container), end(this->it == container.end()) {}
+            Iterator(IteratorType it, const ForwardMap &container) : it(it), container(&container),
+                end(this->it == container.end()) {
+                if (!end) {
+                    val.emplace(it->first, *it->second);
+                }
+            }
 
             explicit Iterator(const BidirectionalMap &map) : Iterator(map.forward->begin(), *map.forward) {}
+
+            Iterator(const Iterator &other) = default;
+            Iterator(Iterator &&other) noexcept = default;
+            Iterator &operator=(Iterator other) noexcept(noexcept(ValueType(this->it->first, *this->it->second))) {
+                it = std::move(other.it);
+                val.reset();
+                end = other.end;
+                if (!end) {
+                    val.emplace(*other.val);
+                }
+
+                return *this;
+            }
+
+            ~Iterator() = default;
 
             Iterator &operator++() {
                 if (end) {
@@ -120,9 +138,9 @@ namespace BiMap {
 
                 ++it;
                 if (it != container->end()) {
-                    val = std::make_shared<ValueType>(it->first, *it->second);
+                    val.emplace(it->first, *it->second);
                 } else {
-                    val = nullptr;
+                    val.reset();
                     end = true;
                 }
 
@@ -141,14 +159,14 @@ namespace BiMap {
                 return *val;
             }
 
-            auto operator->() const noexcept {
-                return val.get();
+            const ValueType *operator->() const noexcept {
+                return &*val;
             }
 
         private:
             friend class BidirectionalMap;
             IteratorType it;
-            std::shared_ptr<ValueType> val;
+            std::optional<ValueType> val{};
             const ForwardMap *container;
             bool end;
         };
