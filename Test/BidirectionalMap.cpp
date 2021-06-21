@@ -71,6 +71,23 @@ TEST(BidirectionalMap, erase) {
     EXPECT_EQ(test.size(), 1);
     EXPECT_EQ(test.find("NewItem"), test.end());
     checkValues(test.find("Test"), "Test", 123);
+    EXPECT_EQ(test.erase(test.end()), test.end());
+    EXPECT_EQ(test.size(), 1);
+    EXPECT_EQ(test.find("NewItem"), test.end());
+}
+
+TEST(BidirectionalMap, erase_by_key) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> test;
+    test.emplace("Test", 123);
+    test.emplace("NewItem", 456);
+    EXPECT_EQ(test.erase("NewItem"), 1);
+    EXPECT_EQ(test.size(), 1);
+    EXPECT_EQ(test.find("NewItem"), test.end());
+    checkValues(test.find("Test"), "Test", 123);
+    EXPECT_EQ(test.erase("Stuff"), 0);
+    EXPECT_EQ(test.size(), 1);
+    checkValues(test.find("Test"), "Test", 123);
 }
 
 TEST(BidirectionalMap, erase_range) {
