@@ -73,14 +73,15 @@ namespace BiMap::implementation {
 }
 
 namespace BiMap {
-    template<typename ForwardKey, typename InverseKey>
+    template<typename ForwardKey, typename InverseKey,
+        template<typename T, typename U>typename Map = std::unordered_map>
     class BidirectionalMap {
     private:
-        using ForwardMap = std::unordered_map<ForwardKey, const InverseKey *>;
-        using InverseMap = std::unordered_map<InverseKey, const ForwardKey *>;
+        using ForwardMap = Map<ForwardKey, const InverseKey *>;
+        using InverseMap = Map<InverseKey, const ForwardKey *>;
         using ForwardMapPtr = std::shared_ptr<ForwardMap>;
         using InverseMapPtr = std::shared_ptr<InverseMap>;
-        using InverseBiMap = BidirectionalMap<InverseKey, ForwardKey>;
+        using InverseBiMap = BidirectionalMap<InverseKey, ForwardKey, Map>;
         friend InverseBiMap;
         using InversBiMapPtr = implementation::AllocOncePointer<InverseBiMap>;
 
@@ -102,27 +103,33 @@ namespace BiMap {
             using IteratorType = decltype(std::declval<ForwardMap>().cbegin());
             using ValueType = std::pair<const ForwardKey &, const InverseKey &>;
 
-            Iterator() = default;
+            Iterator() noexcept(noexcept(IteratorType())) : it(), val(nullptr), container(nullptr), end(true) {}
 
-            explicit Iterator(IteratorType it) : it(it),
-                                                 val(this->it == IteratorType() ? nullptr : std::make_shared<ValueType>(
-                                                         it->first, *it->second)) {}
+            explicit Iterator(IteratorType it, const ForwardMap &container) :
+                    it(it),
+                    val(this->it == container.end() ? nullptr : std::make_shared<ValueType>(it->first, *it->second)),
+                    container(&container), end(this->it == container.end()) {}
 
-            explicit Iterator(const BidirectionalMap &map) : Iterator(map.forward->begin()) {}
+            explicit Iterator(const BidirectionalMap &map) : Iterator(map.forward->begin(), *map.forward) {}
 
             Iterator &operator++() {
+                if (end) {
+                    return *this;
+                }
+
                 ++it;
-                if (it != IteratorType()) {
+                if (it != container->end()) {
                     val = std::make_shared<ValueType>(it->first, *it->second);
                 } else {
                     val = nullptr;
+                    end = true;
                 }
 
                 return *this;
             }
 
             bool operator==(const Iterator &other) const noexcept(noexcept(it == it)) {
-                return this->it == other.it;
+                return (end && other.end) || (end == other.end && this->it == other.it);
             }
 
             bool operator!=(const Iterator &other) const noexcept(noexcept(*this == other)) {
@@ -141,6 +148,8 @@ namespace BiMap {
             friend class BidirectionalMap;
             IteratorType it;
             std::shared_ptr<ValueType> val;
+            const ForwardMap * const container;
+            bool end;
         };
 
         BidirectionalMap() : forward(std::make_shared<ForwardMap>()), inverse(std::make_shared<InverseMap>()),
@@ -157,7 +166,7 @@ namespace BiMap {
         }
 
 
-        BidirectionalMap(BidirectionalMap &&other) noexcept: BidirectionalMap(Construct::Empty) {
+        BidirectionalMap(BidirectionalMap &&other) noexcept : BidirectionalMap(Construct::Empty) {
             swap(other);
         }
 
@@ -181,7 +190,7 @@ namespace BiMap {
                 it->second = &invIt->first;
             }
 
-            return {Iterator(it), inserted};
+            return {Iterator(it, *forward), inserted};
         }
 
         [[nodiscard]] auto size() const noexcept {
@@ -214,7 +223,7 @@ namespace BiMap {
         }
 
         Iterator find(const ForwardKey &key) const {
-            return Iterator(forward->find(key));
+            return Iterator(forward->find(key), *forward);
         }
 
         Iterator erase(Iterator pos) {
@@ -223,11 +232,11 @@ namespace BiMap {
             }
 
             inverse->erase(inverse->find(pos->second));
-            return Iterator(forward->erase(pos.it));
+            return Iterator(forward->erase(pos.it), *forward);
         }
 
         std::size_t erase(const ForwardKey &key) {
-            auto it = Iterator(forward->find(key));
+            auto it = Iterator(forward->find(key), *forward);
             if (it != end()) {
                 erase(it);
                 return 1;
