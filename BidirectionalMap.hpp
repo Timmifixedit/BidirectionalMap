@@ -148,7 +148,7 @@ namespace BiMap {
             friend class BidirectionalMap;
             IteratorType it;
             std::shared_ptr<ValueType> val;
-            const ForwardMap * const container;
+            const ForwardMap *container;
             bool end;
         };
 
@@ -180,17 +180,21 @@ namespace BiMap {
         template<typename ...ARGS>
         auto emplace(ARGS &&...args) -> std::pair<Iterator, bool> {
             std::pair<ForwardKey, InverseKey> tmp(std::forward<ARGS>(args)...);
-            auto[it, inserted] = forward->emplace(std::move(tmp.first), nullptr);
+            auto res = find(tmp.first);
+            if (res != end()) {
+                return {res, false};
+            }
+
+            auto invRes = invert().find(tmp.second);
+            if (invRes != invert().end()) {
+                return {find(invRes->second), false};
+            }
+
+            auto[it, _] = forward->emplace(std::move(tmp.first), nullptr);
             decltype(inverse->begin()) invIt;
-            if (inserted) {
-                std::tie(invIt, inserted) = inverse->emplace(std::move(tmp.second), &it->first);
-            }
-
-            if (inserted) {
-                it->second = &invIt->first;
-            }
-
-            return {Iterator(it, *forward), inserted};
+            std::tie(invIt, _) = inverse->emplace(std::move(tmp.second), &it->first);
+            it->second = &invIt->first;
+            return {Iterator(it, *forward), true};
         }
 
         [[nodiscard]] auto size() const noexcept {
