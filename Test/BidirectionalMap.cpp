@@ -184,3 +184,35 @@ TEST(BidirectionalMap, comparison) {
     EXPECT_NE(original, test3);
     EXPECT_NE(original, test4);
 }
+
+TEST(BidirectionalMap, copy_ctor) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    auto copy = original;
+    EXPECT_EQ(original, copy);
+    original.emplace("AddStuff", 17);
+    EXPECT_EQ(copy.size(), 3);
+    EXPECT_EQ(copy.find("AddStuff"), copy.end());
+}
+
+TEST(BidirectionalMap, move_ctor) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    auto copy = original;
+    auto moved = std::move(original);
+    EXPECT_EQ(moved, copy);
+}
+
+TEST(BidirectionalMap, asignment) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    BidirectionalMap<std::string, int> overwritten  = {{"abc", 1}};
+    overwritten = original;
+    EXPECT_EQ(overwritten, original);
+    original.emplace("AddStuff", 17);
+    EXPECT_EQ(overwritten.size(), 3);
+    EXPECT_EQ(overwritten.find("AddStuff"), overwritten.end());
+    auto copy = original;
+    overwritten = std::move(original);
+    EXPECT_EQ(overwritten, copy);
+}
