@@ -287,6 +287,11 @@ namespace BiMap {
             return !(*this == other);
         }
 
+        void clear() noexcept(noexcept(forward->clear()) && noexcept(inverse->clear())) {
+            forward->clear();
+            inverse->clear();
+        }
+
     private:
         ForwardMapPtr forward;
         InverseMapPtr inverse;

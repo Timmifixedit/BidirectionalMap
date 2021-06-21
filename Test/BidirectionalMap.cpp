@@ -216,3 +216,11 @@ TEST(BidirectionalMap, asignment) {
     overwritten = std::move(original);
     EXPECT_EQ(overwritten, copy);
 }
+TEST(BidirectionalMap, clear) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> test = {{"Test", 123}};
+    test.clear();
+    EXPECT_TRUE(test.empty());
+    EXPECT_EQ(test.size(), 0);
+    EXPECT_EQ(test.find("Test"), test.end());
+}
