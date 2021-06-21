@@ -257,6 +257,25 @@ namespace BiMap {
             return first;
         }
 
+        bool operator==(const BidirectionalMap &other) const {
+            if (size() != other.size()) {
+                return false;
+            }
+
+            for (const auto &[v1, v2] : *this) {
+                auto res = other.find(v1);
+                if (res == other.end() || res->second != v2) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        bool operator!=(const BidirectionalMap &other) const {
+            return !(*this == other);
+        }
+
     private:
         ForwardMapPtr forward;
         InverseMapPtr inverse;
