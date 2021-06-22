@@ -86,8 +86,12 @@ namespace BiMap {
         using InverseBiMap = BidirectionalMap<InverseKey, ForwardKey, InverseMapType, ForwardMapType>;
         friend InverseBiMap;
         using InversBiMapPtr = implementation::AllocOncePointer<InverseBiMap>;
-
         friend class implementation::AllocOncePointer<BidirectionalMap>;
+
+        static_assert(std::is_default_constructible<ForwardMap>::value &&
+            std::is_default_constructible<InverseMap>::value, "Map base containers must be default constructible.");
+        static_assert(std::is_copy_constructible<ForwardMap>::value &&
+            std::is_copy_constructible<InverseMap>::value, "Map base containers must be copy constructible.");
 
         explicit BidirectionalMap(InverseBiMap &inverseMap) noexcept :
                 forward(inverseMap.inverse), inverse(inverseMap.forward), inverseAccess(&inverseMap) {}
@@ -108,7 +112,7 @@ namespace BiMap {
             Iterator() noexcept(noexcept(IteratorType())) : it(), val(std::nullopt), container(nullptr), end(true) {}
 
             Iterator(IteratorType it, const ForwardMap &container) : it(it), container(&container),
-                end(this->it == container.end()) {
+                end(this->it == std::end(container)) {
                 if (!end) {
                     val.emplace(it->first, *it->second);
                 }
@@ -131,13 +135,14 @@ namespace BiMap {
 
             ~Iterator() = default;
 
-            Iterator &operator++() {
+            Iterator &operator++() noexcept(noexcept(++this->it) &&
+                                            noexcept(this->val.emplace(this->it->first, *this->it->second))) {
                 if (end) {
                     return *this;
                 }
 
                 ++it;
-                if (it != container->end()) {
+                if (it != std::end(*container)) {
                     val.emplace(it->first, *it->second);
                 } else {
                     val.reset();
