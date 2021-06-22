@@ -195,12 +195,12 @@ namespace BiMap {
                                                           inverseAccess(*this) {}
 
         void swap(BidirectionalMap &other) noexcept {
-            //Swap data pointers
+            // swap data pointers
             std::swap(this->forward, other.forward);
             std::swap(this->inverse, other.inverse);
-            // swap inverse lookup reference cycle
-            this->inverseAccess.swap(other.inverseAccess);
-            this->inverseAccess->inverseAccess.swap(other.inverseAccess->inverseAccess);
+            // swap data pointers in inverse lookup
+            std::swap(this->inverseAccess->forward, other.inverseAccess->forward);
+            std::swap(this->inverseAccess->inverse, other.inverseAccess->inverse);
         }
 
 
