@@ -6,8 +6,10 @@
 #include <string>
 #include <unordered_map>
 #include <map>
+#include <vector>
 
 #include "BidirectionalMap.hpp"
+#include "MustNotCopy.hpp"
 
 template<typename It, typename T, typename U>
 void checkValues(It it, const T& first, const U& second) {
@@ -299,4 +301,25 @@ TEST(BidirectionalMap, move_inverse) {
     checkValues(moved.find(18), 18, "NewMoveItem");
     moved.invert().erase("Test");
     EXPECT_EQ(moved.find(123), moved.end());
+}
+
+TEST(BidirectionalMap, zero_copy) {
+    using namespace BiMap;
+    BidirectionalMap<MustNotCopy, int, MNCMAp> test;
+    test.emplace("Test1", 1);
+    test.emplace("Test2", 2);
+    test.emplace("Test3", 3);
+    auto it = test.begin();
+    while (it != test.end()) {
+        ++it;
+    }
+
+    std::vector<std::string> strings;
+    for(const auto &[mnc, _] : test) {
+        strings.emplace_back(mnc.s);
+    }
+
+    for (const auto &[_, mnc] : test.invert()) {
+        strings.emplace_back(mnc.s);
+    }
 }
