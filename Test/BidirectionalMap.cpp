@@ -269,8 +269,7 @@ TEST(BidirectionalMap, copy_inverse) {
     EXPECT_EQ(original.size(), 4);
     EXPECT_EQ(original.find("NewCopyItem"), original.end());
     copy.invert().erase("Test");
-    auto f = copy.find(123);
-    EXPECT_EQ(f, copy.end());
+    EXPECT_EQ(copy.find(123), copy.end());
     checkValues(original.find("Test"), "Test", 123);
 }
 
