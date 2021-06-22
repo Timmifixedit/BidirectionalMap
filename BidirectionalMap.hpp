@@ -74,31 +74,34 @@ namespace BiMap::implementation {
 
 namespace BiMap {
     template<typename ForwardKey, typename InverseKey,
-            template<typename T, typename U> typename BaseMapType = std::unordered_map>
+            template<typename T, typename U> typename ForwardMapType = std::unordered_map,
+            template<typename T, typename U> typename InverseMapType = std::unordered_map>
     class BidirectionalMap {
     private:
-        using Map = BaseMapType<ForwardKey, const InverseKey *>;
-        using InverseBiMap = BidirectionalMap<InverseKey, ForwardKey, BaseMapType>;
+        using ForwardMap = ForwardMapType<ForwardKey, const InverseKey *>;
+        using InverseBiMap = BidirectionalMap<InverseKey, ForwardKey, InverseMapType, ForwardMapType>;
         friend InverseBiMap;
         using InversBiMapPtr = implementation::AllocOncePointer<InverseBiMap>;
 
         friend class implementation::AllocOncePointer<BidirectionalMap>;
 
-        static_assert(std::is_default_constructible<Map>::value, "Map base containers must be default constructible.");
-        static_assert(std::is_copy_constructible<Map>::value, "Map base containers must be copy constructible.");
+        static_assert(std::is_default_constructible<ForwardMap>::value,
+                      "ForwardMap base containers must be default constructible.");
+        static_assert(std::is_copy_constructible<ForwardMap>::value,
+                      "ForwardMap base containers must be copy constructible.");
 
         explicit BidirectionalMap(InverseBiMap &inverseMap) noexcept: map(), inverseAccess(&inverseMap) {}
 
     public:
         class Iterator {
         public:
-            using IteratorType = decltype(std::declval<Map>().cbegin());
+            using IteratorType = decltype(std::declval<ForwardMap>().cbegin());
             using ValueType = std::pair<const ForwardKey &, const InverseKey &>;
 
             Iterator() noexcept(noexcept(IteratorType())): it(), val(std::nullopt), container(nullptr), end(true) {}
 
-            Iterator(IteratorType it, const Map &container) : it(it), container(&container),
-                                                              end(this->it == std::end(container)) {
+            Iterator(IteratorType it, const ForwardMap &container) : it(it), container(&container),
+                                                                     end(this->it == std::end(container)) {
                 if (!end) {
                     val.emplace(it->first, *it->second);
                 }
@@ -161,7 +164,7 @@ namespace BiMap {
 
             IteratorType it;
             std::optional<ValueType> val{};
-            const Map *container;
+            const ForwardMap *container;
             bool end;
         };
 
@@ -303,7 +306,7 @@ namespace BiMap {
         }
 
     private:
-        Map map;
+        ForwardMap map;
         InversBiMapPtr inverseAccess;
     };
 }
