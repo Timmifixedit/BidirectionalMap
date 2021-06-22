@@ -100,8 +100,8 @@ namespace BiMap {
             Empty
         };
 
-        explicit constexpr BidirectionalMap(Construct) noexcept : forward(nullptr), inverse(nullptr),
-                                                         inverseAccess(static_cast<InverseBiMap *>(nullptr)) {}
+        explicit constexpr BidirectionalMap(Construct) noexcept: forward(nullptr), inverse(nullptr),
+                                                                 inverseAccess(*this) {}
 
     public:
         class Iterator {
@@ -195,9 +195,12 @@ namespace BiMap {
                                                           inverseAccess(*this) {}
 
         void swap(BidirectionalMap &other) noexcept {
+            //Swap data pointers
             std::swap(this->forward, other.forward);
             std::swap(this->inverse, other.inverse);
+            // swap inverse lookup reference cycle
             this->inverseAccess.swap(other.inverseAccess);
+            this->inverseAccess->inverseAccess.swap(other.inverseAccess->inverseAccess);
         }
 
 

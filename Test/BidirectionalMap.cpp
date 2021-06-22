@@ -177,6 +177,9 @@ TEST(BidirectionalMap, copy_ctor) {
     original.emplace("AddStuff", 17);
     EXPECT_EQ(copy.size(), 3);
     EXPECT_EQ(copy.find("AddStuff"), copy.end());
+    copy.emplace("CopyItem", 17);
+    EXPECT_EQ(original.size(), 4);
+    EXPECT_EQ(original.find("CopyItem"), original.end());
 }
 
 TEST(BidirectionalMap, move_ctor) {
@@ -185,6 +188,9 @@ TEST(BidirectionalMap, move_ctor) {
     auto copy = original;
     auto moved = std::move(original);
     EXPECT_EQ(moved, copy);
+    moved.emplace("AnotherItem", 17);
+    EXPECT_EQ(moved.size(), 4);
+    checkValues(moved.find("AnotherItem"), "AnotherItem", 17);
 }
 
 TEST(BidirectionalMap, asignment) {
@@ -239,4 +245,14 @@ TEST(BidirectionalMap, inverse_access_identity) {
     same.emplace("abc", 17);
     EXPECT_EQ(test.size(), 4);
     checkValues(test.find("abc"), "abc", 17);
+}
+
+TEST(BidirectionalMap, inverse_access_emplace_after_moved) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    auto moved = std::move(original);
+    moved.invert().emplace(17, "AnotherItem");
+    EXPECT_EQ(moved.invert().size(), 4);
+    checkValues(moved.invert().find(17), 17, "AnotherItem");
+    checkValues(moved.find("AnotherItem"), "AnotherItem", 17);
 }
