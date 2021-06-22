@@ -256,3 +256,19 @@ TEST(BidirectionalMap, inverse_access_emplace_after_moved) {
     checkValues(moved.invert().find(17), 17, "AnotherItem");
     checkValues(moved.find("AnotherItem"), "AnotherItem", 17);
 }
+
+TEST(BidirectionalMap, copy_inverse) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    auto copy = original.invert();
+    EXPECT_EQ(copy, original.invert());
+    original.emplace("AddStuff", 17);
+    EXPECT_EQ(copy.size(), 3);
+    EXPECT_EQ(copy.find(17), copy.end());
+    copy.emplace(18, "NewCopyItem");
+    EXPECT_EQ(original.size(), 4);
+    EXPECT_EQ(original.find("CopyNewItem"), original.end());
+    copy.invert().erase("Test");
+    EXPECT_EQ(copy.find(123), copy.end());
+    checkValues(original.find("Test"), "Test", 123);
+}
