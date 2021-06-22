@@ -244,8 +244,26 @@ TEST(BidirectionalMap, inverse_access_identity) {
     EXPECT_EQ(test, same);
     same.emplace("abc", 17);
     EXPECT_EQ(test.size(), 4);
+    EXPECT_EQ(same.size(), 4);
     checkValues(test.find("abc"), "abc", 17);
+    checkValues(same.find("abc"), "abc", 17);
 }
+
+TEST(BidirectionalMap, inverse_access_clear) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> test = {{"Test", 123}};
+    auto &inverse = test.invert();
+    test.clear();
+    EXPECT_TRUE(inverse.empty());
+    EXPECT_EQ(inverse.find(123), inverse.end());
+    inverse.emplace(123, "Test");
+    inverse.clear();
+    EXPECT_TRUE(inverse.empty());
+    EXPECT_TRUE(test.empty());
+    EXPECT_EQ(inverse.find(123), inverse.end());
+    EXPECT_EQ(test.find("Test"), test.end());
+}
+
 
 TEST(BidirectionalMap, inverse_access_emplace_after_moved) {
     using namespace BiMap;
