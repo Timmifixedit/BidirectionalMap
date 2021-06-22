@@ -10,6 +10,22 @@ void print(const MAP &m, const std::string &name = "") {
     }
 }
 
+struct String {
+    std::string s;
+    struct Hash {
+        std::size_t operator()(const String &string) const {
+            return std::hash<std::string>()(string.s);
+        }
+    };
+
+    bool operator==(const String &string) const {
+        return s == string.s;
+    }
+};
+
+template<typename T, typename U>
+using StringMap = std::unordered_map<T, U, String::Hash>;
+
 int main() {
     BiMap::BidirectionalMap<std::string, int> test;
     test.emplace("hallo", 7);
