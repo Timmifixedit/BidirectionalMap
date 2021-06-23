@@ -14,7 +14,7 @@ namespace BiMap::implementation {
         constexpr AllocOncePointer() noexcept: data(nullptr), owner(false) {}
 
     public:
-        explicit AllocOncePointer(T *data) : data(data), owner(false) {}
+        explicit AllocOncePointer(T *data) noexcept : data(data), owner(false) {}
 
         template<typename ...ARGS>
         explicit AllocOncePointer(ARGS &&...args) : data(new T(std::forward<ARGS>(args)...)), owner(true) {}
@@ -100,16 +100,20 @@ namespace BiMap {
             using IteratorType = decltype(std::declval<ForwardMap>().cbegin());
             using ValueType = std::pair<const ForwardKey &, const InverseKey &>;
 
-            Iterator() noexcept(noexcept(IteratorType())): it(), val(std::nullopt), container(nullptr), end(true) {}
+            Iterator() noexcept(std::is_nothrow_default_constructible_v<IteratorType>): it(), val(std::nullopt),
+                                                                                        container(nullptr), end(true) {}
 
-            Iterator(IteratorType it, const ForwardMap &container) : it(it), container(&container),
-                                                                     end(this->it == std::end(container)) {
+            Iterator(IteratorType it, const ForwardMap &container)
+            noexcept(std::is_nothrow_copy_constructible_v<IteratorType> && noexcept(ValueType(it->first, *it->second)))
+                    : it(it), container(&container),
+                      end(this->it == std::end(container)) {
                 if (!end) {
                     val.emplace(it->first, *it->second);
                 }
             }
 
-            explicit Iterator(const BidirectionalMap &map) : Iterator(map.map.begin(), map.map) {}
+            explicit Iterator(const BidirectionalMap &map) noexcept(noexcept(Iterator(std::declval<IteratorType>(),
+                    std::declval<BidirectionalMap>().map))) : Iterator(map.map.begin(), map.map) {}
 
             Iterator(const Iterator &other) = default;
 
@@ -129,7 +133,7 @@ namespace BiMap {
             ~Iterator() = default;
 
             Iterator &operator++() noexcept(noexcept(++this->it) &&
-                                            noexcept(this->val.emplace(this->it->first, *this->it->second))) {
+                                            noexcept(ValueType(this->it->first, *this->it->second))) {
                 if (end) {
                     return *this;
                 }
@@ -171,8 +175,7 @@ namespace BiMap {
         };
 
         BidirectionalMap() noexcept(std::is_nothrow_default_constructible_v<ForwardMap> &&
-                                    std::is_nothrow_constructible_v<InverseBiMap, BidirectionalMap>): map(),
-                                    inverseAccess(*this) {}
+                                    noexcept(InverseBiMap(*this))) : map(), inverseAccess(*this) {}
 
         template<typename InputIt>
         BidirectionalMap(InputIt start, InputIt end) : BidirectionalMap() {
@@ -185,8 +188,10 @@ namespace BiMap {
         BidirectionalMap(std::initializer_list<std::pair<ForwardKey, InverseKey>> init) :
                 BidirectionalMap(init.begin(), init.end()) {}
 
-        BidirectionalMap(const BidirectionalMap &other) noexcept(std::is_nothrow_copy_constructible_v<ForwardMap> &&
-                std::is_nothrow_constructible_v<InverseBiMap, BidirectionalMap>): map(other.map), inverseAccess(*this) {
+        BidirectionalMap(const BidirectionalMap &other)
+        noexcept(std::is_nothrow_copy_constructible_v<ForwardMap> &&
+                 std::is_nothrow_copy_constructible_v<decltype(inverseAccess->map)> &&
+                 noexcept(InverseBiMap(*this))): map(other.map), inverseAccess(*this) {
             inverseAccess->map = other.inverseAccess->map;
         }
 
@@ -317,6 +322,17 @@ namespace BiMap {
         ForwardMap map;
         InversBiMapPtr inverseAccess;
     };
+}
+
+namespace std {
+    template<typename ForwardKey, typename InverseKey,
+            template<typename T, typename U> typename ForwardMapType = std::unordered_map,
+            template<typename T, typename U> typename InverseMapType = std::unordered_map>
+    void swap(BiMap::BidirectionalMap<ForwardKey, InverseKey, ForwardMapType, InverseMapType> &lhs,
+              BiMap::BidirectionalMap<ForwardKey, InverseKey, ForwardMapType, InverseMapType> &rhs)
+              noexcept(noexcept(lhs.swap(rhs))) {
+        lhs.swap(rhs);
+    }
 }
 
 #endif //BIDIRECTIONALMAP_BIDIRECTIONALMAP_HPP
