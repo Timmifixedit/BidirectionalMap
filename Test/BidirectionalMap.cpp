@@ -140,6 +140,12 @@ TEST(BidirectionalMap, iterate) {
     EXPECT_TRUE(lookup.empty());
 }
 
+TEST(BidirectionalMap, iterate_empty) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> test;
+    EXPECT_EQ(test.begin(), test.end());
+}
+
 TEST(BidirectionalMap, iterate_with_erase) {
     using namespace BiMap;
     BidirectionalMap<std::string, int, std::map> test = {{"Item1", 123}, {"Item2", 456}, {"Item3", 789}};
@@ -237,6 +243,12 @@ TEST(BidirectionalMap, inverse_access_emplace) {
     EXPECT_EQ(test.size(), 4);
     checkValues(test.find("Inverse"), "Inverse", 17);
     checkValues(inverse.find(17), 17, "Inverse");
+    auto [it, inserted] = inverse.emplace(123, "bla");
+    EXPECT_EQ(inverse.size(), 4);
+    EXPECT_EQ(test.size(), 4);
+    EXPECT_EQ(test.find("bla"), test.end());
+    EXPECT_FALSE(inserted);
+    checkValues(it, 123, "Test");
 }
 
 TEST(BidirectionalMap, inverse_access_identity) {
