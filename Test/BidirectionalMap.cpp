@@ -313,6 +313,7 @@ TEST(BidirectionalMap, move_inverse) {
     checkValues(moved.find(18), 18, "NewMoveItem");
     moved.invert().erase("Test");
     EXPECT_EQ(moved.find(123), moved.end());
+    checkValues(moved.find(456), 456, "NewItem");
 }
 
 TEST(BidirectionalMap, zero_copy) {
