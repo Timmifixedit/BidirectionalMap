@@ -11,10 +11,10 @@
 namespace BiMap::implementation {
     template<typename T>
     class AllocOncePointer {
+    public:
         constexpr AllocOncePointer() noexcept: data(nullptr), owner(false) {}
 
-    public:
-        explicit AllocOncePointer(T *data) noexcept : data(data), owner(false) {}
+        constexpr AllocOncePointer(T *data) noexcept : data(data), owner(false) {}
 
         template<typename ...ARGS>
         explicit AllocOncePointer(ARGS &&...args) : data(new T(std::forward<ARGS>(args)...)), owner(true) {}
@@ -59,6 +59,19 @@ namespace BiMap::implementation {
 
         const T *operator->() const noexcept {
             return data;
+        }
+
+        bool operator==(const AllocOncePointer &other) const {
+            return data == other.data;
+        }
+
+        bool operator==(nullptr_t) const {
+            return data == nullptr;
+        }
+
+        template<typename Ptr>
+        bool operator!=(const Ptr& other) const {
+            return !(*this == other);
         }
 
     private:
@@ -174,8 +187,7 @@ namespace BiMap {
             bool end;
         };
 
-        BidirectionalMap() noexcept(std::is_nothrow_default_constructible_v<ForwardMap> &&
-                                    noexcept(InverseBiMap(*this))) : map(), inverseAccess(*this) {}
+        BidirectionalMap() : map(), inverseAccess(*this) {}
 
         template<typename InputIt>
         BidirectionalMap(InputIt start, InputIt end) : BidirectionalMap() {
@@ -188,24 +200,21 @@ namespace BiMap {
         BidirectionalMap(std::initializer_list<std::pair<ForwardKey, InverseKey>> init) :
                 BidirectionalMap(init.begin(), init.end()) {}
 
-        BidirectionalMap(const BidirectionalMap &other)
-        noexcept(std::is_nothrow_copy_constructible_v<ForwardMap> &&
-                 std::is_nothrow_copy_constructible_v<decltype(inverseAccess->map)> &&
-                 noexcept(InverseBiMap(*this))): map(other.map), inverseAccess(*this) {
+        BidirectionalMap(const BidirectionalMap &other) : map(other.map), inverseAccess(*this) {
             inverseAccess->map = other.inverseAccess->map;
         }
 
         void swap(BidirectionalMap &other) noexcept(std::is_nothrow_swappable_v<ForwardMap> &&
-                                                    noexcept(std::swap(this->inverseAccess->map,
-                                                                       other.inverseAccess->map))) {
+                                                    std::is_nothrow_swappable_v<typename InverseBiMap::ForwardMap>) {
             std::swap(this->map, other.map);
             std::swap(this->inverseAccess->map, other.inverseAccess->map);
         }
 
 
-        BidirectionalMap(BidirectionalMap &&other) noexcept(std::is_nothrow_default_constructible_v<BidirectionalMap> &&
-                                                            noexcept(this->swap(other))): BidirectionalMap() {
-            swap(other);
+        BidirectionalMap(BidirectionalMap &&other) noexcept : map(), inverseAccess() {
+            std::swap(map, other.map);
+            inverseAccess.swap(other.inverseAccess);
+            inverseAccess->inverseAccess = this;
         }
 
         BidirectionalMap &operator=(BidirectionalMap other) noexcept(noexcept(this->swap(other))) {
