@@ -1,6 +1,10 @@
-//
-// Created by tim on 16.06.21.
-//
+/**
+ * @author Tim Luchterhand
+ * @date 2021-06-16
+ * @brief This file contains the class definition of a bidirectional associative container that can be used for
+ * efficient lookup in both directions. Its contents are immutable to ensure the integrity of the underlying map
+ * map containers. Also the mapping has to be injective to make bidirectional lookup possible.
+ */
 
 #ifndef BIDIRECTIONALMAP_BIDIRECTIONALMAP_HPP
 #define BIDIRECTIONALMAP_BIDIRECTIONALMAP_HPP
@@ -9,18 +13,44 @@
 #include <optional>
 
 namespace BiMap::implementation {
+    /**
+     * Very simple pointer class that can be used to allocate storage once but can also be used as a non owning pointer.
+     * Unlike shared_ptr, copies of this class are non-owning pointers and unlike weak_ptr, non-owning pointers
+     * do not know if the object behind the pointer still exists. The owning pointer deallocates storage at destruction
+     * @tparam T type of object behind the pointer
+     */
     template<typename T>
     class AllocOncePointer {
     public:
+        /**
+         * Creates an empty nullptr object
+         */
         constexpr AllocOncePointer() noexcept: data(nullptr), owner(false) {}
 
+        /**
+         * Creates a non owning pointer to an existing object
+         * @param data
+         */
         constexpr AllocOncePointer(T *data) noexcept : data(data), owner(false) {}
 
+        /**
+         * Allocates storage and creates an instance of T in place. Becomes owner of the storage
+         * @tparam ARGS
+         * @param args Arguments that are passed to the constructor of T by std::forward
+         */
         template<typename ...ARGS>
         explicit AllocOncePointer(ARGS &&...args) : data(new T(std::forward<ARGS>(args)...)), owner(true) {}
 
+        /**
+         * Copy constructor, creates a non-owning pointer
+         * @param other
+         */
         AllocOncePointer(const AllocOncePointer &other) noexcept: data(other.data), owner(false) {}
 
+        /**
+         * Swaps pointer and ownership with other
+         * @param other
+         */
         void swap(AllocOncePointer &other) noexcept {
             std::swap(data, other.data);
             std::swap(owner, other.owner);
@@ -35,12 +65,19 @@ namespace BiMap::implementation {
             return *this;
         }
 
+        /**
+         * Destructor. Deallocates memory only when owner
+         */
         ~AllocOncePointer() {
             if (owner) {
                 delete data;
             }
         }
 
+        /**
+         * Check if pointer is owner
+         * @return
+         */
         [[nodiscard]] bool isOwner() const noexcept {
             return owner;
         }
@@ -61,6 +98,11 @@ namespace BiMap::implementation {
             return data;
         }
 
+        /**
+         * Comparison operator
+         * @param other
+         * @return true if data pointers point to the same object, false otherwise
+         */
         bool operator==(const AllocOncePointer &other) const {
             return data == other.data;
         }
@@ -79,6 +121,12 @@ namespace BiMap::implementation {
         bool owner{};
     };
 
+    /**
+     * See member function swap
+     * @tparam T
+     * @param a
+     * @param b
+     */
     template<typename T>
     void swap(AllocOncePointer<T> &a, AllocOncePointer<T> &b) noexcept {
         a.swap(b);
@@ -86,6 +134,15 @@ namespace BiMap::implementation {
 }
 
 namespace BiMap {
+    /**
+     * Bidirectional associative container that supports efficient lookup in both directions. To ensure that lookup in
+     * both directions is possible, only unique items of type ForwardKey and InverseKey can be inserted. Neither items
+     * of type ForwardKey nor InverseKey can be modified.
+     * @tparam ForwardKey Type of key used for forward lookup
+     * @tparam InverseKey Type of key used for inverse lookup
+     * @tparam ForwardMapType base map container used for forward lookup. Default is std::unordered_map
+     * @tparam InverseMapType base map container used for inverse lookup. Default is std::unordered_map
+     */
     template<typename ForwardKey, typename InverseKey,
             template<typename T, typename U> typename ForwardMapType = std::unordered_map,
             template<typename T, typename U> typename InverseMapType = std::unordered_map>
@@ -187,8 +244,17 @@ namespace BiMap {
             bool end;
         };
 
+        /**
+         * Creates an empty container
+         */
         BidirectionalMap() : map(), inverseAccess(*this) {}
 
+        /**
+         * Creates the container from the iterator range [start, end)
+         * @tparam InputIt Type of iterator
+         * @param start
+         * @param end
+         */
         template<typename InputIt>
         BidirectionalMap(InputIt start, InputIt end) : BidirectionalMap() {
             while (start != end) {
@@ -197,13 +263,26 @@ namespace BiMap {
             }
         }
 
+        /**
+         * Creates the container from the given initializer list
+         * @param init
+         */
         BidirectionalMap(std::initializer_list<std::pair<ForwardKey, InverseKey>> init) :
                 BidirectionalMap(init.begin(), init.end()) {}
 
+        /**
+         * Copy constructor
+         * @param other
+         */
         BidirectionalMap(const BidirectionalMap &other) : map(other.map), inverseAccess(*this) {
             inverseAccess->map = other.inverseAccess->map;
         }
 
+        /**
+         * Swaps the content of the containers. If ForwardMapType and InverseMapType support moving, no objects are
+         * copied
+         * @param other
+         */
         void swap(BidirectionalMap &other) noexcept(std::is_nothrow_swappable_v<ForwardMap> &&
                                                     std::is_nothrow_swappable_v<typename InverseBiMap::ForwardMap>) {
             std::swap(this->map, other.map);
@@ -211,7 +290,15 @@ namespace BiMap {
         }
 
 
-        BidirectionalMap(BidirectionalMap &&other) noexcept : map(), inverseAccess() {
+        /**
+         * Move constructor. Moves objects from other. If ForwardMapType and InverseMapType support moving, no objects
+         * are copied
+         * @param other
+         */
+        BidirectionalMap(BidirectionalMap &&other)
+        noexcept(std::is_nothrow_default_constructible_v<ForwardMap> &&
+                 std::is_nothrow_swappable_v<ForwardMap> &&
+                 std::is_nothrow_swappable_v<typename InverseBiMap::ForwardMap>) : map(), inverseAccess() {
             std::swap(map, other.map);
             inverseAccess.swap(other.inverseAccess);
             inverseAccess->inverseAccess = this;
@@ -224,6 +311,13 @@ namespace BiMap {
 
         ~BidirectionalMap() = default;
 
+        /**
+         * Constructs elements in place. If a pair of values with same ForwardKey or same InverseKey already exists
+         * no insertion happens
+         * @tparam ARGS
+         * @param args
+         * @return std::pair(Iterator to inserted element or already existing element, bool whether insertion happened)
+         */
         template<typename ...ARGS>
         auto emplace(ARGS &&...args) -> std::pair<Iterator, bool> {
             std::pair<ForwardKey, InverseKey> tmp(std::forward<ARGS>(args)...);
@@ -243,39 +337,81 @@ namespace BiMap {
             return {Iterator(it, map), true};
         }
 
+        /**
+         * Number of contained elements
+         * @return
+         */
         [[nodiscard]] auto size() const noexcept(noexcept(map.size())) {
             return map.size();
         }
 
+        /**
+         * Whether container is empty
+         * @return
+         */
         [[nodiscard]] bool empty() const noexcept(noexcept(map.empty())) {
             return map.empty();
         }
 
+        /**
+         * Calls reserve on underlying container
+         * @param n Number of elements to reserve space for
+         */
         void reserve(std::size_t n) noexcept(noexcept(map.reserve(n)) && noexcept(inverseAccess->map.reserve(n))) {
             map.reserve(n);
             inverseAccess->map.reserve(n);
         }
 
+        /**
+         * Access to the inverted map for reverse lookup or insertion
+         * @return Reference to inverted map
+         */
         auto invert() noexcept -> InverseBiMap & {
             return *inverseAccess;
         }
 
+        /**
+         * Readonly access to the inverted map for reverse lookup
+         * @return const reference to inverted map
+         */
         auto invert() const noexcept -> const InverseBiMap & {
             return *inverseAccess;
         }
 
+        /**
+         * Iterator to first element
+         * @note Ordering of objects depends on the underlying container specified by ForwardMpaType and InverseMapType.
+         * Ordering of forward access may be different from ordering of inverse access
+         * @return
+         */
         Iterator begin() const noexcept(noexcept(Iterator(*this))) {
             return Iterator(*this);
         }
 
+        /**
+         * Iterator to the past the end element. This iterator does not point to anything. Access results in undefined
+         * behaviour
+         * @return
+         */
         constexpr Iterator end() const noexcept(noexcept(Iterator())) {
             return Iterator();
         }
 
+        /**
+         * Finds an element with forward key equivalent to key
+         * @param key
+         * @return Iterator to an element with forward key equivalent to key. If no such element is found, past-the-end
+         * (see end()) iterator is returned.
+         */
         Iterator find(const ForwardKey &key) const {
             return Iterator(map.find(key), map);
         }
 
+        /**
+         * Erases the element at position pos
+         * @param pos Iterator to the element to remove. if pos == end(), this method does nothing
+         * @return Iterator pointing to the next element in the container
+         */
         Iterator erase(Iterator pos) {
             if (pos == end()) {
                 return pos;
@@ -285,6 +421,11 @@ namespace BiMap {
             return Iterator(map.erase(pos.it), map);
         }
 
+        /**
+         * Erases an element with forward key equivalent to key.
+         * @param key
+         * @return 1 if an element with forward key is found, 0 otherwise
+         */
         std::size_t erase(const ForwardKey &key) {
             auto it = Iterator(map.find(key), map);
             if (it != end()) {
@@ -295,6 +436,12 @@ namespace BiMap {
             return 0;
         }
 
+        /**
+         * Erases all elements in the range [first, last) which must be a valid range in *this
+         * @param first
+         * @param last
+         * @return Iterator following the last removed element
+         */
         Iterator erase(Iterator first, Iterator last) {
             while (first != last && first != end()) {
                 first = erase(first);
@@ -303,6 +450,12 @@ namespace BiMap {
             return first;
         }
 
+        /**
+         * Compares containers by elements
+         * @param other
+         * @return true if other contains the same elements and the same number of elements. Two elements are equivalent
+         * if their ForwardKeys and InverseKeys are equivalent respectively. Otherwise false is returned
+         */
         bool operator==(const BidirectionalMap &other) const {
             if (size() != other.size()) {
                 return false;
@@ -318,10 +471,18 @@ namespace BiMap {
             return true;
         }
 
+        /**
+         * Compares container by elements, see operator==
+         * @param other
+         * @return
+         */
         bool operator!=(const BidirectionalMap &other) const noexcept(noexcept(*this == other)) {
             return !(*this == other);
         }
 
+        /**
+         * Erases all elements from the container
+         */
         void clear() noexcept(noexcept(map.clear()) && noexcept(inverseAccess->map.clear())) {
             map.clear();
             inverseAccess->map.clear();
@@ -334,6 +495,15 @@ namespace BiMap {
 }
 
 namespace std {
+    /**
+     * Specialization to std::swap
+     * @tparam ForwardKey
+     * @tparam InverseKey
+     * @tparam ForwardMapType
+     * @tparam InverseMapType
+     * @param lhs
+     * @param rhs
+     */
     template<typename ForwardKey, typename InverseKey,
             template<typename T, typename U> typename ForwardMapType = std::unordered_map,
             template<typename T, typename U> typename InverseMapType = std::unordered_map>
