@@ -19,13 +19,18 @@ An instance of `BidirectionalMap` can be created similarly to `std::unordered_ma
 #include <unordered_map>
 #include "BidirectionalMap.hpp"
 
-BiMap::BidirectionalMap<std::string, int> map; // empty container
-BiMap::BidirectionalMap<std::string, int> map1 = {{"Test", 1}, {"Hello", 2}}; // using initializer list
+// empty container
+BiMap::BidirectionalMap<std::string, int> map;
 
-// or from another container
-BiMap::BidirectionalMap<std::string, int> map3(map1.begin(), map1.end()); // from same container type
+// using initializer list
+BiMap::BidirectionalMap<std::string, int> map1 = {{"Test", 1}, {"Hello", 2}}; 
+
+// from same container type
+BiMap::BidirectionalMap<std::string, int> map3(map1.begin(), map1.end());
+
+// from different container type
 std::unordered_map<std::string, int> values = {{"abc", 1}, {"def", 2}};
-BiMap::BidirectionalMap<std::string, int> map2(values.begin(), values.end()); // from different container type
+BiMap::BidirectionalMap<std::string, int> map2(values.begin(), values.end());
 ```
 From the items used for initialization only unique ones are inserted (see properties).
 Further items can be inserted using the `emplace` method
@@ -45,7 +50,7 @@ if (location != map.end()) {
 ```
 
 ### Inverse Access
-Using the `inverse()`, inverse lookup and insertion is possible:
+Using the `inverse()` member, inverse lookup and insertion is possible:
 ```c++
 map.inverse().emplace(123, "one two three"); // inverse insertion
 auto invLocation = map.inverse().find(123); // inverse lookup
@@ -55,7 +60,7 @@ std::cout << invLocation->first << std::endl; // prints '123'
 auto location = map.invert().invert().find("one two three");
 ```
 `inverse()` returns a reference to `BidirectionalMap` where the template types K1 and K2
-reversed. Ite behaves exactly like the original map except... well the other way around.
+reversed. It behaves exactly like the original map except... well the other way around.
 Even the iterator members are reversed. Copying the `inverse()` container is allowed and
 will copy the container contents.
 ```c++
@@ -76,7 +81,7 @@ BiMap::BidirectionalMap<std::string, int, std::map> map;
 // Both forward and inverse access use std::map
 BiMap::BidirectionalMap<std::string, int, std::map, std::map> map1;
 ```
-Another scenario where using a different map base type is when you need to specify for
+Another scenario for using a different map base type is when you need to specify for
 example a custom hash function:
 ```c++
 struct MyString {...}; // Custom data structure with no default std::hash specialization
