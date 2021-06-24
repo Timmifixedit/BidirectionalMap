@@ -328,8 +328,8 @@ namespace BiMap {
                 return {res, false};
             }
 
-            auto invRes = invert().find(tmp.second);
-            if (invRes != invert().end()) {
+            auto invRes = inverse().find(tmp.second);
+            if (invRes != inverse().end()) {
                 return {find(invRes->second), false};
             }
 
@@ -368,7 +368,7 @@ namespace BiMap {
          * Access to the inverted map for reverse lookup or insertion
          * @return Reference to inverted map
          */
-        auto invert() noexcept -> InverseBiMap & {
+        auto inverse() noexcept -> InverseBiMap & {
             return *inverseAccess;
         }
 
@@ -376,7 +376,7 @@ namespace BiMap {
          * Readonly access to the inverted map for reverse lookup
          * @return const reference to inverted map
          */
-        auto invert() const noexcept -> const InverseBiMap & {
+        auto inverse() const noexcept -> const InverseBiMap & {
             return *inverseAccess;
         }
 

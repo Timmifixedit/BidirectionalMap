@@ -29,7 +29,7 @@ using StringMap = std::unordered_map<T, U, String::Hash>;
 int main() {
     BiMap::BidirectionalMap<std::string, int> test;
     test.emplace("hallo", 7);
-    test.invert().emplace(8, "moin");
+    test.inverse().emplace(8, "moin");
     print(test, "test");
     auto copy = test;
     print(copy, "copy");
