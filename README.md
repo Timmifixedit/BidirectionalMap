@@ -57,7 +57,7 @@ auto invLocation = map.inverse().find(123); // inverse lookup
 std::cout << invLocation->first << std::endl; // prints '123'
 
 // inverse of inverse() is again the original
-auto location = map.invert().invert().find("one two three");
+auto location = map.inverse().inverse().find("one two three");
 ```
 `inverse()` returns a reference to `BidirectionalMap` where the template types K1 and K2
 reversed. It behaves exactly like the original map except... well the other way around.
