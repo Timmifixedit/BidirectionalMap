@@ -299,6 +299,18 @@ TEST(BidirectionalMap, inverse_access_clear) {
     EXPECT_EQ(test.find("Test"), test.end());
 }
 
+TEST(BidirectionalMap, inverse_access_erase) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> test = {{"Test", 123}, {"NewItem", 456}, {"AnotherItem", 789}};
+    auto &inverse = test.inverse();
+    test.erase("NewItem");
+    EXPECT_EQ(inverse.size(), 2);
+    EXPECT_EQ(inverse.find(456), inverse.end());
+    inverse.erase(123);
+    EXPECT_EQ(test.size(), 1);
+    EXPECT_EQ(test.find("Test"), test.end());
+}
+
 
 TEST(BidirectionalMap, inverse_access_emplace_after_moved) {
     using namespace BiMap;
