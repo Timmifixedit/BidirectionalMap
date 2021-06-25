@@ -7,7 +7,7 @@ The `BidirectionalMap` container contains pairs of values of type K1 and K2.
 * Objects in the container are immutable, neither values of type K1 nor values of type
   K2 can be modified to ensure the integrity of the underlying associative containers
 * The mapping from values of K1 to values of K2 is enforced to be injective to allow lookup
-  in both directions. This meas that for example two pairs (k1, k2) and (k1', k2') can
+  in both directions. This means that for example two pairs (k1, k2) and (k1', k2') can
   only be inserted at the same time if k1 != k1' **and** k2 != k2'.
 * The container supports the use of a custom base associative container. The default base
   container is `std::unordered_map`
