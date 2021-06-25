@@ -1,6 +1,6 @@
 # BidirectionalMap
 Implementation of a bidirectional associative container in c++. Its goal is to behave
-similarly to well known stl containers like `std::unordered_map` while providing efficient
+similarly to popular stl containers like `std::unordered_map` while providing efficient
 lookup from key to value as well as from value to key.
 ## Properties
 The `BidirectionalMap` container contains pairs of values of type K1 and K2.
