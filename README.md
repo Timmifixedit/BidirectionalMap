@@ -60,7 +60,7 @@ std::cout << invLocation->first << std::endl; // prints '123'
 auto location = map.inverse().inverse().find("one two three");
 ```
 `inverse()` returns a reference to `BidirectionalMap` where the template types K1 and K2
-reversed. It behaves exactly like the original map except... well the other way around.
+are reversed. It behaves exactly like the original map except... well the other way around.
 Even the iterator members are reversed. Copying the `inverse()` container is allowed and
 will copy the container contents.
 ```c++
