@@ -190,6 +190,20 @@ TEST(BidirectionalMap, copy_ctor) {
     EXPECT_EQ(original.find("CopyItem"), original.end());
 }
 
+TEST(BidirectionalMap, copy_ctor_elements) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    auto copy = original;
+    auto origIt = original.begin();
+    auto copyIt = copy.begin();
+    while (origIt != original.end()) {
+        EXPECT_NE(&origIt->first, &copyIt->first);
+        EXPECT_NE(&origIt->second, &copyIt->second);
+        ++origIt; ++copyIt;
+    }
+}
+
+
 TEST(BidirectionalMap, move_ctor) {
     using namespace BiMap;
     BidirectionalMap<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
@@ -322,17 +336,18 @@ TEST(BidirectionalMap, zero_copy) {
     test.emplace("Test1", 1);
     test.emplace("Test2", 2);
     test.emplace("Test3", 3);
-    auto it = test.begin();
-    while (it != test.end()) {
+    auto moved = std::move(test);
+    auto it = moved.begin();
+    while (it != moved.end()) {
         ++it;
     }
 
     std::vector<std::string> strings;
-    for(const auto &[mnc, _] : test) {
+    for(const auto &[mnc, _] : moved) {
         strings.emplace_back(mnc.s);
     }
 
-    for (const auto &[_, mnc] : test.inverse()) {
+    for (const auto &[_, mnc] : moved.inverse()) {
         strings.emplace_back(mnc.s);
     }
 }

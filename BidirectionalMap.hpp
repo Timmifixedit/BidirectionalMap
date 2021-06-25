@@ -274,8 +274,10 @@ namespace BiMap {
          * Copy constructor
          * @param other
          */
-        BidirectionalMap(const BidirectionalMap &other) : map(other.map), inverseAccess(*this) {
-            inverseAccess->map = other.inverseAccess->map;
+        BidirectionalMap(const BidirectionalMap &other) : BidirectionalMap() {
+            for (const auto &valuePair : other) {
+                emplace(valuePair);
+            }
         }
 
         /**
