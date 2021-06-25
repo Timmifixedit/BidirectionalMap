@@ -492,6 +492,15 @@ namespace BiMap {
             inverseAccess->map.clear();
         }
 
+        /**
+         * Check if a certain key can be found
+         * @param key
+         * @return true if key can be found, false otherwise
+         */
+        bool contains(const ForwardKey &key) const {
+            return find(key) != end();
+        }
+
     private:
         ForwardMap map;
         InversBiMapPtr inverseAccess;

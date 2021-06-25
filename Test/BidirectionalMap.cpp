@@ -73,6 +73,14 @@ TEST(BidirectionalMap, ctor_initializer) {
     checkValues(test.find("SecondItem"), "SecondItem", 2);
 }
 
+TEST(BidirectionalMap, contains) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> test = {{"Test", 123}, {"NewItem", 456}};
+    EXPECT_TRUE(test.contains("Test"));
+    EXPECT_TRUE(test.contains("NewItem"));
+    EXPECT_FALSE(test.contains("abc"));
+}
+
 TEST(BidirectionalMap, ctor_initialize_from_container) {
     using namespace BiMap;
     std::unordered_map<std::string, int> tmp = {{"Test", 1}, {"SecondItem", 2}};
@@ -202,7 +210,6 @@ TEST(BidirectionalMap, copy_ctor_elements) {
         ++origIt; ++copyIt;
     }
 }
-
 
 TEST(BidirectionalMap, move_ctor) {
     using namespace BiMap;
