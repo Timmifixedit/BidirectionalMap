@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <map>
 #include <vector>
+#include <exception>
 
 #include "BidirectionalMap.hpp"
 #include "MustNotCopy.hpp"
@@ -369,4 +370,14 @@ TEST(BidirectionalMap, zero_copy) {
     for (const auto &[_, mnc] : moved.inverse()) {
         strings.emplace_back(mnc.s);
     }
+}
+
+TEST(BidirectionalMap, at) {
+    using namespace BiMap;
+    BidirectionalMap<std::string, int> test = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    EXPECT_EQ(test.at("Test"), 123);
+    EXPECT_EQ(test.at("Stuff"), 789);
+    EXPECT_EQ(test.inverse().at(456), "NewItem");
+    EXPECT_THROW(test.at("NotIncluded"), std::out_of_range);
+    EXPECT_THROW(test.inverse().at(0), std::out_of_range);
 }

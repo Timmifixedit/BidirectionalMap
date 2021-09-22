@@ -501,6 +501,15 @@ namespace BiMap {
             return find(key) != end();
         }
 
+        auto at(const ForwardKey &key) const -> const InverseKey& {
+            auto res = find(key);
+            if (res == end()) {
+                throw std::out_of_range("Bimap key not found");
+            }
+
+            return res->second;
+        }
+
     private:
         ForwardMap map;
         InversBiMapPtr inverseAccess;
