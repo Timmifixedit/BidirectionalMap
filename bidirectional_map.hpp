@@ -6,13 +6,13 @@
  * map containers. Also the mapping has to be injective to make bidirectional lookup possible.
  */
 
-#ifndef BIDIRECTIONALMAP_BIDIRECTIONALMAP_HPP
-#define BIDIRECTIONALMAP_BIDIRECTIONALMAP_HPP
+#ifndef BIDIRECTIONALMAP_BIDIRECTIONAL_MAP_HPP
+#define BIDIRECTIONALMAP_BIDIRECTIONAL_MAP_HPP
 
 #include <unordered_map>
 #include <optional>
 
-namespace BiMap::implementation {
+namespace bimap::implementation {
     /**
      * Very simple pointer class that can be used to allocate storage once but can also be used as a non owning pointer.
      * Unlike shared_ptr, copies of this class are non-owning pointers and unlike weak_ptr, non-owning pointers
@@ -133,7 +133,7 @@ namespace BiMap::implementation {
     }
 }
 
-namespace BiMap {
+namespace bimap {
     /**
      * Bidirectional associative container that supports efficient lookup in both directions. To ensure that lookup in
      * both directions is possible, only unique items of type ForwardKey and InverseKey can be inserted. Neither items
@@ -146,21 +146,21 @@ namespace BiMap {
     template<typename ForwardKey, typename InverseKey,
             template<typename T, typename U> typename ForwardMapType = std::unordered_map,
             template<typename T, typename U> typename InverseMapType = std::unordered_map>
-    class BidirectionalMap {
+    class bidirectional_map {
     private:
         using ForwardMap = ForwardMapType<ForwardKey, const InverseKey *>;
-        using InverseBiMap = BidirectionalMap<InverseKey, ForwardKey, InverseMapType, ForwardMapType>;
+        using InverseBiMap = bidirectional_map<InverseKey, ForwardKey, InverseMapType, ForwardMapType>;
         friend InverseBiMap;
         using InversBiMapPtr = implementation::AllocOncePointer<InverseBiMap>;
 
-        friend class implementation::AllocOncePointer<BidirectionalMap>;
+        friend class implementation::AllocOncePointer<bidirectional_map>;
 
         static_assert(std::is_default_constructible<ForwardMap>::value,
                       "ForwardMap base containers must be default constructible.");
         static_assert(std::is_copy_constructible<ForwardMap>::value,
                       "ForwardMap base containers must be copy constructible.");
 
-        explicit BidirectionalMap(
+        explicit bidirectional_map(
                 InverseBiMap &inverseMap) noexcept(std::is_nothrow_default_constructible_v<ForwardMap>)
                 : map(), inverseAccess(&inverseMap) {}
 
@@ -182,8 +182,8 @@ namespace BiMap {
                 }
             }
 
-            explicit Iterator(const BidirectionalMap &map) noexcept(noexcept(Iterator(std::declval<IteratorType>(),
-                    std::declval<BidirectionalMap>().map))) : Iterator(map.map.begin(), map.map) {}
+            explicit Iterator(const bidirectional_map &map) noexcept(noexcept(Iterator(std::declval<IteratorType>(),
+                                                                                       std::declval<bidirectional_map>().map))) : Iterator(map.map.begin(), map.map) {}
 
             Iterator(const Iterator &other) = default;
 
@@ -236,7 +236,7 @@ namespace BiMap {
             }
 
         private:
-            friend class BidirectionalMap;
+            friend class bidirectional_map;
 
             IteratorType it;
             std::optional<ValueType> val{};
@@ -247,7 +247,7 @@ namespace BiMap {
         /**
          * Creates an empty container
          */
-        BidirectionalMap() : map(), inverseAccess(*this) {}
+        bidirectional_map() : map(), inverseAccess(*this) {}
 
         /**
          * Creates the container from the iterator range [start, end)
@@ -256,7 +256,7 @@ namespace BiMap {
          * @param end
          */
         template<typename InputIt>
-        BidirectionalMap(InputIt start, InputIt end) : BidirectionalMap() {
+        bidirectional_map(InputIt start, InputIt end) : bidirectional_map() {
             while (start != end) {
                 emplace(*start);
                 ++start;
@@ -267,14 +267,14 @@ namespace BiMap {
          * Creates the container from the given initializer list
          * @param init
          */
-        BidirectionalMap(std::initializer_list<std::pair<ForwardKey, InverseKey>> init) :
-                BidirectionalMap(init.begin(), init.end()) {}
+        bidirectional_map(std::initializer_list<std::pair<ForwardKey, InverseKey>> init) :
+                bidirectional_map(init.begin(), init.end()) {}
 
         /**
          * Copy constructor
          * @param other
          */
-        BidirectionalMap(const BidirectionalMap &other) : BidirectionalMap() {
+        bidirectional_map(const bidirectional_map &other) : bidirectional_map() {
             for (const auto &valuePair : other) {
                 emplace(valuePair);
             }
@@ -285,8 +285,8 @@ namespace BiMap {
          * copied
          * @param other
          */
-        void swap(BidirectionalMap &other) noexcept(std::is_nothrow_swappable_v<ForwardMap> &&
-                                                    std::is_nothrow_swappable_v<typename InverseBiMap::ForwardMap>) {
+        void swap(bidirectional_map &other) noexcept(std::is_nothrow_swappable_v<ForwardMap> &&
+                                                     std::is_nothrow_swappable_v<typename InverseBiMap::ForwardMap>) {
             std::swap(this->map, other.map);
             std::swap(this->inverseAccess->map, other.inverseAccess->map);
         }
@@ -299,7 +299,7 @@ namespace BiMap {
          * @note unlike containers like std::unordered_map (at least using gcc), use after move will most likely result
          * in undefined behaviour
          */
-        BidirectionalMap(BidirectionalMap &&other)
+        bidirectional_map(bidirectional_map &&other)
         noexcept(std::is_nothrow_default_constructible_v<ForwardMap> &&
                  std::is_nothrow_swappable_v<ForwardMap> &&
                  std::is_nothrow_swappable_v<typename InverseBiMap::ForwardMap>) : map(), inverseAccess() {
@@ -308,12 +308,12 @@ namespace BiMap {
             inverseAccess->inverseAccess = this;
         }
 
-        BidirectionalMap &operator=(BidirectionalMap other) noexcept(noexcept(this->swap(other))) {
+        bidirectional_map &operator=(bidirectional_map other) noexcept(noexcept(this->swap(other))) {
             swap(other);
             return *this;
         }
 
-        ~BidirectionalMap() = default;
+        ~bidirectional_map() = default;
 
         /**
          * Constructs elements in place. If a pair of values with same ForwardKey or same InverseKey already exists
@@ -460,7 +460,7 @@ namespace BiMap {
          * @return true if other contains the same elements and the same number of elements. Two elements are equivalent
          * if their ForwardKeys and InverseKeys are equivalent respectively. Otherwise false is returned
          */
-        bool operator==(const BidirectionalMap &other) const {
+        bool operator==(const bidirectional_map &other) const {
             if (size() != other.size()) {
                 return false;
             }
@@ -480,7 +480,7 @@ namespace BiMap {
          * @param other
          * @return
          */
-        bool operator!=(const BidirectionalMap &other) const noexcept(noexcept(*this == other)) {
+        bool operator!=(const bidirectional_map &other) const noexcept(noexcept(*this == other)) {
             return !(*this == other);
         }
 
@@ -529,11 +529,11 @@ namespace std {
     template<typename ForwardKey, typename InverseKey,
             template<typename T, typename U> typename ForwardMapType = std::unordered_map,
             template<typename T, typename U> typename InverseMapType = std::unordered_map>
-    void swap(BiMap::BidirectionalMap<ForwardKey, InverseKey, ForwardMapType, InverseMapType> &lhs,
-              BiMap::BidirectionalMap<ForwardKey, InverseKey, ForwardMapType, InverseMapType> &rhs)
+    void swap(bimap::bidirectional_map<ForwardKey, InverseKey, ForwardMapType, InverseMapType> &lhs,
+              bimap::bidirectional_map<ForwardKey, InverseKey, ForwardMapType, InverseMapType> &rhs)
               noexcept(noexcept(lhs.swap(rhs))) {
         lhs.swap(rhs);
     }
 }
 
-#endif //BIDIRECTIONALMAP_BIDIRECTIONALMAP_HPP
+#endif //BIDIRECTIONALMAP_BIDIRECTIONAL_MAP_HPP

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "BidirectionalMap.hpp"
+#include "bidirectional_map.hpp"
 
 template<typename MAP>
 void print(const MAP &m, const std::string &name = "") {
@@ -27,7 +27,7 @@ template<typename T, typename U>
 using StringMap = std::unordered_map<T, U, String::Hash>;
 
 int main() {
-    BiMap::BidirectionalMap<std::string, int> test;
+    bimap::bidirectional_map<std::string, int> test;
     test.emplace("hallo", 7);
     test.inverse().emplace(8, "moin");
     print(test, "test");

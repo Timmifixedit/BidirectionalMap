@@ -9,7 +9,7 @@
 #include <vector>
 #include <exception>
 
-#include "BidirectionalMap.hpp"
+#include "bidirectional_map.hpp"
 #include "MustNotCopy.hpp"
 
 template<typename It, typename T, typename U>
@@ -19,15 +19,15 @@ void checkValues(It it, const T& first, const U& second) {
 }
 
 TEST(BidirectionalMap, ctor) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> test;
+    using namespace bimap;
+    bidirectional_map<std::string, int> test;
     EXPECT_TRUE(test.empty());
     EXPECT_EQ(test.size(), 0);
 }
 
 TEST(BidirectionalMap, emplace) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> test;
+    using namespace bimap;
+    bidirectional_map<std::string, int> test;
     auto [it, _] = test.emplace("Test", 123);
     EXPECT_EQ(test.size(), 1);
     EXPECT_FALSE(test.empty());
@@ -35,8 +35,8 @@ TEST(BidirectionalMap, emplace) {
 }
 
 TEST(BidirectionalMap, unique_items) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> test;
+    using namespace bimap;
+    bidirectional_map<std::string, int> test;
     auto [it, inserted] = test.emplace("Test", 123);
     EXPECT_TRUE(inserted);
     checkValues(it, "Test", 123);
@@ -55,8 +55,8 @@ TEST(BidirectionalMap, unique_items) {
 }
 
 TEST(BidirectionalMap, find) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> test;
+    using namespace bimap;
+    bidirectional_map<std::string, int> test;
     test.emplace("Test", 123);
     test.emplace("NewItem", 456);
     auto it = test.find("Test");
@@ -66,8 +66,8 @@ TEST(BidirectionalMap, find) {
 }
 
 TEST(BidirectionalMap, ctor_initializer) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> test = {{"Test", 1}, {"SecondItem", 2}};
+    using namespace bimap;
+    bidirectional_map<std::string, int> test = {{"Test", 1}, {"SecondItem", 2}};
     EXPECT_FALSE(test.empty());
     EXPECT_EQ(test.size(), 2);
     checkValues(test.find("Test"), "Test", 1);
@@ -75,18 +75,18 @@ TEST(BidirectionalMap, ctor_initializer) {
 }
 
 TEST(BidirectionalMap, contains) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> test = {{"Test", 123}, {"NewItem", 456}};
+    using namespace bimap;
+    bidirectional_map<std::string, int> test = {{"Test", 123}, {"NewItem", 456}};
     EXPECT_TRUE(test.contains("Test"));
     EXPECT_TRUE(test.contains("NewItem"));
     EXPECT_FALSE(test.contains("abc"));
 }
 
 TEST(BidirectionalMap, ctor_initialize_from_container) {
-    using namespace BiMap;
+    using namespace bimap;
     std::unordered_map<std::string, int> tmp = {{"Test", 1}, {"SecondItem", 2}};
     auto tmpCopy = tmp;
-    BidirectionalMap<std::string, int> test(tmp.begin(), tmp.end());
+    bidirectional_map<std::string, int> test(tmp.begin(), tmp.end());
     EXPECT_EQ(tmp, tmpCopy);
     EXPECT_FALSE(test.empty());
     EXPECT_EQ(test.size(), 2);
@@ -95,8 +95,8 @@ TEST(BidirectionalMap, ctor_initialize_from_container) {
 }
 
 TEST(BidirectionalMap, erase) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> test;
+    using namespace bimap;
+    bidirectional_map<std::string, int> test;
     test.emplace("Test", 123);
     test.emplace("NewItem", 456);
     test.erase(test.find("NewItem"));
@@ -109,8 +109,8 @@ TEST(BidirectionalMap, erase) {
 }
 
 TEST(BidirectionalMap, erase_by_key) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> test;
+    using namespace bimap;
+    bidirectional_map<std::string, int> test;
     test.emplace("Test", 123);
     test.emplace("NewItem", 456);
     EXPECT_EQ(test.erase("NewItem"), 1);
@@ -123,9 +123,9 @@ TEST(BidirectionalMap, erase_by_key) {
 }
 
 TEST(BidirectionalMap, erase_range) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int, std::map> test = {{"Item1", 123}, {"Item2", 456}, {"Item3", 789},
-                                                         {"Item4", 1123}, {"Item5", 1456}, {"Item6", 1789}};
+    using namespace bimap;
+    bidirectional_map<std::string, int, std::map> test = {{"Item1", 123}, {"Item2", 456}, {"Item3", 789},
+                                                          {"Item4", 1123}, {"Item5", 1456}, {"Item6", 1789}};
     auto start = test.begin();
     ++start;
     auto end = start;
@@ -137,8 +137,8 @@ TEST(BidirectionalMap, erase_range) {
 }
 
 TEST(BidirectionalMap, iterate) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int, std::map> test = {{"Item1", 123}, {"Item2", 456}, {"Item3", 789}};
+    using namespace bimap;
+    bidirectional_map<std::string, int, std::map> test = {{"Item1", 123}, {"Item2", 456}, {"Item3", 789}};
     std::unordered_map<std::string, int> lookup = {{"Item1", 123}, {"Item2", 456}, {"Item3", 789}};
     for (auto it = test.begin(); it != test.end(); ++it) {
         auto lookupRes = lookup.find(it->first);
@@ -150,14 +150,14 @@ TEST(BidirectionalMap, iterate) {
 }
 
 TEST(BidirectionalMap, iterate_empty) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> test;
+    using namespace bimap;
+    bidirectional_map<std::string, int> test;
     EXPECT_EQ(test.begin(), test.end());
 }
 
 TEST(BidirectionalMap, iterate_with_erase) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int, std::map> test = {{"Item1", 123}, {"Item2", 456}, {"Item3", 789}};
+    using namespace bimap;
+    bidirectional_map<std::string, int, std::map> test = {{"Item1", 123}, {"Item2", 456}, {"Item3", 789}};
     std::unordered_map<std::string, int> lookup = {{"Item1", 123}, {"Item3", 789}};
     for (auto it = test.begin(); it != test.end(); ++it) {
         if (it->first == "Item2") {
@@ -174,12 +174,12 @@ TEST(BidirectionalMap, iterate_with_erase) {
 }
 
 TEST(BidirectionalMap, comparison) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
-    BidirectionalMap<std::string, int> test1 = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
-    BidirectionalMap<std::string, int> test2 = {{"Test", 123}, {"Stuff", 789}};
-    BidirectionalMap<std::string, int> test3 = {{"Test", 0}, {"NewItem", 456}, {"Stuff", 789}};
-    BidirectionalMap<std::string, int> test4 = {{"Testing", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    using namespace bimap;
+    bidirectional_map<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    bidirectional_map<std::string, int> test1 = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    bidirectional_map<std::string, int> test2 = {{"Test", 123}, {"Stuff", 789}};
+    bidirectional_map<std::string, int> test3 = {{"Test", 0}, {"NewItem", 456}, {"Stuff", 789}};
+    bidirectional_map<std::string, int> test4 = {{"Testing", 123}, {"NewItem", 456}, {"Stuff", 789}};
     EXPECT_EQ(original, test1);
     EXPECT_NE(original, test2);
     EXPECT_NE(original, test3);
@@ -187,8 +187,8 @@ TEST(BidirectionalMap, comparison) {
 }
 
 TEST(BidirectionalMap, copy_ctor) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    using namespace bimap;
+    bidirectional_map<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
     auto copy = original;
     EXPECT_EQ(original, copy);
     original.emplace("AddStuff", 17);
@@ -200,8 +200,8 @@ TEST(BidirectionalMap, copy_ctor) {
 }
 
 TEST(BidirectionalMap, copy_ctor_elements) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    using namespace bimap;
+    bidirectional_map<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
     auto copy = original;
     auto origIt = original.begin();
     auto copyIt = copy.begin();
@@ -213,8 +213,8 @@ TEST(BidirectionalMap, copy_ctor_elements) {
 }
 
 TEST(BidirectionalMap, move_ctor) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    using namespace bimap;
+    bidirectional_map<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
     auto copy = original;
     auto moved = std::move(original);
     EXPECT_EQ(moved, copy);
@@ -224,9 +224,9 @@ TEST(BidirectionalMap, move_ctor) {
 }
 
 TEST(BidirectionalMap, asignment) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
-    BidirectionalMap<std::string, int> overwritten  = {{"abc", 1}};
+    using namespace bimap;
+    bidirectional_map<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    bidirectional_map<std::string, int> overwritten  = {{"abc", 1}};
     overwritten = original;
     EXPECT_EQ(overwritten, original);
     original.emplace("AddStuff", 17);
@@ -238,8 +238,8 @@ TEST(BidirectionalMap, asignment) {
 }
 
 TEST(BidirectionalMap, clear) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> test = {{"Test", 123}};
+    using namespace bimap;
+    bidirectional_map<std::string, int> test = {{"Test", 123}};
     test.clear();
     EXPECT_TRUE(test.empty());
     EXPECT_EQ(test.size(), 0);
@@ -247,8 +247,8 @@ TEST(BidirectionalMap, clear) {
 }
 
 TEST(BidirectionalMap, inverse_access_content) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> test = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    using namespace bimap;
+    bidirectional_map<std::string, int> test = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
     const auto &inverse = test.inverse();
     EXPECT_EQ(inverse.size(), 3);
     checkValues(inverse.find(123), 123, "Test");
@@ -257,8 +257,8 @@ TEST(BidirectionalMap, inverse_access_content) {
 }
 
 TEST(BidirectionalMap, inverse_access_emplace) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> test = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    using namespace bimap;
+    bidirectional_map<std::string, int> test = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
     auto &inverse = test.inverse();
     inverse.emplace(17, "Inverse");
     EXPECT_EQ(inverse.size(), 4);
@@ -274,8 +274,8 @@ TEST(BidirectionalMap, inverse_access_emplace) {
 }
 
 TEST(BidirectionalMap, inverse_access_identity) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> test = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    using namespace bimap;
+    bidirectional_map<std::string, int> test = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
     auto &same = test.inverse().inverse();
     EXPECT_EQ(test, same);
     same.emplace("abc", 17);
@@ -286,8 +286,8 @@ TEST(BidirectionalMap, inverse_access_identity) {
 }
 
 TEST(BidirectionalMap, inverse_access_clear) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> test = {{"Test", 123}};
+    using namespace bimap;
+    bidirectional_map<std::string, int> test = {{"Test", 123}};
     auto &inverse = test.inverse();
     test.clear();
     EXPECT_TRUE(inverse.empty());
@@ -301,8 +301,8 @@ TEST(BidirectionalMap, inverse_access_clear) {
 }
 
 TEST(BidirectionalMap, inverse_access_erase) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> test = {{"Test", 123}, {"NewItem", 456}, {"AnotherItem", 789}};
+    using namespace bimap;
+    bidirectional_map<std::string, int> test = {{"Test", 123}, {"NewItem", 456}, {"AnotherItem", 789}};
     auto &inverse = test.inverse();
     test.erase("NewItem");
     EXPECT_EQ(inverse.size(), 2);
@@ -314,8 +314,8 @@ TEST(BidirectionalMap, inverse_access_erase) {
 
 
 TEST(BidirectionalMap, inverse_access_emplace_after_moved) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    using namespace bimap;
+    bidirectional_map<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
     auto moved = std::move(original);
     moved.inverse().emplace(17, "AnotherItem");
     EXPECT_EQ(moved.inverse().size(), 4);
@@ -324,8 +324,8 @@ TEST(BidirectionalMap, inverse_access_emplace_after_moved) {
 }
 
 TEST(BidirectionalMap, copy_inverse) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    using namespace bimap;
+    bidirectional_map<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
     auto copy = original.inverse();
     EXPECT_EQ(copy, original.inverse());
     original.emplace("AddStuff", 17);
@@ -340,8 +340,8 @@ TEST(BidirectionalMap, copy_inverse) {
 }
 
 TEST(BidirectionalMap, move_inverse) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    using namespace bimap;
+    bidirectional_map<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
     auto moved = std::move(original.inverse());
     moved.emplace(18, "NewMoveItem");
     checkValues(moved.find(18), 18, "NewMoveItem");
@@ -351,8 +351,8 @@ TEST(BidirectionalMap, move_inverse) {
 }
 
 TEST(BidirectionalMap, zero_copy) {
-    using namespace BiMap;
-    BidirectionalMap<MustNotCopy, int, MNCMAp> test;
+    using namespace bimap;
+    bidirectional_map<MustNotCopy, int, MNCMAp> test;
     test.emplace("Test1", 1);
     test.emplace("Test2", 2);
     test.emplace("Test3", 3);
@@ -373,8 +373,8 @@ TEST(BidirectionalMap, zero_copy) {
 }
 
 TEST(BidirectionalMap, at) {
-    using namespace BiMap;
-    BidirectionalMap<std::string, int> test = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    using namespace bimap;
+    bidirectional_map<std::string, int> test = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
     EXPECT_EQ(test.at("Test"), 123);
     EXPECT_EQ(test.at("Stuff"), 789);
     EXPECT_EQ(test.inverse().at(456), "NewItem");
