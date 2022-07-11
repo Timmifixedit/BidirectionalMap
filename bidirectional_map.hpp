@@ -31,7 +31,7 @@ namespace bimap::implementation {
          * Creates a non owning pointer to an existing object
          * @param data
          */
-        constexpr AllocOncePointer(T *data) noexcept : data(data), owner(false) {}
+        constexpr AllocOncePointer(T *data) noexcept: data(data), owner(false) {}
 
         /**
          * Allocates storage and creates an instance of T in place. Becomes owner of the storage
@@ -112,7 +112,7 @@ namespace bimap::implementation {
         }
 
         template<typename Ptr>
-        bool operator!=(const Ptr& other) const {
+        bool operator!=(const Ptr &other) const {
             return !(*this == other);
         }
 
@@ -165,83 +165,120 @@ namespace bimap {
                 : map(), inverseAccess(&inverseMap) {}
 
     public:
-        class Iterator {
+        class iterator {
+            using IteratorType = decltype(std::declval<std::add_const_t<ForwardMap>>().begin());
+
+            friend class bidirectional_map;
+
         public:
-            using IteratorType = decltype(std::declval<ForwardMap>().cbegin());
-            using ValueType = std::pair<const ForwardKey &, const InverseKey &>;
+            using value_type = std::pair<const ForwardKey &, const InverseKey &>;
+            using reference = value_type;
+            using pointer = std::add_pointer_t<std::add_const_t<value_type>>;
+            using diference_type = typename std::iterator_traits<IteratorType>::difference_type;
+            using iterator_category = typename std::iterator_traits<IteratorType>::iterator_category;
 
-            Iterator() noexcept(std::is_nothrow_default_constructible_v<IteratorType>): it(), val(std::nullopt),
-                                                                                        container(nullptr), end(true) {}
+            /**
+             * CTor used for creating end iterator
+             * @param container
+             */
+            explicit iterator(const ForwardMap &container) noexcept(noexcept(container.end()) &&
+                                                                    std::is_nothrow_copy_constructible_v<IteratorType>)
+                    : it(container.end()), sentinel(container.end()),
+                      val(std::nullopt) {}
 
-            Iterator(IteratorType it, const ForwardMap &container)
-            noexcept(std::is_nothrow_copy_constructible_v<IteratorType> && noexcept(ValueType(it->first, *it->second)))
-                    : it(it), container(&container),
-                      end(this->it == std::end(container)) {
-                if (!end) {
+            /**
+             * CTor
+             * @param it iterator to underlying map element
+             * @param container corresponding container used for range checking
+             */
+            iterator(IteratorType it, const ForwardMap &container)
+            noexcept(std::is_nothrow_copy_constructible_v<IteratorType> && noexcept(value_type(it->first, *it->second)))
+                    : it(it), sentinel(std::end(container)) {
+                if (it != sentinel) {
                     val.emplace(it->first, *it->second);
                 }
             }
 
-            explicit Iterator(const bidirectional_map &map) noexcept(noexcept(Iterator(std::declval<IteratorType>(),
-                                                                                       std::declval<bidirectional_map>().map))) : Iterator(map.map.begin(), map.map) {}
+            iterator(const iterator &) = default;
 
-            Iterator(const Iterator &other) = default;
+            iterator(iterator &&) noexcept = default;
 
-            Iterator(Iterator &&other) noexcept = default;
+            ~iterator() = default;
 
-            Iterator &operator=(Iterator other) noexcept(noexcept(ValueType(this->it->first, *this->it->second))) {
-                it = std::move(other.it);
-                val.reset();
-                end = other.end;
-                if (!end) {
-                    val.emplace(*other.val);
+            /**
+             * Assignment operator
+             * @param other
+             * @return
+             */
+            iterator &operator=(iterator other) {
+                it = other.it;
+                sentinel = other.sentinel;
+                if (it != sentinel) {
+                    val.emplace(it->first, *it->second);
                 }
 
                 return *this;
             }
 
-            ~Iterator() = default;
-
-            Iterator &operator++() noexcept(noexcept(++this->it) &&
-                                            noexcept(ValueType(this->it->first, *this->it->second))) {
-                if (end) {
-                    return *this;
-                }
-
+            /**
+             * Increments underlying iterator by one
+             * @return
+             */
+            iterator &operator++() {
                 ++it;
-                if (it != std::end(*container)) {
+                if (it != sentinel) {
                     val.emplace(it->first, *it->second);
-                } else {
-                    val.reset();
-                    end = true;
                 }
 
                 return *this;
             }
 
-            bool operator==(const Iterator &other) const noexcept(noexcept(it == it)) {
-                return (end && other.end) || (end == other.end && this->it == other.it);
+            /**
+             * Post increment. Increments underlying iterator by one
+             * @return
+             */
+            iterator operator++(int) {
+                auto tmp = *this;
+                ++*this;
+                return tmp;
             }
 
-            bool operator!=(const Iterator &other) const noexcept(noexcept(*this == other)) {
+            /**
+             * Equality operator. Compares underlying map iterators
+             * @param other
+             * @return
+             */
+            constexpr bool operator==(const iterator &other) const noexcept(noexcept(std::declval<IteratorType>() ==
+                                                                                     std::declval<IteratorType>())) {
+                return it == other.it;
+            }
+
+            /**
+             * Inequality operator. Compares underlying map iterators
+             * @param other
+             * @return
+             */
+            constexpr bool operator!=(const iterator &other) const noexcept(noexcept(std::declval<iterator>() ==
+                                                                                     std::declval<iterator>())) {
                 return !(*this == other);
             }
 
-            ValueType operator*() const noexcept {
+            /**
+             * Returns a pair of reference to container elements
+             * @return
+             */
+            constexpr value_type operator*() const noexcept {
                 return *val;
             }
 
-            const ValueType *operator->() const noexcept {
+            constexpr pointer operator->() const noexcept {
                 return &*val;
             }
 
         private:
-            friend class bidirectional_map;
-
             IteratorType it;
-            std::optional<ValueType> val{};
-            const ForwardMap *container;
-            bool end;
+            IteratorType sentinel;
+            std::optional<value_type> val{};
         };
 
         /**
@@ -275,7 +312,7 @@ namespace bimap {
          * @param other
          */
         bidirectional_map(const bidirectional_map &other) : bidirectional_map() {
-            for (const auto &valuePair : other) {
+            for (const auto &valuePair: other) {
                 emplace(valuePair);
             }
         }
@@ -302,7 +339,7 @@ namespace bimap {
         bidirectional_map(bidirectional_map &&other)
         noexcept(std::is_nothrow_default_constructible_v<ForwardMap> &&
                  std::is_nothrow_swappable_v<ForwardMap> &&
-                 std::is_nothrow_swappable_v<typename InverseBiMap::ForwardMap>) : map(), inverseAccess() {
+                 std::is_nothrow_swappable_v<typename InverseBiMap::ForwardMap>): map(), inverseAccess() {
             std::swap(map, other.map);
             inverseAccess.swap(other.inverseAccess);
             inverseAccess->inverseAccess = this;
@@ -320,10 +357,10 @@ namespace bimap {
          * no insertion happens
          * @tparam ARGS
          * @param args
-         * @return std::pair(Iterator to inserted element or already existing element, bool whether insertion happened)
+         * @return std::pair(iterator to inserted element or already existing element, bool whether insertion happened)
          */
         template<typename ...ARGS>
-        auto emplace(ARGS &&...args) -> std::pair<Iterator, bool> {
+        auto emplace(ARGS &&...args) -> std::pair<iterator, bool> {
             std::pair<ForwardKey, InverseKey> tmp(std::forward<ARGS>(args)...);
             auto res = find(tmp.first);
             if (res != end()) {
@@ -338,7 +375,7 @@ namespace bimap {
             auto it = map.emplace(std::move(tmp.first), nullptr).first;
             auto invIt = inverseAccess->map.emplace(std::move(tmp.second), &it->first).first;
             it->second = &invIt->first;
-            return {Iterator(it, map), true};
+            return {iterator(it, map), true};
         }
 
         /**
@@ -383,46 +420,46 @@ namespace bimap {
         }
 
         /**
-         * Iterator to first element
+         * iterator to first element
          * @note Ordering of objects depends on the underlying container specified by ForwardMpaType and InverseMapType.
          * Ordering of forward access may be different from ordering of inverse access
          * @return
          */
-        Iterator begin() const noexcept(noexcept(Iterator(*this))) {
-            return Iterator(*this);
+        iterator begin() const {
+            return iterator(std::begin(map), map);
         }
 
         /**
-         * Iterator to the past the end element. This iterator does not point to anything. Access results in undefined
+         * iterator to the past the end element. This iterator does not point to anything. Access results in undefined
          * behaviour
          * @return
          */
-        constexpr Iterator end() const noexcept(noexcept(Iterator())) {
-            return Iterator();
+        constexpr iterator end() const {
+            return iterator(map);
         }
 
         /**
          * Finds an element with forward key equivalent to key
          * @param key
-         * @return Iterator to an element with forward key equivalent to key. If no such element is found, past-the-end
+         * @return iterator to an element with forward key equivalent to key. If no such element is found, past-the-end
          * (see end()) iterator is returned.
          */
-        Iterator find(const ForwardKey &key) const {
-            return Iterator(map.find(key), map);
+        iterator find(const ForwardKey &key) const {
+            return iterator(map.find(key), map);
         }
 
         /**
          * Erases the element at position pos
-         * @param pos Iterator to the element to remove. if pos == end(), this method does nothing
-         * @return Iterator pointing to the next element in the container
+         * @param pos iterator to the element to remove. if pos == end(), this method does nothing
+         * @return iterator pointing to the next element in the container
          */
-        Iterator erase(Iterator pos) {
+        iterator erase(iterator pos) {
             if (pos == end()) {
                 return pos;
             }
 
             inverseAccess->map.erase(inverseAccess->map.find(pos->second));
-            return Iterator(map.erase(pos.it), map);
+            return iterator(map.erase(pos.it), map);
         }
 
         /**
@@ -431,7 +468,7 @@ namespace bimap {
          * @return 1 if an element with forward key is found, 0 otherwise
          */
         std::size_t erase(const ForwardKey &key) {
-            auto it = Iterator(map.find(key), map);
+            auto it = iterator(map.find(key), map);
             if (it != end()) {
                 erase(it);
                 return 1;
@@ -444,9 +481,9 @@ namespace bimap {
          * Erases all elements in the range [first, last) which must be a valid range in *this
          * @param first
          * @param last
-         * @return Iterator following the last removed element
+         * @return iterator following the last removed element
          */
-        Iterator erase(Iterator first, Iterator last) {
+        iterator erase(iterator first, iterator last) {
             while (first != last && first != end()) {
                 first = erase(first);
             }
@@ -465,7 +502,7 @@ namespace bimap {
                 return false;
             }
 
-            for (const auto &[v1, v2] : *this) {
+            for (const auto &[v1, v2]: *this) {
                 auto res = other.find(v1);
                 if (res == other.end() || res->second != v2) {
                     return false;
@@ -501,7 +538,7 @@ namespace bimap {
             return find(key) != end();
         }
 
-        auto at(const ForwardKey &key) const -> const InverseKey& {
+        auto at(const ForwardKey &key) const -> const InverseKey & {
             auto res = find(key);
             if (res == end()) {
                 throw std::out_of_range("Bimap key not found");
@@ -529,9 +566,9 @@ namespace std {
     template<typename ForwardKey, typename InverseKey,
             template<typename T, typename U> typename ForwardMapType = std::unordered_map,
             template<typename T, typename U> typename InverseMapType = std::unordered_map>
-    void swap(bimap::bidirectional_map<ForwardKey, InverseKey, ForwardMapType, InverseMapType> &lhs,
-              bimap::bidirectional_map<ForwardKey, InverseKey, ForwardMapType, InverseMapType> &rhs)
-              noexcept(noexcept(lhs.swap(rhs))) {
+    void swap(bimap::bidirectional_map <ForwardKey, InverseKey, ForwardMapType, InverseMapType> &lhs,
+              bimap::bidirectional_map <ForwardKey, InverseKey, ForwardMapType, InverseMapType> &rhs)
+    noexcept(noexcept(lhs.swap(rhs))) {
         lhs.swap(rhs);
     }
 }
