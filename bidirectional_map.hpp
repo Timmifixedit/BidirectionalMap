@@ -215,7 +215,7 @@ namespace bimap {
              * Increments underlying iterator by one
              * @return
              */
-            iterator &operator++() {
+            constexpr iterator &operator++() {
                 ++it;
                 return *this;
             }
@@ -224,7 +224,7 @@ namespace bimap {
              * Post increment. Increments underlying iterator by one
              * @return
              */
-            iterator operator++(int) {
+            constexpr iterator operator++(int) {
                 auto tmp = *this;
                 ++*this;
                 return tmp;
@@ -236,7 +236,7 @@ namespace bimap {
              * @return
              */
             template<bool IsBidirectional = implementation::is_bidirectional_v<IteratorType>>
-            auto operator--() -> std::enable_if_t<IsBidirectional, iterator&> {
+            constexpr auto operator--() -> std::enable_if_t<IsBidirectional, iterator&> {
                 --it;
                 return *this;
             }
@@ -247,7 +247,7 @@ namespace bimap {
              * @return
              */
             template<bool IsBidirectional = implementation::is_bidirectional_v<IteratorType>>
-            auto operator--(int) -> std::enable_if_t<IsBidirectional, iterator> {
+            constexpr auto operator--(int) -> std::enable_if_t<IsBidirectional, iterator> {
                 auto tmp = *this;
                 --*this;
                 return tmp;
