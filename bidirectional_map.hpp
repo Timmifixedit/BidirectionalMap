@@ -272,8 +272,7 @@ namespace bimap {
              * @param other
              * @return
              */
-            constexpr bool operator!=(const iterator &other) const noexcept(noexcept(std::declval<iterator>() ==
-                                                                                     std::declval<iterator>())) {
+            constexpr bool operator!=(const iterator &other) const noexcept(noexcept(other == other)) {
                 return !(*this == other);
             }
 
@@ -341,7 +340,6 @@ namespace bimap {
             std::swap(this->map, other.map);
             std::swap(this->inverseAccess->map, other.inverseAccess->map);
         }
-
 
         /**
          * Move constructor. Moves objects from other. If ForwardMapType and InverseMapType support moving, no objects
@@ -526,7 +524,7 @@ namespace bimap {
          * @param other
          * @return
          */
-        bool operator!=(const bidirectional_map &other) const noexcept(noexcept(*this == other)) {
+        bool operator!=(const bidirectional_map &other) const noexcept(noexcept(other == other)) {
             return !(*this == other);
         }
 
@@ -547,10 +545,16 @@ namespace bimap {
             return find(key) != end();
         }
 
+        /**
+         * Returns the value found by the given key
+         * @param key
+         * @return reference to found value
+         * @throws out_of_range if ey does not exist
+         */
         auto at(const ForwardKey &key) const -> const InverseKey & {
             auto res = find(key);
             if (res == end()) {
-                throw std::out_of_range("Bimap key not found");
+                throw std::out_of_range("bidirectional map key not found");
             }
 
             return res->second;
