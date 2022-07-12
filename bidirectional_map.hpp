@@ -167,7 +167,8 @@ namespace bimap {
     public:
         class iterator {
             using IteratorType = decltype(std::declval<std::add_const_t<ForwardMap>>().begin());
-
+            static constexpr bool copy_constructible = std::is_nothrow_copy_constructible_v<IteratorType>;
+            static constexpr bool copy_assignable = std::is_nothrow_copy_assignable_v<IteratorType>;
             friend class bidirectional_map;
 
         public:
@@ -178,47 +179,23 @@ namespace bimap {
             using iterator_category = typename std::iterator_traits<IteratorType>::iterator_category;
 
             /**
-             * CTor used for creating end iterator
-             * @param container
-             */
-            explicit iterator(const ForwardMap &container) noexcept(noexcept(container.end()) &&
-                                                                    std::is_nothrow_copy_constructible_v<IteratorType>)
-                    : it(container.end()), sentinel(container.end()),
-                      val(std::nullopt) {}
-
-            /**
              * CTor
              * @param it iterator to underlying map element
-             * @param container corresponding container used for range checking
              */
-            iterator(IteratorType it, const ForwardMap &container)
-            noexcept(std::is_nothrow_copy_constructible_v<IteratorType> && noexcept(value_type(it->first, *it->second)))
-                    : it(it), sentinel(std::end(container)) {
-                if (it != sentinel) {
-                    val.emplace(it->first, *it->second);
-                }
-            }
+            constexpr explicit iterator(const IteratorType &it) noexcept(copy_constructible) : it(it) {}
 
-            iterator(const iterator &) = default;
+            constexpr iterator(const iterator &other) noexcept(std::constructible_from<iterator, IteratorType>)
+                    : iterator(other.it) {}
 
-            iterator(iterator &&) noexcept = default;
+            constexpr iterator(iterator &&other) noexcept(std::constructible_from<iterator, IteratorType>): iterator(
+                    other) {}
 
-            ~iterator() = default;
-
-            /**
-             * Assignment operator
-             * @param other
-             * @return
-             */
-            iterator &operator=(iterator other) {
+            constexpr iterator &operator=(iterator other) noexcept(copy_assignable) {
                 it = other.it;
-                sentinel = other.sentinel;
-                if (it != sentinel) {
-                    val.emplace(it->first, *it->second);
-                }
-
                 return *this;
             }
+
+            ~iterator() = default;
 
             /**
              * Increments underlying iterator by one
@@ -226,10 +203,6 @@ namespace bimap {
              */
             iterator &operator++() {
                 ++it;
-                if (it != sentinel) {
-                    val.emplace(it->first, *it->second);
-                }
-
                 return *this;
             }
 
@@ -267,18 +240,18 @@ namespace bimap {
              * Returns a pair of reference to container elements
              * @return
              */
-            constexpr value_type operator*() const noexcept {
-                return *val;
+            constexpr reference operator*() const noexcept {
+                return reference(it->first, *it->second);
             }
 
             constexpr pointer operator->() const noexcept {
+                val.emplace(it->first, *it->second);
                 return &*val;
             }
 
         private:
             IteratorType it;
-            IteratorType sentinel;
-            std::optional<value_type> val{};
+            mutable std::optional<value_type> val{};
         };
 
         /**
@@ -375,7 +348,7 @@ namespace bimap {
             auto it = map.emplace(std::move(tmp.first), nullptr).first;
             auto invIt = inverseAccess->map.emplace(std::move(tmp.second), &it->first).first;
             it->second = &invIt->first;
-            return {iterator(it, map), true};
+            return {iterator(it), true};
         }
 
         /**
@@ -426,7 +399,7 @@ namespace bimap {
          * @return
          */
         iterator begin() const {
-            return iterator(std::begin(map), map);
+            return iterator(map.begin());
         }
 
         /**
@@ -435,7 +408,7 @@ namespace bimap {
          * @return
          */
         constexpr iterator end() const {
-            return iterator(map);
+            return iterator(map.end());
         }
 
         /**
@@ -445,7 +418,7 @@ namespace bimap {
          * (see end()) iterator is returned.
          */
         iterator find(const ForwardKey &key) const {
-            return iterator(map.find(key), map);
+            return iterator(map.find(key));
         }
 
         /**
@@ -459,7 +432,7 @@ namespace bimap {
             }
 
             inverseAccess->map.erase(inverseAccess->map.find(pos->second));
-            return iterator(map.erase(pos.it), map);
+            return iterator(map.erase(pos.it));
         }
 
         /**
@@ -468,7 +441,7 @@ namespace bimap {
          * @return 1 if an element with forward key is found, 0 otherwise
          */
         std::size_t erase(const ForwardKey &key) {
-            auto it = iterator(map.find(key), map);
+            auto it = iterator(map.find(key));
             if (it != end()) {
                 erase(it);
                 return 1;
