@@ -250,6 +250,21 @@ TEST(BidirectionalMap, assignment) {
     EXPECT_EQ(overwritten, copy);
 }
 
+TEST(BidirectionalMap, use_after_move) {
+    using namespace bimap;
+    bidirectional_map<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    auto moved = std::move(original);
+    EXPECT_TRUE(original.empty());
+    EXPECT_EQ(original.begin(), original.end());
+    EXPECT_TRUE(original.inverse().empty());
+    EXPECT_EQ(original.inverse().begin(), original.inverse().end());
+    original.emplace("Test", 123);
+    original.inverse().emplace(456, "NewItem");
+    EXPECT_EQ(original.size(), 2);
+    EXPECT_EQ(original.at("Test"), 123);
+    EXPECT_EQ(original.at("NewItem"), 456);
+}
+
 TEST(BidirectionalMap, clear) {
     using namespace bimap;
     bidirectional_map<std::string, int> test = {{"Test", 123}};

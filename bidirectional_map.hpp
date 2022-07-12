@@ -347,19 +347,14 @@ namespace bimap {
          * Move constructor. Moves objects from other. If ForwardMapType and InverseMapType support moving, no objects
          * are copied
          * @param other
-         * @note unlike containers like std::unordered_map (at least using gcc), use after move will most likely result
-         * in undefined behaviour
          */
-        bidirectional_map(bidirectional_map &&other)
-        noexcept(std::is_nothrow_default_constructible_v<ForwardMap> &&
-                 std::is_nothrow_swappable_v<ForwardMap> &&
-                 std::is_nothrow_swappable_v<typename InverseBiMap::ForwardMap>): map(), inverseAccess() {
-            std::swap(map, other.map);
-            inverseAccess.swap(other.inverseAccess);
-            inverseAccess->inverseAccess = this;
+        bidirectional_map(bidirectional_map &&other) noexcept(noexcept(std::declval<bidirectional_map>().swap(other)))
+                : bidirectional_map() {
+            swap(other);
         }
 
-        bidirectional_map &operator=(bidirectional_map other) noexcept(noexcept(this->swap(other))) {
+        bidirectional_map &operator=(bidirectional_map other)
+                noexcept(noexcept(std::declval<bidirectional_map>().swap(other))) {
             swap(other);
             return *this;
         }
