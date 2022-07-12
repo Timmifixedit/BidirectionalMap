@@ -45,22 +45,22 @@ namespace bimap::implementation {
          * Copy constructor, creates a non-owning pointer
          * @param other
          */
-        AllocOncePointer(const AllocOncePointer &other) noexcept: data(other.data), owner(false) {}
+        constexpr AllocOncePointer(const AllocOncePointer &other) noexcept: data(other.data), owner(false) {}
 
         /**
          * Swaps pointer and ownership with other
          * @param other
          */
-        void swap(AllocOncePointer &other) noexcept {
+        constexpr void swap(AllocOncePointer &other) noexcept {
             std::swap(data, other.data);
             std::swap(owner, other.owner);
         }
 
-        AllocOncePointer(AllocOncePointer &&other) noexcept: AllocOncePointer() {
+        constexpr AllocOncePointer(AllocOncePointer &&other) noexcept: AllocOncePointer() {
             swap(other);
         }
 
-        AllocOncePointer &operator=(AllocOncePointer other) noexcept {
+        constexpr AllocOncePointer &operator=(AllocOncePointer other) noexcept {
             swap(other);
             return *this;
         }
@@ -78,23 +78,23 @@ namespace bimap::implementation {
          * Check if pointer is owner
          * @return
          */
-        [[nodiscard]] bool isOwner() const noexcept {
+        [[nodiscard]] constexpr bool isOwner() const noexcept {
             return owner;
         }
 
-        T &operator*() noexcept {
+        constexpr T &operator*() noexcept {
             return *data;
         }
 
-        const T &operator*() const noexcept {
+        constexpr const T &operator*() const noexcept {
             return *data;
         }
 
-        T *operator->() noexcept {
+        constexpr T *operator->() noexcept {
             return data;
         }
 
-        const T *operator->() const noexcept {
+        constexpr const T *operator->() const noexcept {
             return data;
         }
 
@@ -103,16 +103,16 @@ namespace bimap::implementation {
          * @param other
          * @return true if data pointers point to the same object, false otherwise
          */
-        bool operator==(const AllocOncePointer &other) const {
+        constexpr bool operator==(const AllocOncePointer &other) const {
             return data == other.data;
         }
 
-        bool operator==(nullptr_t) const {
+        constexpr bool operator==(nullptr_t) const {
             return data == nullptr;
         }
 
         template<typename Ptr>
-        bool operator!=(const Ptr &other) const {
+        constexpr bool operator!=(const Ptr &other) const {
             return !(*this == other);
         }
 
@@ -128,7 +128,7 @@ namespace bimap::implementation {
      * @param b
      */
     template<typename T>
-    void swap(AllocOncePointer<T> &a, AllocOncePointer<T> &b) noexcept {
+    constexpr void swap(AllocOncePointer<T> &a, AllocOncePointer<T> &b) noexcept {
         a.swap(b);
     }
 
