@@ -236,7 +236,7 @@ TEST(BidirectionalMap, move_ctor) {
     checkValues(moved.find("AnotherItem"), "AnotherItem", 17);
 }
 
-TEST(BidirectionalMap, asignment) {
+TEST(BidirectionalMap, assignment) {
     using namespace bimap;
     bidirectional_map<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
     bidirectional_map<std::string, int> overwritten  = {{"abc", 1}};
