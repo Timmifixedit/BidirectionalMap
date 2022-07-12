@@ -131,6 +131,20 @@ namespace bimap::implementation {
     void swap(AllocOncePointer<T> &a, AllocOncePointer<T> &b) noexcept {
         a.swap(b);
     }
+
+    template<typename T, typename = std::void_t<>>
+    struct is_bidirectional {
+        static constexpr bool value = false;
+    };
+
+    template<typename T>
+    struct is_bidirectional<T, std::void_t<typename std::iterator_traits<T>::iterator_category>> {
+        static constexpr bool value = std::is_base_of_v<std::bidirectional_iterator_tag,
+                typename std::iterator_traits<T>::iterator_category>;
+    };
+
+    template<typename T>
+    constexpr inline bool is_bidirectional_v = is_bidirectional<T>::value;
 }
 
 namespace bimap {
@@ -213,6 +227,29 @@ namespace bimap {
             iterator operator++(int) {
                 auto tmp = *this;
                 ++*this;
+                return tmp;
+            }
+
+            /**
+             * Decrements underlying iterator by one. Only available if base iterator supports bidirectional iteration
+             * @tparam IsBidirectional
+             * @return
+             */
+            template<bool IsBidirectional = implementation::is_bidirectional_v<IteratorType>>
+            auto operator--() -> std::enable_if_t<IsBidirectional, iterator&> {
+                --it;
+                return *this;
+            }
+
+            /**
+             * Post decrement. Only available if base iterator supports bidirectional iteration
+             * @tparam IsBidirectional
+             * @return
+             */
+            template<bool IsBidirectional = implementation::is_bidirectional_v<IteratorType>>
+            auto operator--(int) -> std::enable_if_t<IsBidirectional, iterator> {
+                auto tmp = *this;
+                --*this;
                 return tmp;
             }
 

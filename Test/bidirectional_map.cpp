@@ -173,6 +173,19 @@ TEST(BidirectionalMap, iterate_with_erase) {
     EXPECT_EQ(test.size(), 2);
 }
 
+TEST(BidirectionalMap, bidirectional_iteration) {
+    using namespace bimap;
+    bidirectional_map<std::string, int, std::map> test = {{"Item1", 123}, {"Item2", 456}, {"Item3", 789}};
+    const auto start = test.begin();
+    auto curr = start;
+    ++curr;
+    checkValues(curr++, "Item2", 456);
+    EXPECT_EQ(++curr, test.end());
+    --curr;
+    checkValues(--curr, "Item2", 456);
+    checkValues(curr--, "Item2", 456);
+}
+
 TEST(BidirectionalMap, comparison) {
     using namespace bimap;
     bidirectional_map<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
