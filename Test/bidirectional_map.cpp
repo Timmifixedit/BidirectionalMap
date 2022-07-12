@@ -10,7 +10,7 @@
 #include <exception>
 
 #include "bidirectional_map.hpp"
-#include "MustNotCopy.hpp"
+#include "TestUtil.hpp"
 
 template<typename It, typename T, typename U>
 void checkValues(It it, const T& first, const U& second) {
@@ -393,4 +393,35 @@ TEST(BidirectionalMap, at) {
     EXPECT_EQ(test.inverse().at(456), "NewItem");
     EXPECT_THROW(test.at("NotIncluded"), std::out_of_range);
     EXPECT_THROW(test.inverse().at(0), std::out_of_range);
+}
+
+TEST(BidirectionalMap, noexcept_map) {
+    using namespace bimap;
+    bidirectional_map<std::string, int, std::map> test;
+    auto it = test.begin();
+    EXPECT_TRUE(noexcept(++it));
+    EXPECT_TRUE(noexcept(it++));
+    EXPECT_TRUE(noexcept(--it));
+    EXPECT_TRUE(noexcept(it--));
+    EXPECT_TRUE(noexcept(it == it));
+    EXPECT_TRUE(noexcept(it != it));
+    EXPECT_TRUE(std::is_nothrow_copy_constructible_v<decltype(it)>);
+    EXPECT_TRUE(std::is_nothrow_copy_assignable_v<decltype(it)>);
+    EXPECT_TRUE(std::is_nothrow_move_constructible_v<decltype(it)>);
+    EXPECT_TRUE(std::is_nothrow_move_assignable_v<decltype(it)>);
+}
+
+TEST(BidirectionalMap, throwing_iterator) {
+    using namespace bimap;
+    BadIterator<std::string, const int*> baseIt;
+    bidirectional_map<std::string, int, BadContainer>::iterator badIt(baseIt);
+    EXPECT_THROW(++badIt, std::runtime_error);
+    EXPECT_THROW(badIt++, std::runtime_error);
+    EXPECT_THROW(--badIt, std::runtime_error);
+    EXPECT_THROW(badIt--, std::runtime_error);
+    EXPECT_THROW(badIt == badIt, std::runtime_error);
+    EXPECT_THROW(badIt != badIt, std::runtime_error);
+    EXPECT_THROW(*badIt, std::runtime_error);
+    EXPECT_THROW(badIt->first, std::runtime_error);
+    EXPECT_THROW(badIt->second, std::runtime_error);
 }

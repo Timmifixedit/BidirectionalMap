@@ -215,7 +215,7 @@ namespace bimap {
              * Increments underlying iterator by one
              * @return
              */
-            constexpr iterator &operator++() {
+            constexpr iterator &operator++() noexcept(noexcept(++std::declval<IteratorType>())) {
                 ++it;
                 return *this;
             }
@@ -224,7 +224,8 @@ namespace bimap {
              * Post increment. Increments underlying iterator by one
              * @return
              */
-            constexpr iterator operator++(int) {
+            constexpr iterator operator++(int) noexcept(std::is_nothrow_copy_constructible_v<iterator> &&
+                                                        noexcept(++std::declval<iterator>())) {
                 auto tmp = *this;
                 ++*this;
                 return tmp;
@@ -236,7 +237,8 @@ namespace bimap {
              * @return
              */
             template<bool IsBidirectional = implementation::is_bidirectional_v<IteratorType>>
-            constexpr auto operator--() -> std::enable_if_t<IsBidirectional, iterator&> {
+            constexpr auto operator--() noexcept(noexcept(--std::declval<IteratorType>()))
+                -> std::enable_if_t<IsBidirectional, iterator&> {
                 --it;
                 return *this;
             }
@@ -247,7 +249,9 @@ namespace bimap {
              * @return
              */
             template<bool IsBidirectional = implementation::is_bidirectional_v<IteratorType>>
-            constexpr auto operator--(int) -> std::enable_if_t<IsBidirectional, iterator> {
+            constexpr auto operator--(int) noexcept(std::is_nothrow_copy_constructible_v<iterator> &&
+                                                    noexcept(--std::declval<iterator>()))
+                                                    -> std::enable_if_t<IsBidirectional, iterator> {
                 auto tmp = *this;
                 --*this;
                 return tmp;
@@ -277,11 +281,11 @@ namespace bimap {
              * Returns a pair of reference to container elements
              * @return
              */
-            constexpr reference operator*() const noexcept {
+            constexpr reference operator*() const {
                 return reference(it->first, *it->second);
             }
 
-            constexpr pointer operator->() const noexcept {
+            constexpr pointer operator->() const {
                 val.emplace(it->first, *it->second);
                 return &*val;
             }
