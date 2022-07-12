@@ -11,6 +11,7 @@
 
 #include <unordered_map>
 #include <optional>
+#include <stdexcept>
 
 namespace bimap::implementation {
     /**
