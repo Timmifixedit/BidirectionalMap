@@ -198,10 +198,10 @@ namespace bimap {
              */
             constexpr explicit iterator(const IteratorType &it) noexcept(copy_constructible) : it(it) {}
 
-            constexpr iterator(const iterator &other) noexcept(std::constructible_from<iterator, IteratorType>)
+            constexpr iterator(const iterator &other) noexcept(std::is_constructible_v<iterator, IteratorType>)
                     : iterator(other.it) {}
 
-            constexpr iterator(iterator &&other) noexcept(std::constructible_from<iterator, IteratorType>): iterator(
+            constexpr iterator(iterator &&other) noexcept(std::is_constructible_v<iterator, IteratorType>): iterator(
                     other) {}
 
             constexpr iterator &operator=(iterator other) noexcept(copy_assignable) {
