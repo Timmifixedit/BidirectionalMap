@@ -46,35 +46,35 @@ struct BadIterator {
     using difference_type = std::size_t;
 
     BadIterator &operator++() {
-        throw std::runtime_error("This exception should be thrown");
+        throw std::runtime_error("This exception should not appear");
     }
 
     BadIterator operator++(int) {
-        throw std::runtime_error("This exception should be thrown");
+        throw std::runtime_error("This exception should not appear");
     }
 
     BadIterator &operator--() {
-        throw std::runtime_error("This exception should be thrown");
+        throw std::runtime_error("This exception should not appear");
     }
 
     BadIterator operator--(int) {
-        throw std::runtime_error("This exception should be thrown");
+        throw std::runtime_error("This exception should not appear");
     }
 
     bool operator==(const BadIterator &) const {
-        throw std::runtime_error("This exception should be thrown");
+        throw std::runtime_error("This exception should not appear");
     }
 
     bool operator!=(const BadIterator &) const {
-        throw std::runtime_error("This exception should be thrown");
+        throw std::runtime_error("This exception should not appear");
     }
 
     reference operator*() const noexcept {
-        throw std::runtime_error("This exception should be thrown");
+        throw std::runtime_error("This exception should not appear");
     }
 
     pointer operator->() const {
-        throw std::runtime_error("This exception should be thrown");
+        throw std::runtime_error("This exception should not appear");
     }
 };
 
@@ -91,31 +91,31 @@ using MNCMAp = std::unordered_map<T, U, MustNotCopy::Hash>;
 template<typename T, typename U>
 struct BadMap {
     std::size_t size() const {
-        throw std::runtime_error("This exception should be thrown");
+        throw std::runtime_error("This exception should not appear");
     }
 
     bool empty() const {
-        throw std::runtime_error("This exception should be thrown");
+        throw std::runtime_error("This exception should not appear");
     }
 
     void reserve(std::size_t) {
-        throw std::runtime_error("This exception should be thrown");
+        throw std::runtime_error("This exception should not appear");
     }
 
     int* begin() const {
-        throw std::runtime_error("This exception should be thrown");
+        throw std::runtime_error("This exception should not appear");
     }
 
     int* end() const {
-        throw std::runtime_error("This exception should be thrown");
+        throw std::runtime_error("This exception should not appear");
     }
 
     int* find(const T&) const {
-        throw std::runtime_error("This exception should be thrown");
+        throw std::runtime_error("This exception should not appear");
     }
 
     void clear() {
-        throw std::runtime_error("This exception should be thrown");
+        throw std::runtime_error("This exception should not appear");
     }
 };
 
