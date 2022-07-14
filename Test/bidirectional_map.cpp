@@ -440,3 +440,15 @@ TEST(BidirectionalMap, throwing_iterator) {
     EXPECT_THROW(badIt->first, std::runtime_error);
     EXPECT_THROW(badIt->second, std::runtime_error);
 }
+
+TEST(BidirectionalMap, throwing_base_container) {
+    using namespace bimap;
+    bidirectional_map<std::string, int, BadMap> test;
+    EXPECT_THROW(test.size(), std::runtime_error);
+    EXPECT_THROW(test.empty(), std::runtime_error);
+    EXPECT_THROW(test.reserve(1), std::runtime_error);
+    EXPECT_THROW(test.begin(), std::runtime_error);
+    EXPECT_THROW(test.end(), std::runtime_error);
+    EXPECT_THROW(test.find(""), std::runtime_error);
+    EXPECT_THROW(test.clear(), std::runtime_error);
+}

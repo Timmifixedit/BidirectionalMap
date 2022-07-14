@@ -88,4 +88,35 @@ struct BadContainer {
 template<typename T, typename U>
 using MNCMAp = std::unordered_map<T, U, MustNotCopy::Hash>;
 
+template<typename T, typename U>
+struct BadMap {
+    std::size_t size() const {
+        throw std::runtime_error("This exception should be thrown");
+    }
+
+    bool empty() const {
+        throw std::runtime_error("This exception should be thrown");
+    }
+
+    void reserve(std::size_t) {
+        throw std::runtime_error("This exception should be thrown");
+    }
+
+    int* begin() const {
+        throw std::runtime_error("This exception should be thrown");
+    }
+
+    int* end() const {
+        throw std::runtime_error("This exception should be thrown");
+    }
+
+    int* find(const T&) const {
+        throw std::runtime_error("This exception should be thrown");
+    }
+
+    void clear() {
+        throw std::runtime_error("This exception should be thrown");
+    }
+};
+
 #endif //BIDIRECTIONALMAP_TESTUTIL_HPP

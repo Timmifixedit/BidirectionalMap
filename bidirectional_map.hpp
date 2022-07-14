@@ -411,7 +411,7 @@ namespace bimap {
          * @param n Number of elements to reserve space for
          */
         void reserve(std::size_t n) noexcept(noexcept(std::declval<ForwardMap>().reserve(n)) &&
-                                             noexcept(std::declval<InverseBiMap::ForwardMap>().reserve(n))) {
+                                             noexcept(std::declval<typename InverseBiMap::ForwardMap>().reserve(n))) {
             map.reserve(n);
             inverseAccess->map.reserve(n);
         }
