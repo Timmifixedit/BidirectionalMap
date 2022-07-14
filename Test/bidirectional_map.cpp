@@ -410,7 +410,7 @@ TEST(BidirectionalMap, at) {
     EXPECT_THROW(test.inverse().at(0), std::out_of_range);
 }
 
-TEST(BidirectionalMap, noexcept_map) {
+TEST(BidirectionalMap, noexcept_iterator) {
     using namespace bimap;
     bidirectional_map<std::string, int, std::map> test;
     auto it = test.begin();
@@ -450,5 +450,6 @@ TEST(BidirectionalMap, throwing_base_container) {
     EXPECT_THROW(test.begin(), std::runtime_error);
     EXPECT_THROW(test.end(), std::runtime_error);
     EXPECT_THROW(test.find(""), std::runtime_error);
+    EXPECT_THROW(test.contains(""), std::runtime_error);
     EXPECT_THROW(test.clear(), std::runtime_error);
 }
