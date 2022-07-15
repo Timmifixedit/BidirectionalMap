@@ -351,8 +351,7 @@ namespace bimap {
          * are copied
          * @param other
          */
-        bidirectional_map(bidirectional_map &&other) noexcept(noexcept(std::declval<bidirectional_map>().swap(other)))
-                : bidirectional_map() {
+        bidirectional_map(bidirectional_map &&other) : bidirectional_map() {
             swap(other);
         }
 
