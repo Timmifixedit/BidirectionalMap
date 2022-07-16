@@ -3,13 +3,14 @@
  * @date 2021-06-16
  * @brief This file contains the class definition of a bidirectional associative container that can be used for
  * efficient lookup in both directions. Its contents are immutable to ensure the integrity of the underlying map
- * map containers. Also the mapping has to be injective to make bidirectional lookup possible.
+ * map containers.
  */
 
 #ifndef BIDIRECTIONALMAP_BIDIRECTIONAL_MAP_HPP
 #define BIDIRECTIONALMAP_BIDIRECTIONAL_MAP_HPP
 
 #include <unordered_map>
+#include <map>
 #include <optional>
 #include <stdexcept>
 
@@ -150,6 +151,31 @@ namespace bimap::impl {
 
         template<typename T>
         constexpr inline bool is_bidirectional_v = is_bidirectional<T>::value;
+
+        template<typename T>
+        struct get_first {
+            explicit constexpr get_first(const T &value) noexcept : value(value) {}
+            const T& value;
+        };
+
+        template<typename T, typename U>
+        struct get_first<std::pair<T, U>> {
+            explicit constexpr get_first(const std::pair<T, U> &pair) noexcept : value(pair.first) {}
+            const T& value;
+        };
+
+        template<typename T>
+        struct is_multimap {
+            static constexpr bool value = false;
+        };
+
+        template<typename Key, typename Val, typename Comp, typename Alloc>
+        struct is_multimap<std::multimap<Key, Val, Comp, Alloc>> {
+            static constexpr bool value = true;
+        };
+
+        template<typename T>
+        constexpr inline bool is_multimap_v = is_multimap<T>::value;
     }
 }
 
@@ -371,26 +397,33 @@ namespace bimap {
 
         /**
          * Constructs elements in place. If a pair of values with same ForwardKey or same InverseKey already exists
-         * no insertion happens
+         * and the corresponding container requires unique keys, then no insertion happens.
          * @tparam ARGS
-         * @param args
+         * @param args arguments used to construct elements
          * @return std::pair(iterator to inserted element or already existing element, bool whether insertion happened)
+         * @example if std::multiset is used for forward lookup and the map contains the following pair :(a, b)
+         * then inserting (a, b') is possible whereas (a', b) will not be inserted since the inverse lookup is carried
+         * out by std::unordered_map
          */
         template<typename ...ARGS>
         auto emplace(ARGS &&...args) -> std::pair<iterator, bool> {
             std::pair<ForwardKey, InverseKey> tmp(std::forward<ARGS>(args)...);
-            auto res = find(tmp.first);
-            if (res != end()) {
-                return {res, false};
+            if constexpr(!impl::traits::is_multimap_v<ForwardMap>) {
+                auto res = find(tmp.first);
+                if (res != end()) {
+                    return {res, false};
+                }
             }
 
-            auto invRes = inverse().find(tmp.second);
-            if (invRes != inverse().end()) {
-                return {find(invRes->second), false};
+            if constexpr(!impl::traits::is_multimap_v<InverseMap>) {
+                auto invRes = inverse().find(tmp.second);
+                if (invRes != inverse().end()) {
+                    return {find(invRes->second), false};
+                }
             }
 
-            auto it = map.emplace(std::move(tmp.first), nullptr).first;
-            auto invIt = inverseAccess->map.emplace(std::move(tmp.second), &it->first).first;
+            auto it = impl::traits::get_first(map.emplace(std::move(tmp.first), nullptr)).value;
+            auto invIt = impl::traits::get_first(inverseAccess->map.emplace(std::move(tmp.second), &it->first)).value;
             it->second = &invIt->first;
             return {iterator(it), true};
         }
@@ -566,7 +599,8 @@ namespace bimap {
          * @return reference to found value
          * @throws out_of_range if ey does not exist
          */
-        auto at(const ForwardKey &key) const -> const InverseKey & {
+        template<bool UniqueKeys = !impl::traits::is_multimap_v<ForwardMap>>
+        auto at(const ForwardKey &key) const -> std::enable_if_t<UniqueKeys, const InverseKey &> {
             auto res = find(key);
             if (res == end()) {
                 throw std::out_of_range("bidirectional map key not found");

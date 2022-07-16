@@ -501,3 +501,19 @@ TEST(BidirectionalMap, throwing_base_container) {
     EXPECT_THROW(test.contains(""), std::runtime_error);
     EXPECT_THROW(test.clear(), std::runtime_error);
 }
+
+TEST(BidirectionalMap, multi_map) {
+    using namespace bimap;
+    bidirectional_map<std::string, int, std::multimap> test = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    auto [it, inserted] = test.emplace("Hello", 123);
+    EXPECT_EQ(test.size(), 3);
+    EXPECT_FALSE(inserted);
+    EXPECT_EQ(it, test.find("Test"));
+    std::tie(it, inserted) = test.emplace("Stuff", 17);
+    EXPECT_TRUE(inserted);
+    EXPECT_EQ(test.inverse().at(17), "Stuff");
+    EXPECT_EQ(test.inverse().at(789), "Stuff");
+    auto [invIt, invInserted] = test.inverse().emplace(1, "Test");
+    EXPECT_TRUE(invInserted);
+    EXPECT_EQ(test.inverse().at(1), "Test");
+}
