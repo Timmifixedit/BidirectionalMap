@@ -515,18 +515,20 @@ namespace bimap {
         }
 
         /**
-         * Erases an element with forward key equivalent to key.
+         * Erases all elements with forward key equivalent to key.
          * @param key
-         * @return 1 if an element with forward key is found, 0 otherwise
+         * @return number of erased elements
          */
         std::size_t erase(const ForwardKey &key) {
-            auto it = iterator(map.find(key));
-            if (it != end()) {
+            iterator it = find(key);
+            std::size_t numErased = 0;
+            while (it != end()) {
                 erase(it);
-                return 1;
+                ++numErased;
+                it = find(key);
             }
 
-            return 0;
+            return numErased;
         }
 
         /**

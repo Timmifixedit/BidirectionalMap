@@ -516,4 +516,6 @@ TEST(BidirectionalMap, multi_map) {
     auto [invIt, invInserted] = test.inverse().emplace(1, "Test");
     EXPECT_TRUE(invInserted);
     EXPECT_EQ(test.inverse().at(1), "Test");
+    EXPECT_EQ(test.erase("Stuff"), 2);
+    EXPECT_FALSE(test.contains("Stuff"));
 }
