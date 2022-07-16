@@ -154,14 +154,14 @@ namespace bimap::impl {
 
         template<typename T>
         struct get_first {
-            explicit constexpr get_first(const T &value) noexcept : value(value) {}
-            const T& value;
+            explicit constexpr get_first(const T &value) noexcept: value(value) {}
+            const T &value;
         };
 
         template<typename T, typename U>
         struct get_first<std::pair<T, U>> {
-            explicit constexpr get_first(const std::pair<T, U> &pair) noexcept : value(pair.first) {}
-            const T& value;
+            explicit constexpr get_first(const std::pair<T, U> &pair) noexcept: value(pair.first) {}
+            const T &value;
         };
 
         template<typename T>
@@ -216,6 +216,7 @@ namespace bimap {
             using IteratorType = decltype(std::declval<std::add_const_t<ForwardMap>>().begin());
             static constexpr bool copy_constructible = std::is_nothrow_copy_constructible_v<IteratorType>;
             static constexpr bool copy_assignable = std::is_nothrow_copy_assignable_v<IteratorType>;
+
             friend class bidirectional_map;
 
         public:
@@ -229,7 +230,7 @@ namespace bimap {
              * CTor
              * @param it iterator to underlying map element
              */
-            constexpr explicit iterator(const IteratorType &it) noexcept(copy_constructible) : it(it) {}
+            constexpr explicit iterator(const IteratorType &it) noexcept(copy_constructible): it(it) {}
 
             constexpr iterator(const iterator &other) noexcept(std::is_constructible_v<iterator, IteratorType>)
                     : iterator(other.it) {}
@@ -271,7 +272,7 @@ namespace bimap {
              */
             template<bool IsBidirectional = impl::traits::is_bidirectional_v<IteratorType>>
             constexpr auto operator--() noexcept(noexcept(--std::declval<IteratorType>()))
-                -> std::enable_if_t<IsBidirectional, iterator&> {
+            -> std::enable_if_t<IsBidirectional, iterator &> {
                 --it;
                 return *this;
             }
