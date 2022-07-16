@@ -519,3 +519,35 @@ TEST(BidirectionalMap, multi_map) {
     EXPECT_EQ(test.erase("Stuff"), 2);
     EXPECT_FALSE(test.contains("Stuff"));
 }
+
+TEST(BidirectionalMap, multi_map_erase) {
+    using namespace bimap;
+    bidirectional_map<std::string, int, std::multimap> test = {{"Test", 123}, {"Test", 456}, {"Test", 789}, {"One", 1}};
+    test.erase("One");
+    EXPECT_FALSE(test.contains("One"));
+    EXPECT_FALSE(test.inverse().contains(1));
+    test.inverse().erase(789);
+    EXPECT_EQ(test.inverse().at(123), "Test");
+    EXPECT_EQ(test.inverse().at(456), "Test");
+    auto [curr, end] = test.equal_range("Test");
+    ASSERT_NE(curr, end);
+    EXPECT_EQ(curr->second, 123);
+    ++curr;
+    EXPECT_EQ(curr->second, 456);
+    EXPECT_EQ(++curr, end);
+}
+
+TEST(BidirectionalMap, multi_map_equality) {
+    using namespace bimap;
+    bidirectional_map<std::string, int, std::multimap> test = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    auto copy = test;
+    EXPECT_EQ(copy, test);
+    test.emplace("Test", 17);
+    test.emplace("Test", 1337);
+    copy.emplace("Test", 1337);
+    copy.emplace("Test", 17);
+    EXPECT_NE(copy, test);
+    test.inverse().erase(17);
+    copy.inverse().erase(17);
+    EXPECT_EQ(copy, test);
+}

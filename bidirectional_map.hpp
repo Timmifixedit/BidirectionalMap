@@ -13,6 +13,7 @@
 #include <map>
 #include <optional>
 #include <stdexcept>
+#include <cassert>
 
 namespace bimap::impl {
     namespace traits {
@@ -225,6 +226,14 @@ namespace bimap::impl {
             return data;
         }
 
+        constexpr T* get() noexcept {
+            return data;
+        }
+
+        constexpr const T* get() const noexcept {
+            return data;
+        }
+
     private:
         T * data;
     };
@@ -270,6 +279,7 @@ namespace bimap {
             static constexpr bool copy_assignable = std::is_nothrow_copy_assignable_v<IteratorType>;
 
             friend class bidirectional_map;
+            friend InverseBiMap;
 
         public:
             using value_type = std::pair<const ForwardKey &, const InverseKey &>;
@@ -553,6 +563,18 @@ namespace bimap {
             return iterator(map.find(key));
         }
 
+        iterator lower_bound(const ForwardKey &key) const {
+            return iterator(map.lower_bound(key));
+        }
+
+        iterator upper_bound(const ForwardKey &key) const {
+            return iterator(map.upper_bound(key));
+        }
+
+        auto equal_range(const ForwardKey &key) const -> std::pair<iterator, iterator> {
+            return {lower_bound(key), upper_bound(key)};
+        }
+
         /**
          * Erases the element at position pos
          * @param pos iterator to the element to remove. if pos == end(), this method does nothing
@@ -563,7 +585,19 @@ namespace bimap {
                 return pos;
             }
 
-            inverseAccess->map.erase(inverseAccess->map.find(pos->second));
+            if constexpr(impl::traits::is_multimap_v<InverseMap>) {
+                auto [curr, end] = inverse().equal_range(pos->second);
+                while (curr != end && &curr->first != pos.it->second.get()) {
+                    ++curr;
+                }
+
+                assert(curr != end);
+                inverseAccess->map.erase(curr.it);
+
+            } else {
+                inverseAccess->map.erase(inverseAccess->map.find(pos->second));
+            }
+
             return iterator(map.erase(pos.it));
         }
 
