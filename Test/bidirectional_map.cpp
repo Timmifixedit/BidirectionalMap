@@ -12,6 +12,8 @@
 #include "bidirectional_map.hpp"
 #include "TestUtil.hpp"
 
+#define UNUSED(x) ((void)(x))
+
 template<typename It, typename T, typename U>
 void checkValues(It it, const T& first, const U& second) {
     EXPECT_EQ(it->first, first);
@@ -297,7 +299,6 @@ TEST(BidirectionalMap, swap) {
     EXPECT_EQ(map2.inverse().at(123), "Test");
     EXPECT_EQ(map2.inverse().at(456), "NewItem");
     EXPECT_EQ(map2.inverse().at(789), "Stuff");
-    auto &same = map2.inverse().inverse();
     EXPECT_EQ(map1, map1.inverse().inverse());
     EXPECT_EQ(map2, map2.inverse().inverse());
 }
@@ -491,8 +492,8 @@ TEST(BidirectionalMap, throwing_iterator) {
 TEST(BidirectionalMap, throwing_base_container) {
     using namespace bimap;
     bidirectional_map<std::string, int, BadMap> test;
-    EXPECT_THROW(test.size(), std::runtime_error);
-    EXPECT_THROW(test.empty(), std::runtime_error);
+    EXPECT_THROW(UNUSED(test.size()), std::runtime_error);
+    EXPECT_THROW(UNUSED(test.empty()), std::runtime_error);
     EXPECT_THROW(test.reserve(1), std::runtime_error);
     EXPECT_THROW(test.begin(), std::runtime_error);
     EXPECT_THROW(test.end(), std::runtime_error);
