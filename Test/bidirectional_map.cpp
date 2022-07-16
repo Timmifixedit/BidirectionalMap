@@ -476,7 +476,7 @@ TEST(BidirectionalMap, noexcept_iterator) {
 
 TEST(BidirectionalMap, throwing_iterator) {
     using namespace bimap;
-    BadIterator<std::string, const int*> baseIt;
+    BadIterator<std::string, impl::Surrogate<const int>> baseIt;
     bidirectional_map<std::string, int, BadContainer>::iterator badIt(baseIt);
     EXPECT_THROW(++badIt, std::runtime_error);
     EXPECT_THROW(badIt++, std::runtime_error);

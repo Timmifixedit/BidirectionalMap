@@ -15,6 +15,50 @@
 #include <stdexcept>
 
 namespace bimap::impl {
+    namespace traits {
+        template<typename T, typename = std::void_t<>>
+        struct is_bidirectional {
+            static constexpr bool value = false;
+        };
+
+        template<typename T>
+        struct is_bidirectional<T, std::void_t<typename std::iterator_traits<T>::iterator_category>> {
+            static constexpr bool value = std::is_base_of_v<std::bidirectional_iterator_tag,
+                    typename std::iterator_traits<T>::iterator_category>;
+        };
+
+        template<typename T>
+        constexpr inline bool is_bidirectional_v = is_bidirectional<T>::value;
+
+        template<typename T>
+        struct get_first {
+            explicit constexpr get_first(const T &value) noexcept: value(value) {}
+            const T &value;
+        };
+
+        template<typename T, typename U>
+        struct get_first<std::pair<T, U>> {
+            explicit constexpr get_first(const std::pair<T, U> &pair) noexcept: value(pair.first) {}
+            const T &value;
+        };
+
+        template<typename T>
+        struct is_multimap {
+            static constexpr bool value = false;
+        };
+
+        template<typename Key, typename Val, typename Comp, typename Alloc>
+        struct is_multimap<std::multimap<Key, Val, Comp, Alloc>> {
+            static constexpr bool value = true;
+        };
+
+        template<typename T>
+        constexpr inline bool is_multimap_v = is_multimap<T>::value;
+
+        template<typename T>
+        constexpr inline bool nothrow_comparable = noexcept(std::declval<T>() == std::declval<T>());
+    }
+
     /**
      * Very simple pointer class that can be used to allocate storage once but can also be used as a non owning pointer.
      * Unlike shared_ptr, copies of this class are non-owning pointers and unlike weak_ptr, non-owning pointers
@@ -137,46 +181,54 @@ namespace bimap::impl {
         a.swap(b);
     }
 
-    namespace traits {
-        template<typename T, typename = std::void_t<>>
-        struct is_bidirectional {
-            static constexpr bool value = false;
-        };
+    /**
+     * Non owning pointer to an object. It overloads the equality operators in order to compare the underlying objects
+     * instead of the pointer values
+     * @tparam T
+     */
+    template<typename T>
+    class Surrogate {
+    public:
+        constexpr Surrogate(T *data) noexcept: data(data) {}
 
-        template<typename T>
-        struct is_bidirectional<T, std::void_t<typename std::iterator_traits<T>::iterator_category>> {
-            static constexpr bool value = std::is_base_of_v<std::bidirectional_iterator_tag,
-                    typename std::iterator_traits<T>::iterator_category>;
-        };
+        /**
+         * Compares objects behind the pointer
+         * @param other
+         * @return
+         */
+        constexpr bool operator==(Surrogate other) const noexcept(traits::nothrow_comparable<T>) {
+            return *data == *other.data;
+        }
 
-        template<typename T>
-        constexpr inline bool is_bidirectional_v = is_bidirectional<T>::value;
+        /**
+         * Compares objects behind the pointer
+         * @param other
+         * @return
+         */
+        constexpr bool operator!=(Surrogate other) const noexcept(noexcept(other == other)) {
+            return !(*this == other);
+        }
 
-        template<typename T>
-        struct get_first {
-            explicit constexpr get_first(const T &value) noexcept: value(value) {}
-            const T &value;
-        };
+        constexpr T& operator*() noexcept {
+            return *data;
+        }
 
-        template<typename T, typename U>
-        struct get_first<std::pair<T, U>> {
-            explicit constexpr get_first(const std::pair<T, U> &pair) noexcept: value(pair.first) {}
-            const T &value;
-        };
+        constexpr const T& operator*() const noexcept {
+            return *data;
+        }
 
-        template<typename T>
-        struct is_multimap {
-            static constexpr bool value = false;
-        };
+        constexpr T* operator->() noexcept {
+            return data;
+        }
 
-        template<typename Key, typename Val, typename Comp, typename Alloc>
-        struct is_multimap<std::multimap<Key, Val, Comp, Alloc>> {
-            static constexpr bool value = true;
-        };
+        constexpr const T* operator->() const noexcept {
+            return data;
+        }
 
-        template<typename T>
-        constexpr inline bool is_multimap_v = is_multimap<T>::value;
-    }
+    private:
+        T * data;
+    };
+
 }
 
 namespace bimap {
@@ -194,7 +246,7 @@ namespace bimap {
             template<typename T, typename U> typename InverseMapType = std::unordered_map>
     class bidirectional_map {
     private:
-        using ForwardMap = ForwardMapType<ForwardKey, const InverseKey *>;
+        using ForwardMap = ForwardMapType<ForwardKey, impl::Surrogate<const InverseKey>>;
         using InverseBiMap = bidirectional_map<InverseKey, ForwardKey, InverseMapType, ForwardMapType>;
         friend InverseBiMap;
         using InverseMap = typename InverseBiMap::ForwardMap;
@@ -296,8 +348,8 @@ namespace bimap {
              * @param other
              * @return
              */
-            constexpr bool operator==(const iterator &other) const noexcept(noexcept(std::declval<IteratorType>() ==
-                                                                                     std::declval<IteratorType>())) {
+            constexpr bool operator==(const iterator &other) const
+                noexcept(impl::traits::nothrow_comparable<IteratorType>) {
                 return it == other.it;
             }
 
@@ -547,24 +599,15 @@ namespace bimap {
         }
 
         /**
-         * Compares containers by elements
+         * Compares underlying containers
          * @param other
-         * @return true if other contains the same elements and the same number of elements. Two elements are equivalent
-         * if their ForwardKeys and InverseKeys are equivalent respectively. Otherwise false is returned
+         * @return true if both forward mapping and inverse mapping are equivalent
+         * @note for more details see documentation of the used underlying containers. If the default containers are
+         * used, the underlying std::unordered_maps are compared
          */
-        bool operator==(const bidirectional_map &other) const {
-            if (size() != other.size()) {
-                return false;
-            }
-
-            for (const auto &[v1, v2]: *this) {
-                auto res = other.find(v1);
-                if (res == other.end() || res->second != v2) {
-                    return false;
-                }
-            }
-
-            return true;
+        bool operator==(const bidirectional_map &other) const noexcept(impl::traits::nothrow_comparable<ForwardMap> &&
+                                                                       impl::traits::nothrow_comparable<InverseMap>) {
+            return map == other.map && inverseAccess->map == other.inverseAccess->map;
         }
 
         /**
