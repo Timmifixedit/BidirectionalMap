@@ -265,6 +265,53 @@ TEST(BidirectionalMap, use_after_move) {
     EXPECT_EQ(original.at("NewItem"), 456);
 }
 
+TEST(BidirectionalMap, return_inverse) {
+    using namespace bimap;
+    auto generator = []() -> bidirectional_map<int, std::string> {
+        bidirectional_map<std::string, int> map = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+        return move(map.inverse());
+    };
+
+    auto test = generator();
+    EXPECT_EQ(test.size(), 3);
+    EXPECT_EQ(test.at(123), "Test");
+    test.emplace(1, "one");
+    EXPECT_EQ(test.at(1), "one");
+    EXPECT_EQ(test.size(), 4);
+}
+
+TEST(BidirectionalMap, swap) {
+    using namespace bimap;
+    bidirectional_map<std::string, int> map1 = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    bidirectional_map<std::string, int> map2 = {{"One", 1}, {"Two", 2}};
+    std::swap(map1, map2);
+    EXPECT_EQ(map1.size(), 2);
+    EXPECT_EQ(map2.size(), 3);
+    EXPECT_EQ(map1.at("One"), 1);
+    EXPECT_EQ(map1.at("Two"), 2);
+    EXPECT_EQ(map1.inverse().at(1), "One");
+    EXPECT_EQ(map1.inverse().at(2), "Two");
+    EXPECT_EQ(map2.at("Test"), 123);
+    EXPECT_EQ(map2.at("NewItem"), 456);
+    EXPECT_EQ(map2.at("Stuff"), 789);
+    EXPECT_EQ(map2.inverse().at(123), "Test");
+    EXPECT_EQ(map2.inverse().at(456), "NewItem");
+    EXPECT_EQ(map2.inverse().at(789), "Stuff");
+    auto &same = map2.inverse().inverse();
+    EXPECT_EQ(map1, map1.inverse().inverse());
+    EXPECT_EQ(map2, map2.inverse().inverse());
+}
+
+TEST(BidirectionalMap, move_swap_back_and_forth) {
+    using namespace bimap;
+    bidirectional_map<std::string, int> original = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
+    auto moved = std::move(original);
+    moved.inverse().emplace(0, "zero");
+    original = std::move(moved);
+    EXPECT_EQ(original.size(), 4);
+    EXPECT_EQ(original.at("zero"), 0);
+}
+
 TEST(BidirectionalMap, clear) {
     using namespace bimap;
     bidirectional_map<std::string, int> test = {{"Test", 123}};
