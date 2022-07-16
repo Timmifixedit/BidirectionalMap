@@ -104,16 +104,19 @@ namespace bimap::implementation {
          * @param other
          * @return true if data pointers point to the same object, false otherwise
          */
-        constexpr bool operator==(const AllocOncePointer &other) const {
+        constexpr bool operator==(const AllocOncePointer &other) const noexcept {
             return data == other.data;
         }
 
-        constexpr bool operator==(nullptr_t) const {
+        constexpr bool operator==(nullptr_t) const noexcept {
             return data == nullptr;
         }
 
-        template<typename Ptr>
-        constexpr bool operator!=(const Ptr &other) const {
+        constexpr bool operator!=(nullptr_t) const noexcept {
+            return data != nullptr;
+        }
+
+        constexpr bool operator!=(const T *other) const noexcept {
             return !(*this == other);
         }
 
@@ -295,6 +298,10 @@ namespace bimap {
             mutable std::optional<value_type> val{};
         };
 
+    private:
+        using BaseIterator = decltype(std::declval<ForwardMap>().begin());
+        static constexpr bool iterator_ctor_nothrow = std::is_nothrow_constructible_v<iterator, BaseIterator>;
+    public:
         /**
          * Creates an empty container
          */
@@ -347,8 +354,7 @@ namespace bimap {
          * are copied
          * @param other
          */
-        bidirectional_map(bidirectional_map &&other) noexcept(noexcept(std::declval<bidirectional_map>().swap(other)))
-                : bidirectional_map() {
+        bidirectional_map(bidirectional_map &&other) : bidirectional_map() {
             swap(other);
         }
 
@@ -390,7 +396,7 @@ namespace bimap {
          * Number of contained elements
          * @return
          */
-        [[nodiscard]] auto size() const noexcept(noexcept(map.size())) {
+        [[nodiscard]] auto size() const noexcept(noexcept(std::declval<ForwardMap>().size())) {
             return map.size();
         }
 
@@ -398,7 +404,7 @@ namespace bimap {
          * Whether container is empty
          * @return
          */
-        [[nodiscard]] bool empty() const noexcept(noexcept(map.empty())) {
+        [[nodiscard]] bool empty() const noexcept(noexcept(std::declval<ForwardMap>().empty())) {
             return map.empty();
         }
 
@@ -406,7 +412,8 @@ namespace bimap {
          * Calls reserve on underlying container
          * @param n Number of elements to reserve space for
          */
-        void reserve(std::size_t n) noexcept(noexcept(map.reserve(n)) && noexcept(inverseAccess->map.reserve(n))) {
+        void reserve(std::size_t n) noexcept(noexcept(std::declval<ForwardMap>().reserve(n)) &&
+                                             noexcept(std::declval<typename InverseBiMap::ForwardMap>().reserve(n))) {
             map.reserve(n);
             inverseAccess->map.reserve(n);
         }
@@ -415,7 +422,7 @@ namespace bimap {
          * Access to the inverted map for reverse lookup or insertion
          * @return Reference to inverted map
          */
-        auto inverse() noexcept -> InverseBiMap & {
+        constexpr auto inverse() noexcept -> InverseBiMap & {
             return *inverseAccess;
         }
 
@@ -423,7 +430,7 @@ namespace bimap {
          * Readonly access to the inverted map for reverse lookup
          * @return const reference to inverted map
          */
-        auto inverse() const noexcept -> const InverseBiMap & {
+        constexpr auto inverse() const noexcept -> const InverseBiMap & {
             return *inverseAccess;
         }
 
@@ -433,7 +440,7 @@ namespace bimap {
          * Ordering of forward access may be different from ordering of inverse access
          * @return
          */
-        iterator begin() const {
+        iterator begin() const noexcept(noexcept(std::declval<ForwardMap>().begin()) && iterator_ctor_nothrow) {
             return iterator(map.begin());
         }
 
@@ -442,7 +449,7 @@ namespace bimap {
          * behaviour
          * @return
          */
-        constexpr iterator end() const {
+        iterator end() const noexcept(noexcept(std::declval<ForwardMap>().end()) && iterator_ctor_nothrow) {
             return iterator(map.end());
         }
 
@@ -452,7 +459,8 @@ namespace bimap {
          * @return iterator to an element with forward key equivalent to key. If no such element is found, past-the-end
          * (see end()) iterator is returned.
          */
-        iterator find(const ForwardKey &key) const {
+        iterator find(const ForwardKey &key) const noexcept(noexcept(std::declval<ForwardMap>().find(key)) &&
+                                                            iterator_ctor_nothrow) {
             return iterator(map.find(key));
         }
 
@@ -542,7 +550,9 @@ namespace bimap {
          * @param key
          * @return true if key can be found, false otherwise
          */
-        bool contains(const ForwardKey &key) const {
+        bool contains(const ForwardKey &key) const noexcept(noexcept(std::declval<bidirectional_map>().find(key)) &&
+                                                            noexcept(std::declval<iterator>() !=
+                                                                     std::declval<iterator>())) {
             return find(key) != end();
         }
 
