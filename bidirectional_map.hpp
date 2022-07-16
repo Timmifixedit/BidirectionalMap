@@ -104,16 +104,19 @@ namespace bimap::implementation {
          * @param other
          * @return true if data pointers point to the same object, false otherwise
          */
-        constexpr bool operator==(const AllocOncePointer &other) const {
+        constexpr bool operator==(const AllocOncePointer &other) const noexcept {
             return data == other.data;
         }
 
-        constexpr bool operator==(nullptr_t) const {
+        constexpr bool operator==(nullptr_t) const noexcept {
             return data == nullptr;
         }
 
-        template<typename Ptr>
-        constexpr bool operator!=(const Ptr &other) const {
+        constexpr bool operator!=(nullptr_t) const noexcept {
+            return data != nullptr;
+        }
+
+        constexpr bool operator!=(const T *other) const noexcept {
             return !(*this == other);
         }
 
