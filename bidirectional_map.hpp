@@ -563,15 +563,19 @@ namespace bimap {
             return iterator(map.find(key));
         }
 
-        iterator lower_bound(const ForwardKey &key) const {
+        iterator lower_bound(const ForwardKey &key) const
+        noexcept(noexcept(std::declval<ForwardMap>().lower_bound(key)) && iterator_ctor_nothrow) {
             return iterator(map.lower_bound(key));
         }
 
-        iterator upper_bound(const ForwardKey &key) const {
+        iterator upper_bound(const ForwardKey &key) const
+        noexcept(noexcept(std::declval<ForwardMap>().upper_bound(key)) && iterator_ctor_nothrow) {
             return iterator(map.upper_bound(key));
         }
 
-        auto equal_range(const ForwardKey &key) const -> std::pair<iterator, iterator> {
+        auto equal_range(const ForwardKey &key) const noexcept(
+        noexcept(std::declval<bidirectional_map>().lower_bound(key)) &&
+        noexcept(std::declval<bidirectional_map>().upper_bound(key))) -> std::pair<iterator, iterator> {
             return {lower_bound(key), upper_bound(key)};
         }
 
