@@ -171,6 +171,7 @@ namespace bimap {
         using ForwardMap = ForwardMapType<ForwardKey, const InverseKey *>;
         using InverseBiMap = bidirectional_map<InverseKey, ForwardKey, InverseMapType, ForwardMapType>;
         friend InverseBiMap;
+        using InverseMap = typename InverseBiMap::ForwardMap;
         using InversBiMapPtr = impl::AllocOncePointer<InverseBiMap>;
 
         friend class impl::AllocOncePointer<bidirectional_map>;
@@ -346,7 +347,7 @@ namespace bimap {
          * @param other
          */
         void swap(bidirectional_map &other) noexcept(std::is_nothrow_swappable_v<ForwardMap> &&
-                                                     std::is_nothrow_swappable_v<typename InverseBiMap::ForwardMap>) {
+                                                     std::is_nothrow_swappable_v<InverseMap>) {
             std::swap(this->map, other.map);
             std::swap(this->inverseAccess->map, other.inverseAccess->map);
         }
@@ -415,7 +416,7 @@ namespace bimap {
          * @param n Number of elements to reserve space for
          */
         void reserve(std::size_t n) noexcept(noexcept(std::declval<ForwardMap>().reserve(n)) &&
-                                             noexcept(std::declval<typename InverseBiMap::ForwardMap>().reserve(n))) {
+                                             noexcept(std::declval<InverseMap>().reserve(n))) {
             map.reserve(n);
             inverseAccess->map.reserve(n);
         }
@@ -543,7 +544,7 @@ namespace bimap {
          * Erases all elements from the container
          */
         void clear() noexcept(noexcept(std::declval<ForwardMap>().clear()) &&
-                              noexcept(std::declval<typename InverseBiMap::ForwardMap>().clear())) {
+                              noexcept(std::declval<InverseMap>().clear())) {
             map.clear();
             inverseAccess->map.clear();
         }
