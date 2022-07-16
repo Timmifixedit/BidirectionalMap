@@ -13,7 +13,7 @@
 #include <optional>
 #include <stdexcept>
 
-namespace bimap::implementation {
+namespace bimap::impl {
     /**
      * Very simple pointer class that can be used to allocate storage once but can also be used as a non owning pointer.
      * Unlike shared_ptr, copies of this class are non-owning pointers and unlike weak_ptr, non-owning pointers
@@ -136,19 +136,21 @@ namespace bimap::implementation {
         a.swap(b);
     }
 
-    template<typename T, typename = std::void_t<>>
-    struct is_bidirectional {
-        static constexpr bool value = false;
-    };
+    namespace traits {
+        template<typename T, typename = std::void_t<>>
+        struct is_bidirectional {
+            static constexpr bool value = false;
+        };
 
-    template<typename T>
-    struct is_bidirectional<T, std::void_t<typename std::iterator_traits<T>::iterator_category>> {
-        static constexpr bool value = std::is_base_of_v<std::bidirectional_iterator_tag,
-                typename std::iterator_traits<T>::iterator_category>;
-    };
+        template<typename T>
+        struct is_bidirectional<T, std::void_t<typename std::iterator_traits<T>::iterator_category>> {
+            static constexpr bool value = std::is_base_of_v<std::bidirectional_iterator_tag,
+                    typename std::iterator_traits<T>::iterator_category>;
+        };
 
-    template<typename T>
-    constexpr inline bool is_bidirectional_v = is_bidirectional<T>::value;
+        template<typename T>
+        constexpr inline bool is_bidirectional_v = is_bidirectional<T>::value;
+    }
 }
 
 namespace bimap {
@@ -169,9 +171,9 @@ namespace bimap {
         using ForwardMap = ForwardMapType<ForwardKey, const InverseKey *>;
         using InverseBiMap = bidirectional_map<InverseKey, ForwardKey, InverseMapType, ForwardMapType>;
         friend InverseBiMap;
-        using InversBiMapPtr = implementation::AllocOncePointer<InverseBiMap>;
+        using InversBiMapPtr = impl::AllocOncePointer<InverseBiMap>;
 
-        friend class implementation::AllocOncePointer<bidirectional_map>;
+        friend class impl::AllocOncePointer<bidirectional_map>;
 
         static_assert(std::is_default_constructible<ForwardMap>::value,
                       "ForwardMap base containers must be default constructible.");
@@ -240,7 +242,7 @@ namespace bimap {
              * @tparam IsBidirectional
              * @return
              */
-            template<bool IsBidirectional = implementation::is_bidirectional_v<IteratorType>>
+            template<bool IsBidirectional = impl::traits::is_bidirectional_v<IteratorType>>
             constexpr auto operator--() noexcept(noexcept(--std::declval<IteratorType>()))
                 -> std::enable_if_t<IsBidirectional, iterator&> {
                 --it;
@@ -252,7 +254,7 @@ namespace bimap {
              * @tparam IsBidirectional
              * @return
              */
-            template<bool IsBidirectional = implementation::is_bidirectional_v<IteratorType>>
+            template<bool IsBidirectional = impl::traits::is_bidirectional_v<IteratorType>>
             constexpr auto operator--(int) noexcept(std::is_nothrow_copy_constructible_v<iterator> &&
                                                     noexcept(--std::declval<iterator>()))
                                                     -> std::enable_if_t<IsBidirectional, iterator> {
