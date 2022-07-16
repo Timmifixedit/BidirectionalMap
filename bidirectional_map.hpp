@@ -540,7 +540,8 @@ namespace bimap {
         /**
          * Erases all elements from the container
          */
-        void clear() noexcept(noexcept(map.clear()) && noexcept(inverseAccess->map.clear())) {
+        void clear() noexcept(noexcept(std::declval<ForwardMap>().clear()) &&
+                              noexcept(std::declval<typename InverseBiMap::ForwardMap>().clear())) {
             map.clear();
             inverseAccess->map.clear();
         }
