@@ -8,6 +8,7 @@
 #include <map>
 #include <vector>
 #include <exception>
+#include <unordered_set>
 
 #include "bidirectional_map.hpp"
 #include "TestUtil.hpp"
@@ -550,4 +551,46 @@ TEST(BidirectionalMap, multi_map_equality) {
     test.inverse().erase(17);
     copy.inverse().erase(17);
     EXPECT_EQ(copy, test);
+}
+
+TEST(BidirectionalMap, ranges_ordered) {
+    using namespace bimap;
+    bidirectional_map<std::string, int, std::multimap, std::map> test{{"Test", 123}, {"NewItem", 456}, {"Test", 789}};
+    auto [curr, last] = test.equal_range("Test");
+    EXPECT_EQ(curr, test.lower_bound("Test"));
+    EXPECT_EQ(last, test.upper_bound("Test"));
+    ASSERT_NE(curr, last);
+    checkValues(curr, "Test", 123);
+    ASSERT_NE(++curr, last);
+    checkValues(curr, "Test", 789);
+    EXPECT_EQ(++curr, last);
+    auto [invCurr, invLast] = test.inverse().equal_range(456);
+    EXPECT_EQ(invCurr, test.inverse().lower_bound(456));
+    EXPECT_EQ(invLast, test.inverse().upper_bound(456));
+    ASSERT_NE(invCurr, invLast);
+    checkValues(invCurr, 456, "NewItem");
+    EXPECT_EQ(++invCurr, invLast);
+}
+
+TEST(BidirectionalMap, ranges_unordered) {
+    using namespace bimap;
+    bidirectional_map<std::string, int, std::unordered_multimap, std::unordered_map> test{{"Test",    123},
+                                                                                          {"NewItem", 456},
+                                                                                          {"Test",    789}};
+    std::unordered_set lookup = {123, 789};
+    auto [curr, last] = test.equal_range("Test");
+    ASSERT_NE(curr, last);
+    EXPECT_EQ(curr->first, "Test");
+    EXPECT_NE(lookup.find(curr->second), lookup.end());
+    lookup.erase(curr->second);
+    ASSERT_NE(++curr, last);
+    EXPECT_EQ(curr->first, "Test");
+    EXPECT_NE(lookup.find(curr->second), lookup.end());
+    lookup.erase(curr->second);
+    EXPECT_EQ(++curr, last);
+    EXPECT_TRUE(lookup.empty());
+    auto [invCurr, invLast] = test.inverse().equal_range(456);
+    ASSERT_NE(invCurr, invLast);
+    checkValues(invCurr, 456, "NewItem");
+    EXPECT_EQ(++invCurr, invLast);
 }
