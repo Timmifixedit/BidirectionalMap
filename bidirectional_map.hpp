@@ -530,16 +530,6 @@ namespace bimap {
         }
 
         /**
-         * Calls reserve on underlying container
-         * @param n Number of elements to reserve space for
-         */
-        void reserve(std::size_t n) noexcept(noexcept(std::declval<ForwardMap>().reserve(n)) &&
-                                             noexcept(std::declval<InverseMap>().reserve(n))) {
-            map.reserve(n);
-            inverseAccess->map.reserve(n);
-        }
-
-        /**
          * Access to the inverted map for reverse lookup or insertion
          * @return Reference to inverted map
          */

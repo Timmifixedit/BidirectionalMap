@@ -495,7 +495,6 @@ TEST(BidirectionalMap, throwing_base_container) {
     bidirectional_map<std::string, int, BadMap> test;
     EXPECT_THROW(UNUSED(test.size()), std::runtime_error);
     EXPECT_THROW(UNUSED(test.empty()), std::runtime_error);
-    EXPECT_THROW(test.reserve(1), std::runtime_error);
     EXPECT_THROW(test.begin(), std::runtime_error);
     EXPECT_THROW(test.end(), std::runtime_error);
     EXPECT_THROW(test.find(""), std::runtime_error);
