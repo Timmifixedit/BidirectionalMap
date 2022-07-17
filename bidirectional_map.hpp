@@ -274,8 +274,8 @@ namespace bimap {
      * @tparam InverseMapType base map container used for inverse lookup. Default is std::unordered_map
      */
     template<typename ForwardKey, typename InverseKey,
-            template<typename T, typename U> typename ForwardMapType = std::unordered_map,
-            template<typename T, typename U> typename InverseMapType = std::unordered_map>
+             template<typename ...> typename ForwardMapType = std::unordered_map,
+             template<typename ...> typename InverseMapType = std::unordered_map>
     class bidirectional_map {
     private:
         using ForwardMap = ForwardMapType<ForwardKey, impl::Surrogate<const InverseKey>>;
