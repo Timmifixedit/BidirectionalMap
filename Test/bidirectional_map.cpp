@@ -483,11 +483,11 @@ TEST(BidirectionalMap, throwing_iterator) {
     EXPECT_THROW(badIt++, std::runtime_error);
     EXPECT_THROW(--badIt, std::runtime_error);
     EXPECT_THROW(badIt--, std::runtime_error);
-    EXPECT_THROW(badIt == badIt, std::runtime_error);
-    EXPECT_THROW(badIt != badIt, std::runtime_error);
+    EXPECT_THROW(UNUSED(badIt == badIt), std::runtime_error);
+    EXPECT_THROW(UNUSED(badIt != badIt), std::runtime_error);
     EXPECT_THROW(*badIt, std::runtime_error);
-    EXPECT_THROW(badIt->first, std::runtime_error);
-    EXPECT_THROW(badIt->second, std::runtime_error);
+    EXPECT_THROW(UNUSED(badIt->first), std::runtime_error);
+    EXPECT_THROW(UNUSED(badIt->second), std::runtime_error);
 }
 
 TEST(BidirectionalMap, throwing_base_container) {
