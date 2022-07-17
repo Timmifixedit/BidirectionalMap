@@ -53,11 +53,34 @@ namespace bimap::impl {
             static constexpr bool value = true;
         };
 
+        template<typename Key, typename Val, typename Hash, typename Comp, typename Alloc>
+        struct is_multimap<std::unordered_multimap<Key, Val, Hash, Comp, Alloc>> {
+            static constexpr bool value = true;
+        };
+
+        template<typename T>
+        struct is_ordered {
+            static constexpr bool value = false;
+        };
+
+        template<typename Key, typename Val, typename Comp, typename Alloc>
+        struct is_ordered<std::multimap<Key, Val, Comp, Alloc>> {
+            static constexpr bool value = true;
+        };
+
+        template<typename Key, typename Val, typename Comp, typename Alloc>
+        struct is_ordered<std::map<Key, Val, Comp, Alloc>> {
+            static constexpr bool value = true;
+        };
+
         template<typename T>
         constexpr inline bool is_multimap_v = is_multimap<T>::value;
 
         template<typename T>
         constexpr inline bool nothrow_comparable = noexcept(std::declval<T>() == std::declval<T>());
+
+        template<typename T>
+        constexpr inline bool is_ordered_v = is_ordered<T>::value;
     }
 
     /**
@@ -563,20 +586,45 @@ namespace bimap {
             return iterator(map.find(key));
         }
 
-        iterator lower_bound(const ForwardKey &key) const
-        noexcept(noexcept(std::declval<ForwardMap>().lower_bound(key)) && iterator_ctor_nothrow) {
+
+        /**
+         * Calls lower_bound on the underlying container. For more information see documentation of the respective
+         * container type. Only available when using sorted containers like std::map
+         * @tparam IsOrdered
+         * @param key Key used for lookup
+         * @return lower bound iterator
+         */
+        template<bool IsOrdered = impl::traits::is_ordered_v<ForwardMap>>
+        auto lower_bound(const ForwardKey &key) const noexcept(noexcept(std::declval<ForwardMap>().lower_bound(key)) &&
+                                                               iterator_ctor_nothrow)
+                                                               -> std::enable_if_t<IsOrdered, iterator> {
             return iterator(map.lower_bound(key));
         }
 
-        iterator upper_bound(const ForwardKey &key) const
-        noexcept(noexcept(std::declval<ForwardMap>().upper_bound(key)) && iterator_ctor_nothrow) {
+        /**
+         * Calls upper_bound on the underlying container. For more information see documentation of the respective
+         * container type. Only available when using sorted containers like std::map
+         * @tparam IsOrdered
+         * @param key Key used for lookup
+         * @return upper bound iterator
+         */
+        template<bool IsOrdered = impl::traits::is_ordered_v<ForwardMap>>
+        auto upper_bound(const ForwardKey &key) const noexcept(noexcept(std::declval<ForwardMap>().upper_bound(key)) &&
+                                                               iterator_ctor_nothrow)
+                                                               -> std::enable_if_t<IsOrdered, iterator> {
             return iterator(map.upper_bound(key));
         }
 
-        auto equal_range(const ForwardKey &key) const noexcept(
-        noexcept(std::declval<bidirectional_map>().lower_bound(key)) &&
-        noexcept(std::declval<bidirectional_map>().upper_bound(key))) -> std::pair<iterator, iterator> {
-            return {lower_bound(key), upper_bound(key)};
+        /**
+         * Calls equal_range on the underlying container. For more information see documentation of the respective
+         * container type.
+         * @param key Key used for lookup
+         * @return iterator range containing equal elements
+         */
+        auto equal_range(const ForwardKey &key) const noexcept(noexcept(std::declval<ForwardMap>().equal_range(key)) &&
+                                                               iterator_ctor_nothrow) -> std::pair<iterator, iterator> {
+            auto [first, last] = map.equal_range(key);
+            return {iterator(first), iterator(last)};
         }
 
         /**
