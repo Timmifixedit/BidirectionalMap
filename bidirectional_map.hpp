@@ -659,12 +659,11 @@ namespace bimap {
          * @return number of erased elements
          */
         std::size_t erase(const ForwardKey &key) {
-            iterator it = find(key);
+            auto [curr, last] = equal_range(key);
             std::size_t numErased = 0;
-            while (it != end()) {
-                erase(it);
+            while (curr != last) {
+                curr = erase(curr);
                 ++numErased;
-                it = find(key);
             }
 
             return numErased;
