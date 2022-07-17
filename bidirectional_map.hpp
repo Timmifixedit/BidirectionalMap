@@ -177,11 +177,11 @@ namespace bimap::impl {
             return data == other.data;
         }
 
-        constexpr bool operator==(nullptr_t) const noexcept {
+        constexpr bool operator==(std::nullptr_t) const noexcept {
             return data == nullptr;
         }
 
-        constexpr bool operator!=(nullptr_t) const noexcept {
+        constexpr bool operator!=(std::nullptr_t) const noexcept {
             return data != nullptr;
         }
 
