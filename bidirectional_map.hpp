@@ -265,9 +265,8 @@ namespace bimap::impl {
 
 namespace bimap {
     /**
-     * Bidirectional associative container that supports efficient lookup in both directions. To ensure that lookup in
-     * both directions is possible, only unique items of type ForwardKey and InverseKey can be inserted. Neither items
-     * of type ForwardKey nor InverseKey can be modified.
+     * Bidirectional associative container that supports efficient lookup in both directions. Neither items of type
+     * ForwardKey nor InverseKey can be modified.
      * @tparam ForwardKey Type of key used for forward lookup
      * @tparam InverseKey Type of key used for inverse lookup
      * @tparam ForwardMapType base map container used for forward lookup. Default is std::unordered_map
