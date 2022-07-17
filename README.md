@@ -6,11 +6,15 @@ lookup from key to value as well as from value to key.
 The `bidirectional_map` container contains pairs of values of type K1 and K2.
 * Objects in the container are immutable, neither values of type K1 nor values of type
   K2 can be modified to ensure the integrity of the underlying associative containers
-* The mapping from values of K1 to values of K2 is enforced to be injective to allow lookup
-  in both directions. This means that for example two pairs (k1, k2) and (k1', k2') can
-  only be inserted at the same time if k1 != k1' **and** k2 != k2'.
-* The container supports the use of a custom base associative container. The default base
-  container is `std::unordered_map`
+* The container supports the use of different associative containers as base. The
+  default base container is `std::unordered_map` for both forward and inverse lookup.
+  Other tested containers are `std::map` as well as `std::multimap` and
+  `std::unordered_multimap`.
+* The mapping from values of K1 to values of K2 is enforced to be injective if the
+  underlying containers for both forward and inverse lookup contain unique keys (like
+  in the default case). This means that for example two pairs (k1, k2) and (k1', k2')
+  can only be inserted at the same time if k1 != k1' **and** k2 != k2'. The use of
+  multimaps as base containers relaxes this constraint.
   
 ## Code Example
 An instance of `bidirectional_map` can be created similarly to `std::unordered_map`:
@@ -43,15 +47,22 @@ auto [iterator, inserted] = map.emplace("AnotherItem", 17);
 ```
 Item lookup:
 ```c++
+bimap::bidirectional_map<std::string, int> map{{"NewItem", 12}, {"Stuff", 17}};
 auto location = map.find("NewItem");
 if (location != map.end()) {
     std::cout << location->first << std::endl;
+}
+
+if (map.contains("Stuff")) {
+    std::cout << map.at("Stuff") << std::endl; // at is only available when using underlying container that enforces
+                                               // unique keys
 }
 ```
 
 ### Inverse Access
 Using the `inverse()` member, inverse lookup and insertion is possible:
 ```c++
+bimap::bidirectional_map<std::string, int> map;
 map.inverse().emplace(123, "one two three"); // inverse insertion
 auto invLocation = map.inverse().find(123); // inverse lookup
 std::cout << invLocation->first << std::endl; // prints '123'
@@ -62,7 +73,7 @@ auto location = map.inverse().inverse().find("one two three");
 `inverse()` returns a reference to `bidirectional_map` where the template types K1 and K2
 are reversed. It behaves exactly like the original map except... well the other way around.
 Even the iterator members are reversed. Copying the `inverse()` container is allowed and
-will copy the container contents.
+will copy the container contents. Same goes for moving from `inverse()`.
 ```c++
 bimap::bidirectional_map<std::string, int> map; // map from std::string -> int
 auto inverse = map.inverse(); // independent (copied) container of reversed type (int -> string)
