@@ -73,7 +73,8 @@ auto location = map.inverse().inverse().find("one two three");
 `inverse()` returns a reference to `bidirectional_map` where the template types K1 and K2
 are reversed. It behaves exactly like the original map except... well the other way around.
 Even the iterator members are reversed. Copying the `inverse()` container is allowed and
-will copy the container contents. Same goes for moving from `inverse()`.
+will copy the container contents. Moving from `inverse()` is also allowed and behaves as
+expected.
 ```c++
 bimap::bidirectional_map<std::string, int> map; // map from std::string -> int
 auto inverse = map.inverse(); // independent (copied) container of reversed type (int -> string)
