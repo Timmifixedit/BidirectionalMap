@@ -1,0 +1,53 @@
+name: unit tests
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  unit_tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        cxx: [g++-9, g++-10, g++-11, clang++-9, clang++-10, clang++11, clang++12, clang++-13, clang++-14]
+        build: [Release, Debug]
+    env:
+      CXX: ${{ matrix.cxx }}
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget g++-9 g++-10 g++-11 libgtest-dev google-mock
+        # Taken from https://apt.llvm.org/
+        wget https://apt.llvm.org/llvm.sh
+        chmod +x llvm.sh
+        sudo ./llvm.sh 9
+        sudo ./llvm.sh 10
+        sudo ./llvm.sh 11
+        sudo ./llvm.sh 12
+        sudo ./llvm.sh 13
+        sudo ./llvm.sh 14
+    
+    - name: Install Gtest
+      run: |
+        cd /usr/src/gtest
+        sudo cmake CmakeLists.txt && sudo make -j$(nproc)
+        sudo cp *.a /usr/lib
+        cd /usr/src/gmock
+        sudo cmake CmakeLists.txt && sudo make -j$(nproc)
+        sudo cp *.a /usr/lib
+    - name: run cmake
+      run: |
+        mkdir build && cd build
+        cmake -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=${{ matrix.build }} ..
+    - name: build
+      run: |
+        cd build
+        make -j$(nproc)
+    - name: run tests
+      run: ./build/Test/Tests --gtest_color=yes
