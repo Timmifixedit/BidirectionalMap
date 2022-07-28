@@ -389,6 +389,9 @@ namespace bimap {
                 : map(), inverseAccess(&inverseMap) {}
 
     public:
+        /**
+         * @brief bidirectional_map iterator
+         */
         class iterator {
             using IteratorType = decltype(std::declval<std::add_const_t<ForwardMap>>().begin());
             static constexpr bool copy_constructable = std::is_nothrow_copy_constructible_v<IteratorType>;
@@ -410,12 +413,25 @@ namespace bimap {
              */
             constexpr explicit iterator(const IteratorType &it) noexcept(copy_constructable): it(it) {}
 
+            /**
+             * Copy ctor
+             * @param other source
+             */
             constexpr iterator(const iterator &other) noexcept(std::is_constructible_v<iterator, IteratorType>)
                     : iterator(other.it) {}
 
+            /**
+             * Move CTor
+             * @param other source
+             */
             constexpr iterator(iterator &&other) noexcept(std::is_constructible_v<iterator, IteratorType>): iterator(
                     other) {}
 
+            /**
+             * Assignment operator
+             * @param other source
+             * @return reference to this
+             */
             constexpr iterator &operator=(iterator other) noexcept(copy_assignable) {
                 it = other.it;
                 return *this;
@@ -425,7 +441,7 @@ namespace bimap {
 
             /**
              * Increments underlying iterator by one
-             * @return
+             * @return reference to this
              */
             constexpr iterator &operator++() noexcept(noexcept(++std::declval<IteratorType>())) {
                 ++it;
@@ -434,7 +450,7 @@ namespace bimap {
 
             /**
              * Post increment. Increments underlying iterator by one
-             * @return
+             * @return instance of iterator
              */
             constexpr iterator operator++(int) noexcept(std::is_nothrow_copy_constructible_v<iterator> &&
                                                         noexcept(++std::declval<iterator>())) {
@@ -444,9 +460,16 @@ namespace bimap {
             }
 
             /**
+             * @name bidirectional iterators
+             * @brief the following operators are only available if all underlying iterators support bidirectional
+             * access
+             */
+            ///@{
+
+            /**
              * Decrements underlying iterator by one. Only available if base iterator supports bidirectional iteration
-             * @tparam IsBidirectional
-             * @return
+             * @tparam IsBidirectional SFINAE guard. Do not specify
+             * @return reference to this
              */
             template<bool IsBidirectional = impl::traits::is_bidirectional_v<IteratorType>>
             constexpr auto operator--() noexcept(noexcept(--std::declval<IteratorType>()))
@@ -457,8 +480,8 @@ namespace bimap {
 
             /**
              * Post decrement. Only available if base iterator supports bidirectional iteration
-             * @tparam IsBidirectional
-             * @return
+             * @tparam IsBidirectional SFINAE guard. Do not specify
+             * @return instance of iterator
              */
             template<bool IsBidirectional = impl::traits::is_bidirectional_v<IteratorType>>
             constexpr auto operator--(int) noexcept(std::is_nothrow_copy_constructible_v<iterator> &&
@@ -469,10 +492,12 @@ namespace bimap {
                 return tmp;
             }
 
+            ///@}
+
             /**
              * Equality operator. Compares underlying map iterators
-             * @param other
-             * @return
+             * @param other right hand side
+             * @return true if underlying iterators are equal
              */
             constexpr bool operator==(const iterator &other) const
                 noexcept(impl::traits::nothrow_comparable<IteratorType>) {
@@ -481,8 +506,8 @@ namespace bimap {
 
             /**
              * Inequality operator. Compares underlying map iterators
-             * @param other
-             * @return
+             * @param other right hand side
+             * @return true if *this != other
              */
             constexpr bool operator!=(const iterator &other) const noexcept(noexcept(other == other)) {
                 return !(*this == other);
@@ -490,12 +515,23 @@ namespace bimap {
 
             /**
              * Returns a pair of reference to container elements
-             * @return
+             * @return std::pair of references to map elements
+             * @note when using structured bindings, map elements are captured by const reference
+             * ```
+             * bidirectional_map<int, char> map{{1, 'a'}};
+             * auto begin = map.begin();
+             * auto [num, c] = *begin; // num and c are const references, no additional reference binding is necessary
+             * num = 3; // error
+             * ```
              */
             constexpr reference operator*() const {
                 return reference(it->first, *it->second);
             }
 
+            /**
+             * Member access operator
+             * @return pointer to reference pair
+             */
             constexpr pointer operator->() const {
                 val.emplace(it->first, *it->second);
                 return &*val;
