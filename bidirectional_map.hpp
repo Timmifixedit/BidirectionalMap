@@ -1,4 +1,5 @@
 /**
+ * @file bidirectional_map.hpp
  * @author Tim Luchterhand
  * @date 2021-06-16
  * @brief This file contains the class definition of a bidirectional associative container that can be used for
