@@ -15,6 +15,8 @@
 #include <stdexcept>
 #include <cassert>
 
+#define REQUIRES_THAT(TYPENAME, EXPRESSION) typename _T_ = TYPENAME, typename = std::void_t<decltype(EXPRESSION)>
+
 namespace bimap::impl {
     namespace traits {
         template<typename T, typename = std::void_t<>>
@@ -47,28 +49,10 @@ namespace bimap::impl {
         };
 
         template<typename T>
-        struct is_ordered {
-            static constexpr bool value = false;
-        };
-
-        template<typename Key, typename Val, typename Comp, typename Alloc>
-        struct is_ordered<std::multimap<Key, Val, Comp, Alloc>> {
-            static constexpr bool value = true;
-        };
-
-        template<typename Key, typename Val, typename Comp, typename Alloc>
-        struct is_ordered<std::map<Key, Val, Comp, Alloc>> {
-            static constexpr bool value = true;
-        };
-
-        template<typename T>
         constexpr inline bool is_multimap_v = is_multimap<T>::value;
 
         template<typename T>
         constexpr inline bool nothrow_comparable = noexcept(std::declval<T>() == std::declval<T>());
-
-        template<typename T>
-        constexpr inline bool is_ordered_v = is_ordered<T>::value;
     }
 
     template<typename T>
@@ -589,28 +573,24 @@ namespace bimap {
         /**
          * Calls lower_bound on the underlying container. For more information see documentation of the respective
          * container type. Only available when using sorted containers like std::map
-         * @tparam IsOrdered
          * @param key Key used for lookup
          * @return lower bound iterator
          */
-        template<bool IsOrdered = impl::traits::is_ordered_v<ForwardMap>>
+        template<REQUIRES_THAT(ForwardMap, std::declval<_T_>().lower_bound(std::declval<ForwardKey>()))>
         auto lower_bound(const ForwardKey &key) const noexcept(noexcept(std::declval<ForwardMap>().lower_bound(key)) &&
-                                                               iterator_ctor_nothrow)
-                                                               -> std::enable_if_t<IsOrdered, iterator> {
+                                                               iterator_ctor_nothrow) -> iterator {
             return iterator(map.lower_bound(key));
         }
 
         /**
          * Calls upper_bound on the underlying container. For more information see documentation of the respective
          * container type. Only available when using sorted containers like std::map
-         * @tparam IsOrdered
          * @param key Key used for lookup
          * @return upper bound iterator
          */
-        template<bool IsOrdered = impl::traits::is_ordered_v<ForwardMap>>
+        template<REQUIRES_THAT(ForwardMap, std::declval<_T_>().upper_bound(std::declval<ForwardKey>()))>
         auto upper_bound(const ForwardKey &key) const noexcept(noexcept(std::declval<ForwardMap>().upper_bound(key)) &&
-                                                               iterator_ctor_nothrow)
-                                                               -> std::enable_if_t<IsOrdered, iterator> {
+                                                               iterator_ctor_nothrow) -> iterator {
             return iterator(map.upper_bound(key));
         }
 
