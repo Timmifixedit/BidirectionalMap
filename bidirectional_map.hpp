@@ -260,9 +260,9 @@ namespace bimap::impl {
 
     /**
      * See member function swap
-     * @tparam T
-     * @param a
-     * @param b
+     * @tparam T type of pointer
+     * @param a left hand side
+     * @param b right hand side
      */
     template<typename T>
     constexpr void swap(AllocOncePointer<T> &a, AllocOncePointer<T> &b) noexcept {
@@ -270,19 +270,26 @@ namespace bimap::impl {
     }
 
     /**
-     * Non owning pointer to an object. It overloads the equality operators in order to compare the underlying objects
-     * instead of the pointer values
-     * @tparam T
+     * @brief Non owning pointer to an object. It overloads the equality operators in order to compare the underlying
+     * objects instead of the pointer values
+     * @tparam T type of object behind the pointer
      */
     template<typename T>
     class Surrogate {
     public:
+        /**
+         * CTor. Stores pointer to data.
+         * @param data memory location of data
+         * @note Instances of this type are always non-owning
+         */
         constexpr Surrogate(T *data) noexcept: data(data) {}
 
         /**
          * Compares objects behind the pointer
-         * @param other
-         * @return
+         * @param other right hand side
+         * @return true if underlying objects compare equal
+         * @note unlike for example std::shared_ptr, the actual objects behind the pointers are compared, not the
+         * pointer values themselves. This requires that both left and right hand side point to valid memory locations
          */
         constexpr bool operator==(Surrogate other) const noexcept(traits::nothrow_comparable<T>) {
             return *data == *other.data;
@@ -290,33 +297,54 @@ namespace bimap::impl {
 
         /**
          * Compares objects behind the pointer
-         * @param other
-         * @return
+         * @param other right hand side
+         * @return true if *this is not equal to other
          */
         constexpr bool operator!=(Surrogate other) const noexcept(noexcept(other == other)) {
             return !(*this == other);
         }
 
+        /**
+         * Dereference operator
+         * @return reference to stored data
+         */
         constexpr T& operator*() noexcept {
             return *data;
         }
 
+        /**
+         * @copydoc operator*
+         */
         constexpr const T& operator*() const noexcept {
             return *data;
         }
 
+        /**
+         * Member access operator
+         * @return stored pointer
+         */
         constexpr T* operator->() noexcept {
             return data;
         }
 
+        /**
+         * @copydoc operator->
+         */
         constexpr const T* operator->() const noexcept {
             return data;
         }
 
+        /**
+         * Getter for stored pointer
+         * @return raw pointer to data
+         */
         constexpr T* get() noexcept {
             return data;
         }
 
+        /**
+         * @copydoc get
+         */
         constexpr const T* get() const noexcept {
             return data;
         }
@@ -324,7 +352,6 @@ namespace bimap::impl {
     private:
         T * data;
     };
-
 }
 
 /**
