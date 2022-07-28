@@ -41,6 +41,15 @@ namespace bimap::impl {
         template<typename T>
         constexpr inline bool is_bidirectional_v = is_bidirectional<T>::value;
 
+        /**
+         * @brief type trait that indicates that a given typ is a multimap
+         * @details If you want to use a custom multimap type, specialize this trait for said type.
+         * Example for a type called `MyMultiMap`
+         * ```
+         * template<typename Key, typename Val, typename Stuff>
+         * struct bimap::impl::traits::is_multimap<MyMultiMap<Key, Val, Stuff>> : std::true_type {};
+         * ```
+         */
         template<typename T>
         struct is_multimap {
             static constexpr bool value = false;
@@ -359,12 +368,23 @@ namespace bimap::impl {
  */
 namespace bimap {
     /**
-     * Bidirectional associative container that supports efficient lookup in both directions. Neither items of type
-     * ForwardKey nor InverseKey can be modified.
+     * @brief Bidirectional associative container that supports efficient lookup in both directions.
+     * @details This class manages two unidirectional maps in order to enable bidirectional lookup. Neither items of
+     * type ForwardKey nor InverseKey can be modified. The map types for forward and for inverse lookup can be changed.
+     * The following map types are supported and have been tested:
+     * - std::unordered_map (default for both lookup directions)
+     * - std::map
+     * - std::unordered_multimap
+     * - std::multimap
      * @tparam ForwardKey Type of key used for forward lookup
      * @tparam InverseKey Type of key used for inverse lookup
      * @tparam ForwardMapType base map container used for forward lookup. Default is std::unordered_map
      * @tparam InverseMapType base map container used for inverse lookup. Default is std::unordered_map
+     * @note when specifying the underlying map types, make sure that the respective types expect two template type
+     * arguments. Further arguments have to be deducible or have defaults. Using a custom map type not included in the
+     * list should be possible. Make sure that the typical map member functions (like find, emplace, etc) are supported
+     * and behave similar to the stl containers. If your map type is a multimap, you have to specialise the type trait
+     * impl::traits::is_multimap
      */
     template<typename ForwardKey, typename InverseKey,
              template<typename ...> typename ForwardMapType = std::unordered_map,
@@ -554,8 +574,8 @@ namespace bimap {
         /**
          * Creates the container from the iterator range [start, end)
          * @tparam InputIt Type of iterator
-         * @param start
-         * @param end
+         * @param start bein of range (inclusive)
+         * @param end end of range (exclusive)
          */
         template<typename InputIt>
         bidirectional_map(InputIt start, InputIt end) : bidirectional_map() {
@@ -567,14 +587,14 @@ namespace bimap {
 
         /**
          * Creates the container from the given initializer list
-         * @param init
+         * @param init list of value pairs
          */
         bidirectional_map(std::initializer_list<std::pair<ForwardKey, InverseKey>> init) :
                 bidirectional_map(init.begin(), init.end()) {}
 
         /**
          * Copy constructor
-         * @param other
+         * @param other source
          */
         bidirectional_map(const bidirectional_map &other) : bidirectional_map() {
             for (const auto &valuePair: other) {
@@ -585,7 +605,7 @@ namespace bimap {
         /**
          * Swaps the content of the containers. If ForwardMapType and InverseMapType support moving, no objects are
          * copied
-         * @param other
+         * @param other swap target
          */
         void swap(bidirectional_map &other) noexcept(std::is_nothrow_swappable_v<ForwardMap> &&
                                                      std::is_nothrow_swappable_v<InverseMap>) {
@@ -596,12 +616,18 @@ namespace bimap {
         /**
          * Move constructor. Moves objects from other. If ForwardMapType and InverseMapType support moving, no objects
          * are copied
-         * @param other
+         * @param other source
+         * @note this move CTor may throw exceptions if memory allocation fails
          */
         bidirectional_map(bidirectional_map &&other) : bidirectional_map() {
             swap(other);
         }
 
+        /**
+         * Assignment operator
+         * @param other source
+         * @return reference to *this
+         */
         bidirectional_map &operator=(bidirectional_map other)
                 noexcept(noexcept(std::declval<bidirectional_map>().swap(other))) {
             swap(other);
@@ -613,12 +639,12 @@ namespace bimap {
         /**
          * Constructs elements in place. If a pair of values with same ForwardKey or same InverseKey already exists
          * and the corresponding container requires unique keys, then no insertion happens.
-         * @tparam ARGS
-         * @param args arguments used to construct elements
-         * @return std::pair(iterator to inserted element or already existing element, bool whether insertion happened)
-         * @example if std::multiset is used for forward lookup and the map contains the following pair :(a, b)
+         * For example, if std::multiset is used for forward lookup and the map contains the following pair :(a, b)
          * then inserting (a, b') is possible whereas (a', b) will not be inserted since the inverse lookup is carried
          * out by std::unordered_map
+         * @tparam ARGS argument types
+         * @param args arguments used to construct elements
+         * @return std::pair(iterator to inserted element or already existing element, bool whether insertion happened)
          */
         template<typename ...ARGS>
         auto emplace(ARGS &&...args) -> std::pair<iterator, bool> {
@@ -645,7 +671,7 @@ namespace bimap {
 
         /**
          * Number of contained elements
-         * @return
+         * @return Number of contained elements
          */
         [[nodiscard]] auto size() const noexcept(noexcept(std::declval<ForwardMap>().size())) {
             return map.size();
@@ -653,7 +679,7 @@ namespace bimap {
 
         /**
          * Whether container is empty
-         * @return
+         * @return true if container is empty
          */
         [[nodiscard]] bool empty() const noexcept(noexcept(std::declval<ForwardMap>().empty())) {
             return map.empty();
@@ -679,7 +705,7 @@ namespace bimap {
          * iterator to first element
          * @note Ordering of objects depends on the underlying container specified by ForwardMpaType and InverseMapType.
          * Ordering of forward access may be different from ordering of inverse access
-         * @return
+         * @return iterator to first element of forward lookup map
          */
         iterator begin() const noexcept(noexcept(std::declval<ForwardMap>().begin()) && iterator_ctor_nothrow) {
             return iterator(map.begin());
@@ -688,7 +714,7 @@ namespace bimap {
         /**
          * iterator to the past the end element. This iterator does not point to anything. Access results in undefined
          * behaviour
-         * @return
+         * @return iterator to past the end element of forward lookup map
          */
         iterator end() const noexcept(noexcept(std::declval<ForwardMap>().end()) && iterator_ctor_nothrow) {
             return iterator(map.end());
@@ -696,7 +722,7 @@ namespace bimap {
 
         /**
          * Finds an element with forward key equivalent to key
-         * @param key
+         * @param key key used for lookup
          * @return iterator to an element with forward key equivalent to key. If no such element is found, past-the-end
          * (see end()) iterator is returned.
          */
@@ -770,7 +796,7 @@ namespace bimap {
 
         /**
          * Erases all elements with forward key equivalent to key.
-         * @param key
+         * @param key key used for lookup
          * @return number of erased elements
          */
         std::size_t erase(const ForwardKey &key) {
@@ -786,8 +812,8 @@ namespace bimap {
 
         /**
          * Erases all elements in the range [first, last) which must be a valid range in *this
-         * @param first
-         * @param last
+         * @param first start of the range (inclusive)
+         * @param last end of the range (exclusive)
          * @return iterator following the last removed element
          */
         iterator erase(iterator first, iterator last) {
@@ -800,7 +826,7 @@ namespace bimap {
 
         /**
          * Compares underlying containers
-         * @param other
+         * @param other right hand side
          * @return true if both forward mapping and inverse mapping are equivalent
          * @note for more details see documentation of the used underlying containers. If the default containers are
          * used, the underlying std::unordered_maps are compared
@@ -812,8 +838,8 @@ namespace bimap {
 
         /**
          * Compares container by elements, see operator==
-         * @param other
-         * @return
+         * @param other right hand side
+         * @return true if *this != other
          */
         bool operator!=(const bidirectional_map &other) const noexcept(noexcept(other == other)) {
             return !(*this == other);
@@ -830,7 +856,7 @@ namespace bimap {
 
         /**
          * Check if a certain key can be found
-         * @param key
+         * @param key key used for lookup
          * @return true if key can be found, false otherwise
          */
         bool contains(const ForwardKey &key) const noexcept(noexcept(std::declval<bidirectional_map>().find(key)) &&
@@ -841,9 +867,10 @@ namespace bimap {
 
         /**
          * Returns the value found by the given key
-         * @param key
+         * @param key key used for lookup
          * @return reference to found value
          * @throws out_of_range if ey does not exist
+         * @note not available when using multimap as base container
          */
         template<bool UniqueKeys = !impl::traits::is_multimap_v<ForwardMap>>
         auto at(const ForwardKey &key) const -> std::enable_if_t<UniqueKeys, const InverseKey &> {
