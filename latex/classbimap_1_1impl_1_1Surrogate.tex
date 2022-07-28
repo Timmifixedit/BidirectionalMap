@@ -1,0 +1,83 @@
+\hypertarget{classbimap_1_1impl_1_1Surrogate}{}\doxysection{bimap\+::impl\+::Surrogate$<$ T $>$ Class Template Reference}
+\label{classbimap_1_1impl_1_1Surrogate}\index{bimap::impl::Surrogate$<$ T $>$@{bimap::impl::Surrogate$<$ T $>$}}
+
+
+{\ttfamily \#include $<$bidirectional\+\_\+map.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classbimap_1_1impl_1_1Surrogate_a6056c197e7d4575d9f8d35155e47a957}\label{classbimap_1_1impl_1_1Surrogate_a6056c197e7d4575d9f8d35155e47a957}} 
+constexpr {\bfseries Surrogate} (T $\ast$data) noexcept
+\item 
+constexpr bool \mbox{\hyperlink{classbimap_1_1impl_1_1Surrogate_af6c586c881517102c05ce51306933f79}{operator==}} (\mbox{\hyperlink{classbimap_1_1impl_1_1Surrogate}{Surrogate}} other) const noexcept(traits\+::nothrow\+\_\+comparable$<$ T $>$)
+\item 
+constexpr bool \mbox{\hyperlink{classbimap_1_1impl_1_1Surrogate_ae7ceac7bb878b9f4a64aa8010cd31921}{operator!=}} (\mbox{\hyperlink{classbimap_1_1impl_1_1Surrogate}{Surrogate}} other) const noexcept(noexcept(other==other))
+\item 
+\mbox{\Hypertarget{classbimap_1_1impl_1_1Surrogate_aefdcdb003bd7fbee021c979ac6806530}\label{classbimap_1_1impl_1_1Surrogate_aefdcdb003bd7fbee021c979ac6806530}} 
+constexpr T \& {\bfseries operator$\ast$} () noexcept
+\item 
+\mbox{\Hypertarget{classbimap_1_1impl_1_1Surrogate_aca57bec1ddc42f03babde886047974a1}\label{classbimap_1_1impl_1_1Surrogate_aca57bec1ddc42f03babde886047974a1}} 
+constexpr const T \& {\bfseries operator$\ast$} () const noexcept
+\item 
+\mbox{\Hypertarget{classbimap_1_1impl_1_1Surrogate_a88058d8191777b12f64d083d85cc5f26}\label{classbimap_1_1impl_1_1Surrogate_a88058d8191777b12f64d083d85cc5f26}} 
+constexpr T $\ast$ {\bfseries operator-\/$>$} () noexcept
+\item 
+\mbox{\Hypertarget{classbimap_1_1impl_1_1Surrogate_a8dd4154fff535f5bfed3c8e6c145a422}\label{classbimap_1_1impl_1_1Surrogate_a8dd4154fff535f5bfed3c8e6c145a422}} 
+constexpr const T $\ast$ {\bfseries operator-\/$>$} () const noexcept
+\item 
+\mbox{\Hypertarget{classbimap_1_1impl_1_1Surrogate_a13318faf670fce73efd11af6d4fbf023}\label{classbimap_1_1impl_1_1Surrogate_a13318faf670fce73efd11af6d4fbf023}} 
+constexpr T $\ast$ {\bfseries get} () noexcept
+\item 
+\mbox{\Hypertarget{classbimap_1_1impl_1_1Surrogate_a02b7629aa46f04b79446a3622201909c}\label{classbimap_1_1impl_1_1Surrogate_a02b7629aa46f04b79446a3622201909c}} 
+constexpr const T $\ast$ {\bfseries get} () const noexcept
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class bimap\+::impl\+::\+Surrogate$<$ T $>$}
+
+Non owning pointer to an object. It overloads the equality operators in order to compare the underlying objects instead of the pointer values 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classbimap_1_1impl_1_1Surrogate_ae7ceac7bb878b9f4a64aa8010cd31921}\label{classbimap_1_1impl_1_1Surrogate_ae7ceac7bb878b9f4a64aa8010cd31921}} 
+\index{bimap::impl::Surrogate$<$ T $>$@{bimap::impl::Surrogate$<$ T $>$}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!bimap::impl::Surrogate$<$ T $>$@{bimap::impl::Surrogate$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr bool \mbox{\hyperlink{classbimap_1_1impl_1_1Surrogate}{bimap\+::impl\+::\+Surrogate}}$<$ T $>$\+::operator!= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classbimap_1_1impl_1_1Surrogate}{Surrogate}}$<$ T $>$}]{other }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+Compares objects behind the pointer 
+\begin{DoxyParams}{Parameters}
+{\em other} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classbimap_1_1impl_1_1Surrogate_af6c586c881517102c05ce51306933f79}\label{classbimap_1_1impl_1_1Surrogate_af6c586c881517102c05ce51306933f79}} 
+\index{bimap::impl::Surrogate$<$ T $>$@{bimap::impl::Surrogate$<$ T $>$}!operator==@{operator==}}
+\index{operator==@{operator==}!bimap::impl::Surrogate$<$ T $>$@{bimap::impl::Surrogate$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr bool \mbox{\hyperlink{classbimap_1_1impl_1_1Surrogate}{bimap\+::impl\+::\+Surrogate}}$<$ T $>$\+::operator== (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classbimap_1_1impl_1_1Surrogate}{Surrogate}}$<$ T $>$}]{other }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+Compares objects behind the pointer 
+\begin{DoxyParams}{Parameters}
+{\em other} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+bidirectional\+\_\+map.\+hpp\end{DoxyCompactItemize}

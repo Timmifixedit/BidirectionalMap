@@ -1,0 +1,18 @@
+\hypertarget{if-example}{}\doxysection{if}
+Constructs elements in place. If a pair of values with same Forward\+Key or same Inverse\+Key already exists and the corresponding container requires unique keys, then no insertion happens. 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em A\+R\+GS} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em args} & arguments used to construct elements \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::pair(iterator to inserted element or already existing element, bool whether insertion happened) std\+::multiset is used for forward lookup and the map contains the following pair \+:(a, b) then inserting (a, b\textquotesingle{}) is possible whereas (a\textquotesingle{}, b) will not be inserted since the inverse lookup is carried out by std\+::unordered\+\_\+map
+\end{DoxyReturn}
+
+\begin{DoxyCodeInclude}{0}
+\end{DoxyCodeInclude}
+ 
