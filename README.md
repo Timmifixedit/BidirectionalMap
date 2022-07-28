@@ -1,3 +1,4 @@
+[![unit tests](https://github.com/Timmifixedit/BidirectionalMap/actions/workflows/unit_tests.yml/badge.svg)](https://github.com/Timmifixedit/BidirectionalMap/actions/workflows/unit_tests.yml)
 # bidirectional_map
 Implementation of a bidirectional associative container in c++. Its goal is to behave
 similarly to popular stl containers like `std::unordered_map` while providing efficient
