@@ -32,18 +32,6 @@ namespace bimap::impl {
         constexpr inline bool is_bidirectional_v = is_bidirectional<T>::value;
 
         template<typename T>
-        struct get_first {
-            explicit constexpr get_first(const T &value) noexcept: value(value) {}
-            const T &value;
-        };
-
-        template<typename T, typename U>
-        struct get_first<std::pair<T, U>> {
-            explicit constexpr get_first(const std::pair<T, U> &pair) noexcept: value(pair.first) {}
-            const T &value;
-        };
-
-        template<typename T>
         struct is_multimap {
             static constexpr bool value = false;
         };
@@ -82,6 +70,28 @@ namespace bimap::impl {
         template<typename T>
         constexpr inline bool is_ordered_v = is_ordered<T>::value;
     }
+
+    template<typename T>
+    struct get_first_impl {
+        template<typename U>
+        constexpr auto &&operator()(U &&value) noexcept {
+            return std::forward<U>(value);
+        }
+    };
+
+    template<typename T, typename U>
+    struct get_first_impl<std::pair<T, U>> {
+        template<typename Pair>
+        constexpr auto && operator()(Pair &&pair) noexcept {
+            return std::forward<Pair>(pair).first;
+        }
+    };
+
+    template<typename T>
+    constexpr auto &&get_first(T &&val) noexcept {
+        return get_first_impl<std::remove_const_t<std::remove_reference_t<T>>>{}(std::forward<T>(val));
+    }
+
 
     /**
      * Very simple pointer class that can be used to allocate storage once but can also be used as a non owning pointer.
@@ -507,8 +517,8 @@ namespace bimap {
                 }
             }
 
-            auto it = impl::traits::get_first(map.emplace(std::move(tmp.first), nullptr)).value;
-            auto invIt = impl::traits::get_first(inverseAccess->map.emplace(std::move(tmp.second), &it->first)).value;
+            auto it = impl::get_first(map.emplace(std::move(tmp.first), nullptr));
+            auto invIt = impl::get_first(inverseAccess->map.emplace(std::move(tmp.second), &it->first));
             it->second = &invIt->first;
             return {iterator(it), true};
         }
