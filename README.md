@@ -16,6 +16,9 @@ The `bidirectional_map` container contains pairs of values of type K1 and K2.
   can only be inserted at the same time if k1 != k1' **and** k2 != k2'. The use of
   multimaps as base containers relaxes this constraint.
   
+## Documentation
+[Doxygen](https://timmifixedit.github.io/BidirectionalMap/html/index.html)
+
 ## Code Example
 An instance of `bidirectional_map` can be created similarly to `std::unordered_map`:
 ```c++
