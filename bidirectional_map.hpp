@@ -280,9 +280,9 @@ namespace bimap {
         friend class impl::AllocOncePointer<bidirectional_map>;
 
         static_assert(std::is_default_constructible<ForwardMap>::value,
-                      "ForwardMap base containers must be default constructible.");
+                      "ForwardMap base containers must be default constructable.");
         static_assert(std::is_copy_constructible<ForwardMap>::value,
-                      "ForwardMap base containers must be copy constructible.");
+                      "ForwardMap base containers must be copy constructable.");
 
         explicit bidirectional_map(
                 InverseBiMap &inverseMap) noexcept(std::is_nothrow_default_constructible_v<ForwardMap>)
@@ -291,7 +291,7 @@ namespace bimap {
     public:
         class iterator {
             using IteratorType = decltype(std::declval<std::add_const_t<ForwardMap>>().begin());
-            static constexpr bool copy_constructible = std::is_nothrow_copy_constructible_v<IteratorType>;
+            static constexpr bool copy_constructable = std::is_nothrow_copy_constructible_v<IteratorType>;
             static constexpr bool copy_assignable = std::is_nothrow_copy_assignable_v<IteratorType>;
 
             friend class bidirectional_map;
@@ -308,7 +308,7 @@ namespace bimap {
              * CTor
              * @param it iterator to underlying map element
              */
-            constexpr explicit iterator(const IteratorType &it) noexcept(copy_constructible): it(it) {}
+            constexpr explicit iterator(const IteratorType &it) noexcept(copy_constructable): it(it) {}
 
             constexpr iterator(const iterator &other) noexcept(std::is_constructible_v<iterator, IteratorType>)
                     : iterator(other.it) {}
