@@ -68,59 +68,149 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>bimap</b></li><li class="navelem"><b>impl</b></li><li class="navelem"><a class="el" href="classbimap_1_1impl_1_1Surrogate.html">Surrogate</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespacebimap.html">bimap</a></li><li class="navelem"><a class="el" href="namespacebimap_1_1impl.html">impl</a></li><li class="navelem"><a class="el" href="classbimap_1_1impl_1_1Surrogate.html">Surrogate</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="classbimap_1_1impl_1_1Surrogate-members.html">List of all members</a>  </div>
+<a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle">
 <div class="title">bimap::impl::Surrogate&lt; T &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
+<p>Non owning pointer to an object. It overloads the equality operators in order to compare the underlying objects instead of the pointer values.  
+ <a href="classbimap_1_1impl_1_1Surrogate.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="bidirectional__map_8hpp_source.html">bidirectional_map.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6056c197e7d4575d9f8d35155e47a957"><td class="memItemLeft" align="right" valign="top"><a id="a6056c197e7d4575d9f8d35155e47a957"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Surrogate</b> (T *data) noexcept</td></tr>
+<tr class="memitem:a6056c197e7d4575d9f8d35155e47a957"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbimap_1_1impl_1_1Surrogate.html#a6056c197e7d4575d9f8d35155e47a957">Surrogate</a> (T *data) noexcept</td></tr>
 <tr class="separator:a6056c197e7d4575d9f8d35155e47a957"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6c586c881517102c05ce51306933f79"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbimap_1_1impl_1_1Surrogate.html#af6c586c881517102c05ce51306933f79">operator==</a> (<a class="el" href="classbimap_1_1impl_1_1Surrogate.html">Surrogate</a> other) const noexcept(traits::nothrow_comparable&lt; T &gt;)</td></tr>
 <tr class="separator:af6c586c881517102c05ce51306933f79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7ceac7bb878b9f4a64aa8010cd31921"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbimap_1_1impl_1_1Surrogate.html#ae7ceac7bb878b9f4a64aa8010cd31921">operator!=</a> (<a class="el" href="classbimap_1_1impl_1_1Surrogate.html">Surrogate</a> other) const noexcept(noexcept(other==other))</td></tr>
 <tr class="separator:ae7ceac7bb878b9f4a64aa8010cd31921"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefdcdb003bd7fbee021c979ac6806530"><td class="memItemLeft" align="right" valign="top"><a id="aefdcdb003bd7fbee021c979ac6806530"></a>
-constexpr T &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> () noexcept</td></tr>
+<tr class="memitem:aefdcdb003bd7fbee021c979ac6806530"><td class="memItemLeft" align="right" valign="top">constexpr T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbimap_1_1impl_1_1Surrogate.html#aefdcdb003bd7fbee021c979ac6806530">operator*</a> () noexcept</td></tr>
 <tr class="separator:aefdcdb003bd7fbee021c979ac6806530"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca57bec1ddc42f03babde886047974a1"><td class="memItemLeft" align="right" valign="top"><a id="aca57bec1ddc42f03babde886047974a1"></a>
-constexpr const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> () const noexcept</td></tr>
+<tr class="memitem:aca57bec1ddc42f03babde886047974a1"><td class="memItemLeft" align="right" valign="top">constexpr const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbimap_1_1impl_1_1Surrogate.html#aca57bec1ddc42f03babde886047974a1">operator*</a> () const noexcept</td></tr>
 <tr class="separator:aca57bec1ddc42f03babde886047974a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88058d8191777b12f64d083d85cc5f26"><td class="memItemLeft" align="right" valign="top"><a id="a88058d8191777b12f64d083d85cc5f26"></a>
-constexpr T *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () noexcept</td></tr>
+<tr class="memitem:a88058d8191777b12f64d083d85cc5f26"><td class="memItemLeft" align="right" valign="top">constexpr T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbimap_1_1impl_1_1Surrogate.html#a88058d8191777b12f64d083d85cc5f26">operator-&gt;</a> () noexcept</td></tr>
 <tr class="separator:a88058d8191777b12f64d083d85cc5f26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8dd4154fff535f5bfed3c8e6c145a422"><td class="memItemLeft" align="right" valign="top"><a id="a8dd4154fff535f5bfed3c8e6c145a422"></a>
-constexpr const T *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt;</b> () const noexcept</td></tr>
+<tr class="memitem:a8dd4154fff535f5bfed3c8e6c145a422"><td class="memItemLeft" align="right" valign="top">constexpr const T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbimap_1_1impl_1_1Surrogate.html#a8dd4154fff535f5bfed3c8e6c145a422">operator-&gt;</a> () const noexcept</td></tr>
 <tr class="separator:a8dd4154fff535f5bfed3c8e6c145a422"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13318faf670fce73efd11af6d4fbf023"><td class="memItemLeft" align="right" valign="top"><a id="a13318faf670fce73efd11af6d4fbf023"></a>
-constexpr T *&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () noexcept</td></tr>
+<tr class="memitem:a13318faf670fce73efd11af6d4fbf023"><td class="memItemLeft" align="right" valign="top">constexpr T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbimap_1_1impl_1_1Surrogate.html#a13318faf670fce73efd11af6d4fbf023">get</a> () noexcept</td></tr>
 <tr class="separator:a13318faf670fce73efd11af6d4fbf023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02b7629aa46f04b79446a3622201909c"><td class="memItemLeft" align="right" valign="top"><a id="a02b7629aa46f04b79446a3622201909c"></a>
-constexpr const T *&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> () const noexcept</td></tr>
+<tr class="memitem:a02b7629aa46f04b79446a3622201909c"><td class="memItemLeft" align="right" valign="top">constexpr const T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbimap_1_1impl_1_1Surrogate.html#a02b7629aa46f04b79446a3622201909c">get</a> () const noexcept</td></tr>
 <tr class="separator:a02b7629aa46f04b79446a3622201909c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
 class bimap::impl::Surrogate&lt; T &gt;</h3>
 
-<p>Non owning pointer to an object. It overloads the equality operators in order to compare the underlying objects instead of the pointer values </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+<p>Non owning pointer to an object. It overloads the equality operators in order to compare the underlying objects instead of the pointer values. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">T</td><td></td></tr>
+    <tr><td class="paramname">T</td><td>type of object behind the pointer </td></tr>
   </table>
   </dd>
 </dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a6056c197e7d4575d9f8d35155e47a957"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6056c197e7d4575d9f8d35155e47a957">&#9670;&nbsp;</a></span>Surrogate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classbimap_1_1impl_1_1Surrogate.html">bimap::impl::Surrogate</a>&lt; T &gt;::<a class="el" href="classbimap_1_1impl_1_1Surrogate.html">Surrogate</a> </td>
+          <td>(</td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>CTor. Stores pointer to data. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>memory location of data </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Instances of this type are always non-owning </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a02b7629aa46f04b79446a3622201909c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02b7629aa46f04b79446a3622201909c">&#9670;&nbsp;</a></span>get() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const T* <a class="el" href="classbimap_1_1impl_1_1Surrogate.html">bimap::impl::Surrogate</a>&lt; T &gt;::get </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p></p>
+<p>Getter for stored pointer </p><dl class="section return"><dt>Returns</dt><dd>raw pointer to data </dd></dl>
+
+</div>
+</div>
+<a id="a13318faf670fce73efd11af6d4fbf023"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13318faf670fce73efd11af6d4fbf023">&#9670;&nbsp;</a></span>get() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr T* <a class="el" href="classbimap_1_1impl_1_1Surrogate.html">bimap::impl::Surrogate</a>&lt; T &gt;::get </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Getter for stored pointer </p><dl class="section return"><dt>Returns</dt><dd>raw pointer to data </dd></dl>
+
+</div>
+</div>
 <a id="ae7ceac7bb878b9f4a64aa8010cd31921"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae7ceac7bb878b9f4a64aa8010cd31921">&#9670;&nbsp;</a></span>operator!=()</h2>
 
@@ -148,11 +238,127 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <p>Compares objects behind the pointer </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">other</td><td></td></tr>
+    <tr><td class="paramname">other</td><td>right hand side </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if *this is not equal to other </dd></dl>
+
+</div>
+</div>
+<a id="aca57bec1ddc42f03babde886047974a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca57bec1ddc42f03babde886047974a1">&#9670;&nbsp;</a></span>operator*() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const T&amp; <a class="el" href="classbimap_1_1impl_1_1Surrogate.html">bimap::impl::Surrogate</a>&lt; T &gt;::operator* </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p></p>
+<p>Dereference operator </p><dl class="section return"><dt>Returns</dt><dd>reference to stored data </dd></dl>
+
+</div>
+</div>
+<a id="aefdcdb003bd7fbee021c979ac6806530"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefdcdb003bd7fbee021c979ac6806530">&#9670;&nbsp;</a></span>operator*() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr T&amp; <a class="el" href="classbimap_1_1impl_1_1Surrogate.html">bimap::impl::Surrogate</a>&lt; T &gt;::operator* </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Dereference operator </p><dl class="section return"><dt>Returns</dt><dd>reference to stored data </dd></dl>
+
+</div>
+</div>
+<a id="a8dd4154fff535f5bfed3c8e6c145a422"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8dd4154fff535f5bfed3c8e6c145a422">&#9670;&nbsp;</a></span>operator-&gt;() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr const T* <a class="el" href="classbimap_1_1impl_1_1Surrogate.html">bimap::impl::Surrogate</a>&lt; T &gt;::operator-&gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p></p>
+<p>Member access operator </p><dl class="section return"><dt>Returns</dt><dd>stored pointer </dd></dl>
+
+</div>
+</div>
+<a id="a88058d8191777b12f64d083d85cc5f26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88058d8191777b12f64d083d85cc5f26">&#9670;&nbsp;</a></span>operator-&gt;() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr T* <a class="el" href="classbimap_1_1impl_1_1Surrogate.html">bimap::impl::Surrogate</a>&lt; T &gt;::operator-&gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Member access operator </p><dl class="section return"><dt>Returns</dt><dd>stored pointer </dd></dl>
 
 </div>
 </div>
@@ -183,11 +389,12 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <p>Compares objects behind the pointer </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">other</td><td></td></tr>
+    <tr><td class="paramname">other</td><td>right hand side </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if underlying objects compare equal </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>unlike for example std::shared_ptr, the actual objects behind the pointers are compared, not the pointer values themselves. This requires that both left and right hand side point to valid memory locations </dd></dl>
 
 </div>
 </div>

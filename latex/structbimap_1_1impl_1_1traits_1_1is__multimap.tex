@@ -1,0 +1,35 @@
+\hypertarget{structbimap_1_1impl_1_1traits_1_1is__multimap}{}\doxysection{bimap\+::impl\+::traits\+::is\+\_\+multimap$<$ T $>$ Struct Template Reference}
+\label{structbimap_1_1impl_1_1traits_1_1is__multimap}\index{bimap::impl::traits::is\_multimap$<$ T $>$@{bimap::impl::traits::is\_multimap$<$ T $>$}}
+
+
+type trait that indicates that a given typ is a multimap  
+
+
+
+
+{\ttfamily \#include $<$bidirectional\+\_\+map.\+hpp$>$}
+
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structbimap_1_1impl_1_1traits_1_1is__multimap_a806254aff9abfef19e87c8fdd4762768}\label{structbimap_1_1impl_1_1traits_1_1is__multimap_a806254aff9abfef19e87c8fdd4762768}} 
+static constexpr bool {\bfseries value} = false
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+struct bimap\+::impl\+::traits\+::is\+\_\+multimap$<$ T $>$}
+
+type trait that indicates that a given typ is a multimap 
+
+If you want to use a custom multimap type, specialize this trait for said type. Example for a type called {\ttfamily My\+Multi\+Map} 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{template}<\textcolor{keyword}{typename} Key, \textcolor{keyword}{typename} Val, \textcolor{keyword}{typename} Stuff>}
+\DoxyCodeLine{\textcolor{keyword}{struct }\mbox{\hyperlink{structbimap_1_1impl_1_1traits_1_1is__multimap}{bimap::impl::traits::is\_multimap}}<MyMultiMap<Key, Val, Stuff>> : std::true\_type \{\};}
+\end{DoxyCode}
+ 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{bidirectional__map_8hpp}{bidirectional\+\_\+map.\+hpp}}\end{DoxyCompactItemize}

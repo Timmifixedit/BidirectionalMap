@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['_7ealloconcepointer_59',['~AllocOncePointer',['../classbimap_1_1impl_1_1AllocOncePointer.html#a942836e98996e694b09cd6ae8e6ed60d',1,'bimap::impl::AllocOncePointer']]]
+  ['upper_5fbound_74',['upper_bound',['../classbimap_1_1bidirectional__map.html#a3a0e37ee3471fd2f82ba587e9ca1a598',1,'bimap::bidirectional_map']]]
 ];

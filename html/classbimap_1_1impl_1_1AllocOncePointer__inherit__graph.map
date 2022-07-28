@@ -1,4 +1,4 @@
 <map id="bimap::impl::AllocOncePointer&lt; T &gt;" name="bimap::impl::AllocOncePointer&lt; T &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,263,32"/>
+<area shape="rect" id="node1" title="Very simple pointer class that can be used to allocate storage once but can also be used as a non own..." alt="" coords="5,5,263,32"/>
 <area shape="rect" id="node2" href="$classbimap_1_1impl_1_1AllocOncePointer.html" title=" " alt="" coords="25,95,243,136"/>
 </map>

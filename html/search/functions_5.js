@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['inverse_47',['inverse',['../classbimap_1_1bidirectional__map.html#aa2c2540101bed9d42a489313af5fb8df',1,'bimap::bidirectional_map::inverse() noexcept -&gt; InverseBiMap &amp;'],['../classbimap_1_1bidirectional__map.html#ab528b91dfee6077311000e3ab5e5a38b',1,'bimap::bidirectional_map::inverse() const noexcept -&gt; const InverseBiMap &amp;']]],
-  ['isowner_48',['isOwner',['../classbimap_1_1impl_1_1AllocOncePointer.html#a90cc760e3170fd224c8508e90936ace4',1,'bimap::impl::AllocOncePointer']]],
-  ['iterator_49',['iterator',['../classbimap_1_1bidirectional__map_1_1iterator.html#a37291a42ab19022c759c8e2b4477ba88',1,'bimap::bidirectional_map::iterator']]]
+  ['get_58',['get',['../classbimap_1_1impl_1_1Surrogate.html#a13318faf670fce73efd11af6d4fbf023',1,'bimap::impl::Surrogate::get() noexcept'],['../classbimap_1_1impl_1_1Surrogate.html#a02b7629aa46f04b79446a3622201909c',1,'bimap::impl::Surrogate::get() const noexcept']]],
+  ['get_5ffirst_59',['get_first',['../namespacebimap_1_1impl.html#acf34a33652e1b4bc9e1273930b0c4181',1,'bimap::impl']]]
 ];

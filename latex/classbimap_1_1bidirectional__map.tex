@@ -2,13 +2,18 @@
 \label{classbimap_1_1bidirectional__map}\index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$}}
 
 
+Bidirectional associative container that supports efficient lookup in both directions.  
+
+
+
+
 {\ttfamily \#include $<$bidirectional\+\_\+map.\+hpp$>$}
 
-\doxysubsection*{Classes}
+\doxysubsection*{Data Structures}
 \begin{DoxyCompactItemize}
 \item 
 class \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}} iterator \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -24,11 +29,9 @@ void \mbox{\hyperlink{classbimap_1_1bidirectional__map_a7bf8224a3833942f396c0aa3
 \item 
 \mbox{\hyperlink{classbimap_1_1bidirectional__map_a4a6ece6236b466ddf6e20ba9c8e5e550}{bidirectional\+\_\+map}} (\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}} \&\&other)
 \item 
-\mbox{\Hypertarget{classbimap_1_1bidirectional__map_aece03979801b20b2e770cebf17d36901}\label{classbimap_1_1bidirectional__map_aece03979801b20b2e770cebf17d36901}} 
-\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}} \& {\bfseries operator=} (\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}} other) noexcept(noexcept(std\+::declval$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}} $>$().\mbox{\hyperlink{classbimap_1_1bidirectional__map_a7bf8224a3833942f396c0aa3e3387146}{swap}}(other)))
+\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}} \& \mbox{\hyperlink{classbimap_1_1bidirectional__map_aece03979801b20b2e770cebf17d36901}{operator=}} (\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}} other) noexcept(noexcept(std\+::declval$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}} $>$().\mbox{\hyperlink{classbimap_1_1bidirectional__map_a7bf8224a3833942f396c0aa3e3387146}{swap}}(other)))
 \item 
-\mbox{\Hypertarget{classbimap_1_1bidirectional__map_adeb2087b3fdd54c9eb0597af8a28c6aa}\label{classbimap_1_1bidirectional__map_adeb2087b3fdd54c9eb0597af8a28c6aa}} 
-{\footnotesize template$<$typename ... A\+R\+GS$>$ }\\auto {\bfseries emplace} (A\+R\+GS \&\&...args) -\/$>$ std\+::pair$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}, bool $>$
+{\footnotesize template$<$typename ... A\+R\+GS$>$ }\\auto \mbox{\hyperlink{classbimap_1_1bidirectional__map_adeb2087b3fdd54c9eb0597af8a28c6aa}{emplace}} (A\+R\+GS \&\&...args) -\/$>$ std\+::pair$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}, bool $>$
 \item 
 auto \mbox{\hyperlink{classbimap_1_1bidirectional__map_aaf83f9f01ac48219ef7204e7df42c0aa}{size}} () const noexcept(noexcept(std\+::declval$<$ Forward\+Map $>$().size()))
 \item 
@@ -78,7 +81,14 @@ class {\bfseries impl\+::\+Alloc\+Once\+Pointer$<$ bidirectional\+\_\+map $>$}
 \subsubsection*{template$<$typename Forward\+Key, typename Inverse\+Key, template$<$ typename ... $>$ typename Forward\+Map\+Type = std\+::unordered\+\_\+map, template$<$ typename ... $>$ typename Inverse\+Map\+Type = std\+::unordered\+\_\+map$>$\newline
 class bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$}
 
-Bidirectional associative container that supports efficient lookup in both directions. Neither items of type Forward\+Key nor Inverse\+Key can be modified. 
+Bidirectional associative container that supports efficient lookup in both directions. 
+
+This class manages two unidirectional maps in order to enable bidirectional lookup. Neither items of type Forward\+Key nor Inverse\+Key can be modified. The map types for forward and for inverse lookup can be changed. The following map types are supported and have been tested\+:
+\begin{DoxyItemize}
+\item std\+::unordered\+\_\+map (default for both lookup directions)
+\item std\+::map
+\item std\+::unordered\+\_\+multimap
+\item std\+::multimap 
 \begin{DoxyTemplParams}{Template Parameters}
 {\em Forward\+Key} & Type of key used for forward lookup \\
 \hline
@@ -89,7 +99,11 @@ Bidirectional associative container that supports efficient lookup in both direc
 {\em Inverse\+Map\+Type} & base map container used for inverse lookup. Default is std\+::unordered\+\_\+map \\
 \hline
 \end{DoxyTemplParams}
+\begin{DoxyNote}{Note}
+when specifying the underlying map types, make sure that the respective types expect two template type arguments. Further arguments have to be deducible or have defaults. Using a custom map type not included in the list should be possible. Make sure that the typical map member functions (like find, emplace, etc) are supported and behave similar to the stl containers. If your map type is a multimap, you have to specialise the type trait \mbox{\hyperlink{structbimap_1_1impl_1_1traits_1_1is__multimap}{impl\+::traits\+::is\+\_\+multimap}} 
+\end{DoxyNote}
 
+\end{DoxyItemize}
 
 \doxysubsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_ab6fca1c655e483508119bc8db3501ca8}\label{classbimap_1_1bidirectional__map_ab6fca1c655e483508119bc8db3501ca8}} 
@@ -114,9 +128,9 @@ Creates the container from the iterator range \mbox{[}start, end)
 \end{DoxyTemplParams}
 
 \begin{DoxyParams}{Parameters}
-{\em start} & \\
+{\em start} & bein of range (inclusive) \\
 \hline
-{\em end} & \\
+{\em end} & end of range (exclusive) \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_a68837ec6cc46f461b8bad24742558bd6}\label{classbimap_1_1bidirectional__map_a68837ec6cc46f461b8bad24742558bd6}} 
@@ -128,7 +142,7 @@ Creates the container from the iterator range \mbox{[}start, end)
 
 Creates the container from the given initializer list 
 \begin{DoxyParams}{Parameters}
-{\em init} & \\
+{\em init} & list of value pairs \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_a72443c7f22a6fb867d0eb8f3365488bd}\label{classbimap_1_1bidirectional__map_a72443c7f22a6fb867d0eb8f3365488bd}} 
@@ -140,7 +154,7 @@ Creates the container from the given initializer list
 
 Copy constructor 
 \begin{DoxyParams}{Parameters}
-{\em other} & \\
+{\em other} & source \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_a4a6ece6236b466ddf6e20ba9c8e5e550}\label{classbimap_1_1bidirectional__map_a4a6ece6236b466ddf6e20ba9c8e5e550}} 
@@ -152,13 +166,12 @@ Copy constructor
 
 Move constructor. Moves objects from other. If Forward\+Map\+Type and Inverse\+Map\+Type support moving, no objects are copied 
 \begin{DoxyParams}{Parameters}
-{\em other} & \\
+{\em other} & source \\
 \hline
 \end{DoxyParams}
-
-
-References bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::swap().
-
+\begin{DoxyNote}{Note}
+this move C\+Tor may throw exceptions if memory allocation fails 
+\end{DoxyNote}
 Here is the call graph for this function\+:
 \nopagebreak
 \begin{figure}[H]
@@ -180,7 +193,7 @@ auto \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+
 
 Returns the value found by the given key 
 \begin{DoxyParams}{Parameters}
-{\em key} & \\
+{\em key} & key used for lookup \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -191,10 +204,9 @@ reference to found value
 {\em out\+\_\+of\+\_\+range} & if ey does not exist \\
 \hline
 \end{DoxyExceptions}
-
-
-References bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::end(), and bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::find().
-
+\begin{DoxyNote}{Note}
+not available when using multimap as base container 
+\end{DoxyNote}
 Here is the call graph for this function\+:
 \nopagebreak
 \begin{figure}[H]
@@ -214,7 +226,7 @@ iterator to first element \begin{DoxyNote}{Note}
 Ordering of objects depends on the underlying container specified by Forward\+Mpa\+Type and Inverse\+Map\+Type. Ordering of forward access may be different from ordering of inverse access 
 \end{DoxyNote}
 \begin{DoxyReturn}{Returns}
-
+iterator to first element of forward lookup map 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_a1cd3d3a7b11fd19e4d2ebd003e65c07a}\label{classbimap_1_1bidirectional__map_a1cd3d3a7b11fd19e4d2ebd003e65c07a}} 
 \index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$}!clear@{clear}}
@@ -232,22 +244,47 @@ bool \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+
 
 Check if a certain key can be found 
 \begin{DoxyParams}{Parameters}
-{\em key} & \\
+{\em key} & key used for lookup \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 true if key can be found, false otherwise 
 \end{DoxyReturn}
-
-
-References bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::end(), and bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::find().
-
 Here is the call graph for this function\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=344pt]{classbimap_1_1bidirectional__map_a1545d66d8b6ad045c54ba8e0df542f36_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classbimap_1_1bidirectional__map_adeb2087b3fdd54c9eb0597af8a28c6aa}\label{classbimap_1_1bidirectional__map_adeb2087b3fdd54c9eb0597af8a28c6aa}} 
+\index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$}!emplace@{emplace}}
+\index{emplace@{emplace}!bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$}}
+\doxysubsubsection{\texorpdfstring{emplace()}{emplace()}}
+{\footnotesize\ttfamily template$<$typename Forward\+Key , typename Inverse\+Key , template$<$ typename ... $>$ typename Forward\+Map\+Type = std\+::unordered\+\_\+map, template$<$ typename ... $>$ typename Inverse\+Map\+Type = std\+::unordered\+\_\+map$>$ \\
+template$<$typename ... A\+R\+GS$>$ \\
+auto \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::emplace (\begin{DoxyParamCaption}\item[{A\+R\+GS \&\&...}]{args }\end{DoxyParamCaption}) -\/$>$ std\+::pair$<$\mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}, bool$>$ \hspace{0.3cm}{\ttfamily [inline]}}
+
+Constructs elements in place. If a pair of values with same Forward\+Key or same Inverse\+Key already exists and the corresponding container requires unique keys, then no insertion happens. For example, if std\+::multiset is used for forward lookup and the map contains the following pair \+:(a, b) then inserting (a, b\textquotesingle{}) is possible whereas (a\textquotesingle{}, b) will not be inserted since the inverse lookup is carried out by std\+::unordered\+\_\+map 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em A\+R\+GS} & argument types \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em args} & arguments used to construct elements \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::pair(iterator to inserted element or already existing element, bool whether insertion happened) 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{classbimap_1_1bidirectional__map_adeb2087b3fdd54c9eb0597af8a28c6aa_cgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_af8e12063c76a126b89aeb87e37b1dcbd}\label{classbimap_1_1bidirectional__map_af8e12063c76a126b89aeb87e37b1dcbd}} 
@@ -258,7 +295,7 @@ Here is the call graph for this function\+:
 bool \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
 Whether container is empty \begin{DoxyReturn}{Returns}
-
+true if container is empty 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_a20d7c9ce77dd7b536dcac6e2eead87fa}\label{classbimap_1_1bidirectional__map_a20d7c9ce77dd7b536dcac6e2eead87fa}} 
 \index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$}!end@{end}}
@@ -268,12 +305,8 @@ Whether container is empty \begin{DoxyReturn}{Returns}
 \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
 iterator to the past the end element. This iterator does not point to anything. Access results in undefined behaviour \begin{DoxyReturn}{Returns}
-
+iterator to past the end element of forward lookup map 
 \end{DoxyReturn}
-
-
-Referenced by bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::at(), bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::contains(), and bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::erase().
-
 Here is the caller graph for this function\+:
 \nopagebreak
 \begin{figure}[H]
@@ -297,10 +330,6 @@ Calls equal\+\_\+range on the underlying container. For more information see doc
 \begin{DoxyReturn}{Returns}
 iterator range containing equal elements 
 \end{DoxyReturn}
-
-
-Referenced by bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::erase().
-
 Here is the caller graph for this function\+:
 \nopagebreak
 \begin{figure}[H]
@@ -318,16 +347,12 @@ std\+::size\+\_\+t \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::b
 
 Erases all elements with forward key equivalent to key. 
 \begin{DoxyParams}{Parameters}
-{\em key} & \\
+{\em key} & key used for lookup \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 number of erased elements 
 \end{DoxyReturn}
-
-
-References bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::equal\+\_\+range().
-
 Here is the call graph for this function\+:
 \nopagebreak
 \begin{figure}[H]
@@ -345,18 +370,14 @@ Here is the call graph for this function\+:
 
 Erases all elements in the range \mbox{[}first, last) which must be a valid range in $\ast$this 
 \begin{DoxyParams}{Parameters}
-{\em first} & \\
+{\em first} & start of the range (inclusive) \\
 \hline
-{\em last} & \\
+{\em last} & end of the range (exclusive) \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 iterator following the last removed element 
 \end{DoxyReturn}
-
-
-References bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::end().
-
 Here is the call graph for this function\+:
 \nopagebreak
 \begin{figure}[H]
@@ -380,10 +401,6 @@ Erases the element at position pos
 \begin{DoxyReturn}{Returns}
 iterator pointing to the next element in the container 
 \end{DoxyReturn}
-
-
-References bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::end().
-
 Here is the call graph for this function\+:
 \nopagebreak
 \begin{figure}[H]
@@ -401,16 +418,12 @@ Here is the call graph for this function\+:
 
 Finds an element with forward key equivalent to key 
 \begin{DoxyParams}{Parameters}
-{\em key} & \\
+{\em key} & key used for lookup \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 iterator to an element with forward key equivalent to key. If no such element is found, past-\/the-\/end (see \mbox{\hyperlink{classbimap_1_1bidirectional__map_a20d7c9ce77dd7b536dcac6e2eead87fa}{end()}}) iterator is returned. 
 \end{DoxyReturn}
-
-
-Referenced by bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::at(), and bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::contains().
-
 Here is the caller graph for this function\+:
 \nopagebreak
 \begin{figure}[H]
@@ -464,12 +477,35 @@ bool \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+
 
 Compares container by elements, see operator== 
 \begin{DoxyParams}{Parameters}
-{\em other} & \\
+{\em other} & right hand side \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-
+true if $\ast$this != other 
 \end{DoxyReturn}
+\mbox{\Hypertarget{classbimap_1_1bidirectional__map_aece03979801b20b2e770cebf17d36901}\label{classbimap_1_1bidirectional__map_aece03979801b20b2e770cebf17d36901}} 
+\index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily template$<$typename Forward\+Key , typename Inverse\+Key , template$<$ typename ... $>$ typename Forward\+Map\+Type = std\+::unordered\+\_\+map, template$<$ typename ... $>$ typename Inverse\+Map\+Type = std\+::unordered\+\_\+map$>$ \\
+\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}}\& \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
+
+Assignment operator 
+\begin{DoxyParams}{Parameters}
+{\em other} & source \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+reference to $\ast$this 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{classbimap_1_1bidirectional__map_aece03979801b20b2e770cebf17d36901_cgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_a509228e6cceb947aec83e058cadfe38a}\label{classbimap_1_1bidirectional__map_a509228e6cceb947aec83e058cadfe38a}} 
 \index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$}!operator==@{operator==}}
 \index{operator==@{operator==}!bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$}}
@@ -479,7 +515,7 @@ bool \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+
 
 Compares underlying containers 
 \begin{DoxyParams}{Parameters}
-{\em other} & \\
+{\em other} & right hand side \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -496,7 +532,7 @@ for more details see documentation of the used underlying containers. If the def
 auto \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
 Number of contained elements \begin{DoxyReturn}{Returns}
-
+Number of contained elements 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_a7bf8224a3833942f396c0aa3e3387146}\label{classbimap_1_1bidirectional__map_a7bf8224a3833942f396c0aa3e3387146}} 
 \index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$}!swap@{swap}}
@@ -507,13 +543,9 @@ void \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+
 
 Swaps the content of the containers. If Forward\+Map\+Type and Inverse\+Map\+Type support moving, no objects are copied 
 \begin{DoxyParams}{Parameters}
-{\em other} & \\
+{\em other} & swap target \\
 \hline
 \end{DoxyParams}
-
-
-Referenced by bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::bidirectional\+\_\+map().
-
 Here is the caller graph for this function\+:
 \nopagebreak
 \begin{figure}[H]
@@ -542,4 +574,4 @@ upper bound iterator
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-bidirectional\+\_\+map.\+hpp\end{DoxyCompactItemize}
+\mbox{\hyperlink{bidirectional__map_8hpp}{bidirectional\+\_\+map.\+hpp}}\end{DoxyCompactItemize}

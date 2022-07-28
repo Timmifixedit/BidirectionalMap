@@ -2,6 +2,11 @@
 \label{classbimap_1_1impl_1_1AllocOncePointer}\index{bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}}
 
 
+Very simple pointer class that can be used to allocate storage once but can also be used as a non owning pointer.  
+
+
+
+
 {\ttfamily \#include $<$bidirectional\+\_\+map.\+hpp$>$}
 
 
@@ -27,38 +32,36 @@ constexpr \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer_ad71c92ab56953
 \item 
 constexpr void \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer_ae831a1f4da6b8ea08e82036da142614f}{swap}} (\mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}} \&other) noexcept
 \item 
-\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a5488012a8a788fbb854dd5bdc78d4232}\label{classbimap_1_1impl_1_1AllocOncePointer_a5488012a8a788fbb854dd5bdc78d4232}} 
-constexpr {\bfseries Alloc\+Once\+Pointer} (\mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}} \&\&other) noexcept
+constexpr \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer_a5488012a8a788fbb854dd5bdc78d4232}{Alloc\+Once\+Pointer}} (\mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}} \&\&other) noexcept
 \item 
-\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_aac8f86f3ac193998e8ea317777a84abf}\label{classbimap_1_1impl_1_1AllocOncePointer_aac8f86f3ac193998e8ea317777a84abf}} 
-constexpr \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}} \& {\bfseries operator=} (\mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}} other) noexcept
+constexpr \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}} \& \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer_aac8f86f3ac193998e8ea317777a84abf}{operator=}} (\mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}} other) noexcept
 \item 
 \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer_a942836e98996e694b09cd6ae8e6ed60d}{$\sim$\+Alloc\+Once\+Pointer}} ()
 \item 
 constexpr bool \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer_a90cc760e3170fd224c8508e90936ace4}{is\+Owner}} () const noexcept
 \item 
-\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a1fca8a9f86a3d8fad84762921b240e94}\label{classbimap_1_1impl_1_1AllocOncePointer_a1fca8a9f86a3d8fad84762921b240e94}} 
-constexpr T \& {\bfseries operator$\ast$} () noexcept
+constexpr T \& \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer_a1fca8a9f86a3d8fad84762921b240e94}{operator$\ast$}} () noexcept
 \item 
-\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a78c8c0dc1871de3d1de6b3bd2356e69a}\label{classbimap_1_1impl_1_1AllocOncePointer_a78c8c0dc1871de3d1de6b3bd2356e69a}} 
-constexpr const T \& {\bfseries operator$\ast$} () const noexcept
+constexpr const T \& \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer_a78c8c0dc1871de3d1de6b3bd2356e69a}{operator$\ast$}} () const noexcept
 \item 
-\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a1655ac91a7d6d200873e87011c914157}\label{classbimap_1_1impl_1_1AllocOncePointer_a1655ac91a7d6d200873e87011c914157}} 
-constexpr T $\ast$ {\bfseries operator-\/$>$} () noexcept
+constexpr T $\ast$ \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer_a1655ac91a7d6d200873e87011c914157}{operator-\/$>$}} () noexcept
 \item 
-\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a4622d6206a49c0dd9d3294977ef5bbd6}\label{classbimap_1_1impl_1_1AllocOncePointer_a4622d6206a49c0dd9d3294977ef5bbd6}} 
-constexpr const T $\ast$ {\bfseries operator-\/$>$} () const noexcept
+constexpr const T $\ast$ \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer_a4622d6206a49c0dd9d3294977ef5bbd6}{operator-\/$>$}} () const noexcept
 \item 
 constexpr bool \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer_a3aa4378301fc21221e58eb3fb926992d}{operator==}} (const \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}} \&other) const noexcept
 \item 
-\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_ad43aaa18511442ff659045d0107b249c}\label{classbimap_1_1impl_1_1AllocOncePointer_ad43aaa18511442ff659045d0107b249c}} 
-constexpr bool {\bfseries operator==} (std\+::nullptr\+\_\+t) const noexcept
+constexpr bool \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer_a47801dc26c28036372408fe5e8264796}{operator!=}} (const T $\ast$other) const noexcept
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_abfd810b1b63b908bc186d2c4a374a6e7}\label{classbimap_1_1impl_1_1AllocOncePointer_abfd810b1b63b908bc186d2c4a374a6e7}} 
-constexpr bool {\bfseries operator!=} (std\+::nullptr\+\_\+t) const noexcept
+constexpr friend bool \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer_a4e2520d2956f25404c052b04ee5b0d74}{operator==}} (const \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}} \&lhs, std\+::nullptr\+\_\+t) noexcept
 \item 
-\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a47801dc26c28036372408fe5e8264796}\label{classbimap_1_1impl_1_1AllocOncePointer_a47801dc26c28036372408fe5e8264796}} 
-constexpr bool {\bfseries operator!=} (const T $\ast$other) const noexcept
+constexpr friend bool \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer_a98db97d38269c98b03774cf4fe940601}{operator==}} (std\+::nullptr\+\_\+t, const \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}} \&rhs) noexcept
+\item 
+constexpr friend bool \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer_a12f42ff17c21e514779906263e89cf55}{operator!=}} (const \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}} \&lhs, std\+::nullptr\+\_\+t) noexcept
+\item 
+constexpr friend bool \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer_a7b4d8c1c830f7be103889705c49a22f0}{operator!=}} (std\+::nullptr\+\_\+t, const \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}} \&rhs) noexcept
 \end{DoxyCompactItemize}
 
 
@@ -66,7 +69,9 @@ constexpr bool {\bfseries operator!=} (const T $\ast$other) const noexcept
 \subsubsection*{template$<$typename T$>$\newline
 class bimap\+::impl\+::\+Alloc\+Once\+Pointer$<$ T $>$}
 
-Very simple pointer class that can be used to allocate storage once but can also be used as a non owning pointer. Unlike shared\+\_\+ptr, copies of this class are non-\/owning pointers and unlike weak\+\_\+ptr, non-\/owning pointers do not know if the object behind the pointer still exists. The owning pointer deallocates storage at destruction 
+Very simple pointer class that can be used to allocate storage once but can also be used as a non owning pointer. 
+
+Unlike shared\+\_\+ptr, copies of this class are non-\/owning pointers and unlike weak\+\_\+ptr, non-\/owning pointers do not know if the object behind the pointer still exists. The owning pointer deallocates storage at destruction 
 \begin{DoxyTemplParams}{Template Parameters}
 {\em T} & type of object behind the pointer \\
 \hline
@@ -77,33 +82,33 @@ Very simple pointer class that can be used to allocate storage once but can also
 \mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a599ab42f776aec0b3bca8dacfa1f8cc1}\label{classbimap_1_1impl_1_1AllocOncePointer_a599ab42f776aec0b3bca8dacfa1f8cc1}} 
 \index{bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}!AllocOncePointer@{AllocOncePointer}}
 \index{AllocOncePointer@{AllocOncePointer}!bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}}
-\doxysubsubsection{\texorpdfstring{AllocOncePointer()}{AllocOncePointer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+\doxysubsubsection{\texorpdfstring{AllocOncePointer()}{AllocOncePointer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 constexpr \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{bimap\+::impl\+::\+Alloc\+Once\+Pointer}}$<$ T $>$\+::\mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
 
 Creates an empty nullptr object \mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_aae58a6922ca2c8e0dda5c15c281ab980}\label{classbimap_1_1impl_1_1AllocOncePointer_aae58a6922ca2c8e0dda5c15c281ab980}} 
 \index{bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}!AllocOncePointer@{AllocOncePointer}}
 \index{AllocOncePointer@{AllocOncePointer}!bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}}
-\doxysubsubsection{\texorpdfstring{AllocOncePointer()}{AllocOncePointer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+\doxysubsubsection{\texorpdfstring{AllocOncePointer()}{AllocOncePointer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 constexpr \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{bimap\+::impl\+::\+Alloc\+Once\+Pointer}}$<$ T $>$\+::\mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}} (\begin{DoxyParamCaption}\item[{T $\ast$}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
 
 Creates a non owning pointer to an existing object 
 \begin{DoxyParams}{Parameters}
-{\em data} & \\
+{\em data} & memory location of object \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a6b00e8576295de626472b57c2d604a22}\label{classbimap_1_1impl_1_1AllocOncePointer_a6b00e8576295de626472b57c2d604a22}} 
 \index{bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}!AllocOncePointer@{AllocOncePointer}}
 \index{AllocOncePointer@{AllocOncePointer}!bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}}
-\doxysubsubsection{\texorpdfstring{AllocOncePointer()}{AllocOncePointer()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+\doxysubsubsection{\texorpdfstring{AllocOncePointer()}{AllocOncePointer()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 template$<$typename ... A\+R\+GS$>$ \\
 \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{bimap\+::impl\+::\+Alloc\+Once\+Pointer}}$<$ T $>$\+::\mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}} (\begin{DoxyParamCaption}\item[{A\+R\+GS \&\&...}]{args }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
 
 Allocates storage and creates an instance of T in place. Becomes owner of the storage 
 \begin{DoxyTemplParams}{Template Parameters}
-{\em A\+R\+GS} & \\
+{\em A\+R\+GS} & Argument types \\
 \hline
 \end{DoxyTemplParams}
 
@@ -114,13 +119,25 @@ Allocates storage and creates an instance of T in place. Becomes owner of the st
 \mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_ad71c92ab56953cef42c9d81f6c172ed8}\label{classbimap_1_1impl_1_1AllocOncePointer_ad71c92ab56953cef42c9d81f6c172ed8}} 
 \index{bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}!AllocOncePointer@{AllocOncePointer}}
 \index{AllocOncePointer@{AllocOncePointer}!bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}}
-\doxysubsubsection{\texorpdfstring{AllocOncePointer()}{AllocOncePointer()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+\doxysubsubsection{\texorpdfstring{AllocOncePointer()}{AllocOncePointer()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 constexpr \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{bimap\+::impl\+::\+Alloc\+Once\+Pointer}}$<$ T $>$\+::\mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}} (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}}$<$ T $>$ \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
 
 Copy constructor, creates a non-\/owning pointer 
 \begin{DoxyParams}{Parameters}
-{\em other} & \\
+{\em other} & source \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a5488012a8a788fbb854dd5bdc78d4232}\label{classbimap_1_1impl_1_1AllocOncePointer_a5488012a8a788fbb854dd5bdc78d4232}} 
+\index{bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}!AllocOncePointer@{AllocOncePointer}}
+\index{AllocOncePointer@{AllocOncePointer}!bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{AllocOncePointer()}{AllocOncePointer()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{bimap\+::impl\+::\+Alloc\+Once\+Pointer}}$<$ T $>$\+::\mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}}$<$ T $>$ \&\&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+Move C\+Tor. Takes ownership if other is owning 
+\begin{DoxyParams}{Parameters}
+{\em other} & source \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a942836e98996e694b09cd6ae8e6ed60d}\label{classbimap_1_1impl_1_1AllocOncePointer_a942836e98996e694b09cd6ae8e6ed60d}} 
@@ -141,7 +158,89 @@ Destructor. Deallocates memory only when owner
 constexpr bool \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{bimap\+::impl\+::\+Alloc\+Once\+Pointer}}$<$ T $>$\+::is\+Owner (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
 
 Check if pointer is owner \begin{DoxyReturn}{Returns}
+true if owner 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a47801dc26c28036372408fe5e8264796}\label{classbimap_1_1impl_1_1AllocOncePointer_a47801dc26c28036372408fe5e8264796}} 
+\index{bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr bool \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{bimap\+::impl\+::\+Alloc\+Once\+Pointer}}$<$ T $>$\+::operator!= (\begin{DoxyParamCaption}\item[{const T $\ast$}]{other }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
 
+
+
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & right hand side \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if $\ast$this is not equal to other 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a78c8c0dc1871de3d1de6b3bd2356e69a}\label{classbimap_1_1impl_1_1AllocOncePointer_a78c8c0dc1871de3d1de6b3bd2356e69a}} 
+\index{bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator$\ast$()}{operator*()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr const T\& \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{bimap\+::impl\+::\+Alloc\+Once\+Pointer}}$<$ T $>$\+::operator$\ast$ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+
+
+Dereference operator \begin{DoxyReturn}{Returns}
+reference to stored data 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a1fca8a9f86a3d8fad84762921b240e94}\label{classbimap_1_1impl_1_1AllocOncePointer_a1fca8a9f86a3d8fad84762921b240e94}} 
+\index{bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator$\ast$()}{operator*()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr T\& \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{bimap\+::impl\+::\+Alloc\+Once\+Pointer}}$<$ T $>$\+::operator$\ast$ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+Dereference operator \begin{DoxyReturn}{Returns}
+reference to stored data 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a4622d6206a49c0dd9d3294977ef5bbd6}\label{classbimap_1_1impl_1_1AllocOncePointer_a4622d6206a49c0dd9d3294977ef5bbd6}} 
+\index{bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}!operator-\/$>$@{operator-\/$>$}}
+\index{operator-\/$>$@{operator-\/$>$}!bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator-\/$>$()}{operator->()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr const T$\ast$ \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{bimap\+::impl\+::\+Alloc\+Once\+Pointer}}$<$ T $>$\+::operator-\/$>$ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+
+
+
+
+Member access operator \begin{DoxyReturn}{Returns}
+stored pointer 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a1655ac91a7d6d200873e87011c914157}\label{classbimap_1_1impl_1_1AllocOncePointer_a1655ac91a7d6d200873e87011c914157}} 
+\index{bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}!operator-\/$>$@{operator-\/$>$}}
+\index{operator-\/$>$@{operator-\/$>$}!bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator-\/$>$()}{operator->()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr T$\ast$ \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{bimap\+::impl\+::\+Alloc\+Once\+Pointer}}$<$ T $>$\+::operator-\/$>$ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+Member access operator \begin{DoxyReturn}{Returns}
+stored pointer 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_aac8f86f3ac193998e8ea317777a84abf}\label{classbimap_1_1impl_1_1AllocOncePointer_aac8f86f3ac193998e8ea317777a84abf}} 
+\index{bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}}\& \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{bimap\+::impl\+::\+Alloc\+Once\+Pointer}}$<$ T $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}}$<$ T $>$}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+Assignment operator 
+\begin{DoxyParams}{Parameters}
+{\em other} & source \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+reference to this 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a3aa4378301fc21221e58eb3fb926992d}\label{classbimap_1_1impl_1_1AllocOncePointer_a3aa4378301fc21221e58eb3fb926992d}} 
 \index{bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}!operator==@{operator==}}
@@ -150,9 +249,9 @@ Check if pointer is owner \begin{DoxyReturn}{Returns}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 constexpr bool \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{bimap\+::impl\+::\+Alloc\+Once\+Pointer}}$<$ T $>$\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}}$<$ T $>$ \&}]{other }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
 
-Comparison operator 
+Equality comparison operator. Compares data pointers 
 \begin{DoxyParams}{Parameters}
-{\em other} & \\
+{\em other} & right hand side \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -167,11 +266,94 @@ constexpr void \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{bimap\+:
 
 Swaps pointer and ownership with other 
 \begin{DoxyParams}{Parameters}
-{\em other} & \\
+{\em other} & swap target \\
 \hline
 \end{DoxyParams}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbimap_1_1impl_1_1AllocOncePointer_ae831a1f4da6b8ea08e82036da142614f_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a12f42ff17c21e514779906263e89cf55}\label{classbimap_1_1impl_1_1AllocOncePointer_a12f42ff17c21e514779906263e89cf55}} 
+\index{bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator"!=}{operator!=}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr friend bool operator!= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}}$<$ T $>$ \&}]{lhs,  }\item[{std\+::nullptr\+\_\+t}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+Inequality comparison operator. Compares data pointers 
+\begin{DoxyParams}{Parameters}
+{\em lhs} & left hand side \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if data is not nullptr 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a7b4d8c1c830f7be103889705c49a22f0}\label{classbimap_1_1impl_1_1AllocOncePointer_a7b4d8c1c830f7be103889705c49a22f0}} 
+\index{bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator"!=}{operator!=}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr friend bool operator!= (\begin{DoxyParamCaption}\item[{std\+::nullptr\+\_\+t}]{,  }\item[{const \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}}$<$ T $>$ \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & right hand side \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if data is not nullptr 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a4e2520d2956f25404c052b04ee5b0d74}\label{classbimap_1_1impl_1_1AllocOncePointer_a4e2520d2956f25404c052b04ee5b0d74}} 
+\index{bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}!operator==@{operator==}}
+\index{operator==@{operator==}!bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator==}{operator==}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr friend bool operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}}$<$ T $>$ \&}]{lhs,  }\item[{std\+::nullptr\+\_\+t}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em lhs} & left hand side \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if data is not nullptr 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classbimap_1_1impl_1_1AllocOncePointer_a98db97d38269c98b03774cf4fe940601}\label{classbimap_1_1impl_1_1AllocOncePointer_a98db97d38269c98b03774cf4fe940601}} 
+\index{bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}!operator==@{operator==}}
+\index{operator==@{operator==}!bimap::impl::AllocOncePointer$<$ T $>$@{bimap::impl::AllocOncePointer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator==}{operator==}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr friend bool operator== (\begin{DoxyParamCaption}\item[{std\+::nullptr\+\_\+t}]{,  }\item[{const \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}}$<$ T $>$ \&}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & right hande side \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if data is not nullptr 
+\end{DoxyReturn}
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-bidirectional\+\_\+map.\+hpp\end{DoxyCompactItemize}
+\mbox{\hyperlink{bidirectional__map_8hpp}{bidirectional\+\_\+map.\+hpp}}\end{DoxyCompactItemize}

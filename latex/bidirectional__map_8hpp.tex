@@ -1,0 +1,80 @@
+\hypertarget{bidirectional__map_8hpp}{}\doxysection{bidirectional\+\_\+map.\+hpp File Reference}
+\label{bidirectional__map_8hpp}\index{bidirectional\_map.hpp@{bidirectional\_map.hpp}}
+
+
+This file contains the class definition of a bidirectional associative container that can be used for efficient lookup in both directions. Its contents are immutable to ensure the integrity of the underlying map map containers.  
+
+
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include $<$optional$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+{\ttfamily \#include $<$cassert$>$}\newline
+Include dependency graph for bidirectional\+\_\+map.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{bidirectional__map_8hpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structbimap_1_1impl_1_1traits_1_1is__multimap}{bimap\+::impl\+::traits\+::is\+\_\+multimap$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em type trait that indicates that a given typ is a multimap \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{bimap\+::impl\+::\+Alloc\+Once\+Pointer$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Very simple pointer class that can be used to allocate storage once but can also be used as a non owning pointer. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classbimap_1_1impl_1_1Surrogate}{bimap\+::impl\+::\+Surrogate$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Non owning pointer to an object. It overloads the equality operators in order to compare the underlying objects instead of the pointer values. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$}}
+\begin{DoxyCompactList}\small\item\em Bidirectional associative container that supports efficient lookup in both directions. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::iterator}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}} iterator \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacebimap}{bimap}}
+\begin{DoxyCompactList}\small\item\em namespace containing the bidirectional map class \end{DoxyCompactList}\item 
+ \mbox{\hyperlink{namespacebimap_1_1impl}{bimap\+::impl}}
+\begin{DoxyCompactList}\small\item\em Namespace containing structures and helpers used to implement the bidirectional map. Normally there is no need to use any of its members directly. \end{DoxyCompactList}\item 
+ \mbox{\hyperlink{namespacebimap_1_1impl_1_1traits}{bimap\+::impl\+::traits}}
+\begin{DoxyCompactList}\small\item\em namespace containing type traits used in implementation of \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}} \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{bidirectional__map_8hpp_af43ca71360dc1a38bc7b905a43713001}\label{bidirectional__map_8hpp_af43ca71360dc1a38bc7b905a43713001}} 
+\#define {\bfseries R\+E\+Q\+U\+I\+R\+E\+S\+\_\+\+T\+H\+AT}(T\+Y\+P\+E\+N\+A\+ME,  E\+X\+P\+R\+E\+S\+S\+I\+ON)~typename \+\_\+\+T\+\_\+ = T\+Y\+P\+E\+N\+A\+ME, typename = std\+::void\+\_\+t$<$decltype(E\+X\+P\+R\+E\+S\+S\+I\+ON)$>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\constexpr auto \&\& \mbox{\hyperlink{namespacebimap_1_1impl_acf34a33652e1b4bc9e1273930b0c4181}{bimap\+::impl\+::get\+\_\+first}} (T \&\&val) noexcept
+\item 
+{\footnotesize template$<$typename T $>$ }\\constexpr void \mbox{\hyperlink{namespacebimap_1_1impl_a82959a59c7d7bec8d7a9c53301a678cc}{bimap\+::impl\+::swap}} (Alloc\+Once\+Pointer$<$ T $>$ \&a, Alloc\+Once\+Pointer$<$ T $>$ \&b) noexcept
+\item 
+{\footnotesize template$<$typename Forward\+Key , typename Inverse\+Key , template$<$ typename ... $>$ typename Forward\+Map\+Type = std\+::unordered\+\_\+map, template$<$ typename ... $>$ typename Inverse\+Map\+Type = std\+::unordered\+\_\+map$>$ }\\void \mbox{\hyperlink{namespacebimap_abca0ff4955274bfa292bd78054ae1b58}{bimap\+::swap}} (bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$ \&lhs, bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$ \&rhs) noexcept(noexcept(lhs.\+swap(rhs)))
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacebimap_1_1impl_1_1traits_a20356ff34500f95c5aad42c51ca1c7ec}\label{namespacebimap_1_1impl_1_1traits_a20356ff34500f95c5aad42c51ca1c7ec}} 
+{\footnotesize template$<$typename T $>$ }\\constexpr bool {\bfseries bimap\+::impl\+::traits\+::is\+\_\+bidirectional\+\_\+v} = is\+\_\+bidirectional$<$T$>$\+::value
+\item 
+\mbox{\Hypertarget{namespacebimap_1_1impl_1_1traits_ad36b0f7a658911c56bee86a59cb63917}\label{namespacebimap_1_1impl_1_1traits_ad36b0f7a658911c56bee86a59cb63917}} 
+{\footnotesize template$<$typename T $>$ }\\constexpr bool {\bfseries bimap\+::impl\+::traits\+::is\+\_\+multimap\+\_\+v} = is\+\_\+multimap$<$T$>$\+::value
+\item 
+\mbox{\Hypertarget{namespacebimap_1_1impl_1_1traits_a9b64bfaa2675595a3ba071a73b70c2a4}\label{namespacebimap_1_1impl_1_1traits_a9b64bfaa2675595a3ba071a73b70c2a4}} 
+{\footnotesize template$<$typename T $>$ }\\constexpr bool {\bfseries bimap\+::impl\+::traits\+::nothrow\+\_\+comparable} = noexcept(std\+::declval$<$T$>$() == std\+::declval$<$T$>$())
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains the class definition of a bidirectional associative container that can be used for efficient lookup in both directions. Its contents are immutable to ensure the integrity of the underlying map map containers. 
+
+\begin{DoxyAuthor}{Author}
+Tim Luchterhand 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2021-\/06-\/16 
+\end{DoxyDate}

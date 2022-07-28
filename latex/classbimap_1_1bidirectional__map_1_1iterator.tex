@@ -1,5 +1,14 @@
 \hypertarget{classbimap_1_1bidirectional__map_1_1iterator}{}\doxysection{bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::iterator Class Reference}
 \label{classbimap_1_1bidirectional__map_1_1iterator}\index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}}
+
+
+\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}} iterator  
+
+
+
+
+{\ttfamily \#include $<$bidirectional\+\_\+map.\+hpp$>$}
+
 \doxysubsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
@@ -23,22 +32,15 @@ using {\bfseries iterator\+\_\+category} = typename std\+::iterator\+\_\+traits$
 \item 
 constexpr \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator_a37291a42ab19022c759c8e2b4477ba88}{iterator}} (const Iterator\+Type \&it) noexcept(copy\+\_\+constructable)
 \item 
-\mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_afd7b730aad41db58b82e64c3884eb743}\label{classbimap_1_1bidirectional__map_1_1iterator_afd7b730aad41db58b82e64c3884eb743}} 
-constexpr {\bfseries iterator} (const \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \&other) noexcept(std\+::is\+\_\+constructible\+\_\+v$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}, Iterator\+Type $>$)
+constexpr \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator_afd7b730aad41db58b82e64c3884eb743}{iterator}} (const \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \&other) noexcept(std\+::is\+\_\+constructible\+\_\+v$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}, Iterator\+Type $>$)
 \item 
-\mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_a535e30a64353785690b8039829af2858}\label{classbimap_1_1bidirectional__map_1_1iterator_a535e30a64353785690b8039829af2858}} 
-constexpr {\bfseries iterator} (\mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \&\&other) noexcept(std\+::is\+\_\+constructible\+\_\+v$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}, Iterator\+Type $>$)
+constexpr \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator_a535e30a64353785690b8039829af2858}{iterator}} (\mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \&\&other) noexcept(std\+::is\+\_\+constructible\+\_\+v$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}, Iterator\+Type $>$)
 \item 
-\mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_afaa59bdfbbaf101bbcd11a9c07536619}\label{classbimap_1_1bidirectional__map_1_1iterator_afaa59bdfbbaf101bbcd11a9c07536619}} 
-constexpr \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \& {\bfseries operator=} (\mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} other) noexcept(copy\+\_\+assignable)
+constexpr \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \& \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator_afaa59bdfbbaf101bbcd11a9c07536619}{operator=}} (\mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} other) noexcept(copy\+\_\+assignable)
 \item 
 constexpr \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \& \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator_a4aedc7745737115ad106314f9190b7c6}{operator++}} () noexcept(noexcept(++std\+::declval$<$ Iterator\+Type $>$()))
 \item 
 constexpr \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator_a679238b1562457a0bb8d3b42c5e0e59e}{operator++}} (int) noexcept(std\+::is\+\_\+nothrow\+\_\+copy\+\_\+constructible\+\_\+v$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} $>$ \&\&noexcept(++std\+::declval$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} $>$()))
-\item 
-{\footnotesize template$<$bool Is\+Bidirectional = impl\+::traits\+::is\+\_\+bidirectional\+\_\+v$<$\+Iterator\+Type$>$$>$ }\\constexpr auto \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator_a22425e79beb6afdd878afbc28c40c57f}{operator-\/-\/}} () noexcept(noexcept(-\/-\/std\+::declval$<$ Iterator\+Type $>$())) -\/$>$ std\+::enable\+\_\+if\+\_\+t$<$ Is\+Bidirectional, \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \& $>$
-\item 
-{\footnotesize template$<$bool Is\+Bidirectional = impl\+::traits\+::is\+\_\+bidirectional\+\_\+v$<$\+Iterator\+Type$>$$>$ }\\constexpr auto \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator_ae672074a7d7b13f31c405aff94cff1f4}{operator-\/-\/}} (int) noexcept(std\+::is\+\_\+nothrow\+\_\+copy\+\_\+constructible\+\_\+v$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} $>$ \&\&noexcept(-\/-\/std\+::declval$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} $>$())) -\/$>$ std\+::enable\+\_\+if\+\_\+t$<$ Is\+Bidirectional, \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} $>$
 \item 
 constexpr bool \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator_ad927377e828ee945d6e750fd3ea23d99}{operator==}} (const \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \&other) const noexcept(impl\+::traits\+::nothrow\+\_\+comparable$<$ Iterator\+Type $>$)
 \item 
@@ -46,9 +48,16 @@ constexpr bool \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator_a33
 \item 
 constexpr reference \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator_a2171f69a4be916bbc80123c318443c72}{operator$\ast$}} () const
 \item 
-\mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_a64c5bcb8a07ff03a5e1e838e52449184}\label{classbimap_1_1bidirectional__map_1_1iterator_a64c5bcb8a07ff03a5e1e838e52449184}} 
-constexpr pointer {\bfseries operator-\/$>$} () const
+constexpr pointer \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator_a64c5bcb8a07ff03a5e1e838e52449184}{operator-\/$>$}} () const
 \end{DoxyCompactItemize}
+\begin{Indent}\textbf{ bidirectional iterators}\par
+{\em the following operators are only available if all underlying iterators support bidirectional access }\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$bool Is\+Bidirectional = impl\+::traits\+::is\+\_\+bidirectional\+\_\+v$<$\+Iterator\+Type$>$$>$ }\\constexpr auto \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator_a22425e79beb6afdd878afbc28c40c57f}{operator-\/-\/}} () noexcept(noexcept(-\/-\/std\+::declval$<$ Iterator\+Type $>$())) -\/$>$ std\+::enable\+\_\+if\+\_\+t$<$ Is\+Bidirectional, \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \& $>$
+\item 
+{\footnotesize template$<$bool Is\+Bidirectional = impl\+::traits\+::is\+\_\+bidirectional\+\_\+v$<$\+Iterator\+Type$>$$>$ }\\constexpr auto \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator_ae672074a7d7b13f31c405aff94cff1f4}{operator-\/-\/}} (int) noexcept(std\+::is\+\_\+nothrow\+\_\+copy\+\_\+constructible\+\_\+v$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} $>$ \&\&noexcept(-\/-\/std\+::declval$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} $>$())) -\/$>$ std\+::enable\+\_\+if\+\_\+t$<$ Is\+Bidirectional, \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} $>$
+\end{DoxyCompactItemize}
+\end{Indent}
 \doxysubsection*{Friends}
 \begin{DoxyCompactItemize}
 \item 
@@ -57,17 +66,47 @@ class {\bfseries bidirectional\+\_\+map}
 \end{DoxyCompactItemize}
 
 
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Forward\+Key, typename Inverse\+Key, template$<$ typename ... $>$ typename Forward\+Map\+Type = std\+::unordered\+\_\+map, template$<$ typename ... $>$ typename Inverse\+Map\+Type = std\+::unordered\+\_\+map$>$\newline
+class bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::iterator}
+
+\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}} iterator 
+
 \doxysubsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_a37291a42ab19022c759c8e2b4477ba88}\label{classbimap_1_1bidirectional__map_1_1iterator_a37291a42ab19022c759c8e2b4477ba88}} 
 \index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}!iterator@{iterator}}
 \index{iterator@{iterator}!bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}}
-\doxysubsubsection{\texorpdfstring{iterator()}{iterator()}}
+\doxysubsubsection{\texorpdfstring{iterator()}{iterator()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
 {\footnotesize\ttfamily template$<$typename Forward\+Key , typename Inverse\+Key , template$<$ typename ... $>$ typename Forward\+Map\+Type = std\+::unordered\+\_\+map, template$<$ typename ... $>$ typename Inverse\+Map\+Type = std\+::unordered\+\_\+map$>$ \\
 constexpr \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::iterator\+::iterator (\begin{DoxyParamCaption}\item[{const Iterator\+Type \&}]{it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
 
 C\+Tor 
 \begin{DoxyParams}{Parameters}
 {\em it} & iterator to underlying map element \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_afd7b730aad41db58b82e64c3884eb743}\label{classbimap_1_1bidirectional__map_1_1iterator_afd7b730aad41db58b82e64c3884eb743}} 
+\index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}!iterator@{iterator}}
+\index{iterator@{iterator}!bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{iterator()}{iterator()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$typename Forward\+Key , typename Inverse\+Key , template$<$ typename ... $>$ typename Forward\+Map\+Type = std\+::unordered\+\_\+map, template$<$ typename ... $>$ typename Inverse\+Map\+Type = std\+::unordered\+\_\+map$>$ \\
+constexpr \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::iterator\+::iterator (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+Copy ctor 
+\begin{DoxyParams}{Parameters}
+{\em other} & source \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_a535e30a64353785690b8039829af2858}\label{classbimap_1_1bidirectional__map_1_1iterator_a535e30a64353785690b8039829af2858}} 
+\index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}!iterator@{iterator}}
+\index{iterator@{iterator}!bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{iterator()}{iterator()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$typename Forward\+Key , typename Inverse\+Key , template$<$ typename ... $>$ typename Forward\+Map\+Type = std\+::unordered\+\_\+map, template$<$ typename ... $>$ typename Inverse\+Map\+Type = std\+::unordered\+\_\+map$>$ \\
+constexpr \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::iterator\+::iterator (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \&\&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+Move C\+Tor 
+\begin{DoxyParams}{Parameters}
+{\em other} & source \\
 \hline
 \end{DoxyParams}
 
@@ -82,11 +121,11 @@ constexpr bool \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidir
 
 Inequality operator. Compares underlying map iterators 
 \begin{DoxyParams}{Parameters}
-{\em other} & \\
+{\em other} & right hand side \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-
+true if $\ast$this != other 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_a2171f69a4be916bbc80123c318443c72}\label{classbimap_1_1bidirectional__map_1_1iterator_a2171f69a4be916bbc80123c318443c72}} 
 \index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}!operator$\ast$@{operator$\ast$}}
@@ -96,8 +135,18 @@ Inequality operator. Compares underlying map iterators
 constexpr reference \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::iterator\+::operator$\ast$ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
 
 Returns a pair of reference to container elements \begin{DoxyReturn}{Returns}
-
+std\+::pair of references to map elements 
 \end{DoxyReturn}
+\begin{DoxyNote}{Note}
+when using structured bindings, map elements are captured by const reference 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{bidirectional\_map<int, char> map\{\{1, \textcolor{charliteral}{'a'}\}\};}
+\DoxyCodeLine{\textcolor{keyword}{auto} \mbox{\hyperlink{classbimap_1_1bidirectional__map_a7ebfac1450e9aef4926db96a0365fe0c}{begin}} = map.begin();}
+\DoxyCodeLine{\textcolor{keyword}{auto} [num, c] = *\mbox{\hyperlink{classbimap_1_1bidirectional__map_a7ebfac1450e9aef4926db96a0365fe0c}{begin}}; \textcolor{comment}{// num and c are const references, no additional reference binding is necessary}}
+\DoxyCodeLine{num = 3; \textcolor{comment}{// error}}
+\end{DoxyCode}
+ 
+\end{DoxyNote}
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_a4aedc7745737115ad106314f9190b7c6}\label{classbimap_1_1bidirectional__map_1_1iterator_a4aedc7745737115ad106314f9190b7c6}} 
 \index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}!operator++@{operator++}}
 \index{operator++@{operator++}!bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}}
@@ -106,7 +155,7 @@ Returns a pair of reference to container elements \begin{DoxyReturn}{Returns}
 constexpr \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}\& \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::iterator\+::operator++ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
 
 Increments underlying iterator by one \begin{DoxyReturn}{Returns}
-
+reference to this 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_a679238b1562457a0bb8d3b42c5e0e59e}\label{classbimap_1_1bidirectional__map_1_1iterator_a679238b1562457a0bb8d3b42c5e0e59e}} 
 \index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}!operator++@{operator++}}
@@ -116,7 +165,7 @@ Increments underlying iterator by one \begin{DoxyReturn}{Returns}
 constexpr \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::iterator\+::operator++ (\begin{DoxyParamCaption}\item[{int}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
 
 Post increment. Increments underlying iterator by one \begin{DoxyReturn}{Returns}
-
+instance of iterator 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_a22425e79beb6afdd878afbc28c40c57f}\label{classbimap_1_1bidirectional__map_1_1iterator_a22425e79beb6afdd878afbc28c40c57f}} 
 \index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}!operator-\/-\/@{operator-\/-\/}}
@@ -128,11 +177,11 @@ constexpr auto \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidir
 
 Decrements underlying iterator by one. Only available if base iterator supports bidirectional iteration 
 \begin{DoxyTemplParams}{Template Parameters}
-{\em Is\+Bidirectional} & \\
+{\em Is\+Bidirectional} & S\+F\+I\+N\+AE guard. Do not specify \\
 \hline
 \end{DoxyTemplParams}
 \begin{DoxyReturn}{Returns}
-
+reference to this 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_ae672074a7d7b13f31c405aff94cff1f4}\label{classbimap_1_1bidirectional__map_1_1iterator_ae672074a7d7b13f31c405aff94cff1f4}} 
 \index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}!operator-\/-\/@{operator-\/-\/}}
@@ -144,11 +193,36 @@ constexpr auto \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidir
 
 Post decrement. Only available if base iterator supports bidirectional iteration 
 \begin{DoxyTemplParams}{Template Parameters}
-{\em Is\+Bidirectional} & \\
+{\em Is\+Bidirectional} & S\+F\+I\+N\+AE guard. Do not specify \\
 \hline
 \end{DoxyTemplParams}
 \begin{DoxyReturn}{Returns}
+instance of iterator 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_a64c5bcb8a07ff03a5e1e838e52449184}\label{classbimap_1_1bidirectional__map_1_1iterator_a64c5bcb8a07ff03a5e1e838e52449184}} 
+\index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}!operator-\/$>$@{operator-\/$>$}}
+\index{operator-\/$>$@{operator-\/$>$}!bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{operator-\/$>$()}{operator->()}}
+{\footnotesize\ttfamily template$<$typename Forward\+Key , typename Inverse\+Key , template$<$ typename ... $>$ typename Forward\+Map\+Type = std\+::unordered\+\_\+map, template$<$ typename ... $>$ typename Inverse\+Map\+Type = std\+::unordered\+\_\+map$>$ \\
+constexpr pointer \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::iterator\+::operator-\/$>$ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
 
+Member access operator \begin{DoxyReturn}{Returns}
+pointer to reference pair 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_afaa59bdfbbaf101bbcd11a9c07536619}\label{classbimap_1_1bidirectional__map_1_1iterator_afaa59bdfbbaf101bbcd11a9c07536619}} 
+\index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}!operator=@{operator=}}
+\index{operator=@{operator=}!bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily template$<$typename Forward\+Key , typename Inverse\+Key , template$<$ typename ... $>$ typename Forward\+Map\+Type = std\+::unordered\+\_\+map, template$<$ typename ... $>$ typename Inverse\+Map\+Type = std\+::unordered\+\_\+map$>$ \\
+constexpr \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}\& \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::iterator\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+Assignment operator 
+\begin{DoxyParams}{Parameters}
+{\em other} & source \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+reference to this 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_ad927377e828ee945d6e750fd3ea23d99}\label{classbimap_1_1bidirectional__map_1_1iterator_ad927377e828ee945d6e750fd3ea23d99}} 
 \index{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$::iterator}!operator==@{operator==}}
@@ -159,14 +233,14 @@ constexpr bool \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidir
 
 Equality operator. Compares underlying map iterators 
 \begin{DoxyParams}{Parameters}
-{\em other} & \\
+{\em other} & right hand side \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-
+true if underlying iterators are equal 
 \end{DoxyReturn}
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-bidirectional\+\_\+map.\+hpp\end{DoxyCompactItemize}
+\mbox{\hyperlink{bidirectional__map_8hpp}{bidirectional\+\_\+map.\+hpp}}\end{DoxyCompactItemize}

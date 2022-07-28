@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['lower_5fbound_50',['lower_bound',['../classbimap_1_1bidirectional__map.html#aea0458ff3f2052cb76a9f84b0c816c14',1,'bimap::bidirectional_map']]]
+  ['inverse_60',['inverse',['../classbimap_1_1bidirectional__map.html#aa2c2540101bed9d42a489313af5fb8df',1,'bimap::bidirectional_map::inverse() noexcept -&gt; InverseBiMap &amp;'],['../classbimap_1_1bidirectional__map.html#ab528b91dfee6077311000e3ab5e5a38b',1,'bimap::bidirectional_map::inverse() const noexcept -&gt; const InverseBiMap &amp;']]],
+  ['isowner_61',['isOwner',['../classbimap_1_1impl_1_1AllocOncePointer.html#a90cc760e3170fd224c8508e90936ace4',1,'bimap::impl::AllocOncePointer']]],
+  ['iterator_62',['iterator',['../classbimap_1_1bidirectional__map_1_1iterator.html#a37291a42ab19022c759c8e2b4477ba88',1,'bimap::bidirectional_map::iterator::iterator(const IteratorType &amp;it) noexcept(copy_constructable)'],['../classbimap_1_1bidirectional__map_1_1iterator.html#afd7b730aad41db58b82e64c3884eb743',1,'bimap::bidirectional_map::iterator::iterator(const iterator &amp;other) noexcept(std::is_constructible_v&lt; iterator, IteratorType &gt;)'],['../classbimap_1_1bidirectional__map_1_1iterator.html#a535e30a64353785690b8039829af2858',1,'bimap::bidirectional_map::iterator::iterator(iterator &amp;&amp;other) noexcept(std::is_constructible_v&lt; iterator, IteratorType &gt;)']]]
 ];
