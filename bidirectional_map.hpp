@@ -887,23 +887,17 @@ namespace bimap {
         ForwardMap map;
         InversBiMapPtr inverseAccess;
     };
-}
 
-namespace std {
     /**
-     * Specialization to std::swap
-     * @tparam ForwardKey
-     * @tparam InverseKey
-     * @tparam ForwardMapType
-     * @tparam InverseMapType
-     * @param lhs
-     * @param rhs
+     * See member function bidirectional_map::swap
+     * @param lhs left hand side
+     * @param rhs right hand sode
      */
     template<typename ForwardKey, typename InverseKey,
-            template<typename T, typename U> typename ForwardMapType = std::unordered_map,
-            template<typename T, typename U> typename InverseMapType = std::unordered_map>
-    void swap(bimap::bidirectional_map <ForwardKey, InverseKey, ForwardMapType, InverseMapType> &lhs,
-              bimap::bidirectional_map <ForwardKey, InverseKey, ForwardMapType, InverseMapType> &rhs)
+            template<typename ...> typename ForwardMapType = std::unordered_map,
+            template<typename ...> typename InverseMapType = std::unordered_map>
+    void swap(bidirectional_map<ForwardKey, InverseKey, ForwardMapType, InverseMapType> &lhs,
+              bidirectional_map<ForwardKey, InverseKey, ForwardMapType, InverseMapType> &rhs)
     noexcept(noexcept(lhs.swap(rhs))) {
         lhs.swap(rhs);
     }
