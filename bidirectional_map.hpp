@@ -17,7 +17,15 @@
 
 #define REQUIRES_THAT(TYPENAME, EXPRESSION) typename _T_ = TYPENAME, typename = std::void_t<decltype(EXPRESSION)>
 
+/**
+ * @brief Namespace containing structures and helpers used to implement the bidirectional map. Normally there is no need
+ * to use any of its members directly
+ */
 namespace bimap::impl {
+
+    /**
+     * @brief namespace containing type traits used in implementation of bidirectional_map
+     */
     namespace traits {
         template<typename T, typename = std::void_t<>>
         struct is_bidirectional {
@@ -71,6 +79,12 @@ namespace bimap::impl {
         }
     };
 
+    /**
+     * Helper function that selects the first member of a tuple
+     * @tparam T any type
+     * @param val function argument
+     * @return if T is a std::pair, selects the first member. Otherwise, val is forwarded
+     */
     template<typename T>
     constexpr auto &&get_first(T &&val) noexcept {
         return get_first_impl<std::remove_const_t<std::remove_reference_t<T>>>{}(std::forward<T>(val));
@@ -78,8 +92,8 @@ namespace bimap::impl {
 
 
     /**
-     * Very simple pointer class that can be used to allocate storage once but can also be used as a non owning pointer.
-     * Unlike shared_ptr, copies of this class are non-owning pointers and unlike weak_ptr, non-owning pointers
+     * @brief Very simple pointer class that can be used to allocate storage once but can also be used as a non owning pointer.
+     * @details Unlike shared_ptr, copies of this class are non-owning pointers and unlike weak_ptr, non-owning pointers
      * do not know if the object behind the pointer still exists. The owning pointer deallocates storage at destruction
      * @tparam T type of object behind the pointer
      */
@@ -93,13 +107,13 @@ namespace bimap::impl {
 
         /**
          * Creates a non owning pointer to an existing object
-         * @param data
+         * @param data memory location of object
          */
         constexpr AllocOncePointer(T *data) noexcept: data(data), owner(false) {}
 
         /**
          * Allocates storage and creates an instance of T in place. Becomes owner of the storage
-         * @tparam ARGS
+         * @tparam ARGS Argument types
          * @param args Arguments that are passed to the constructor of T by std::forward
          */
         template<typename ...ARGS>
@@ -107,23 +121,32 @@ namespace bimap::impl {
 
         /**
          * Copy constructor, creates a non-owning pointer
-         * @param other
+         * @param other source
          */
         constexpr AllocOncePointer(const AllocOncePointer &other) noexcept: data(other.data), owner(false) {}
 
         /**
          * Swaps pointer and ownership with other
-         * @param other
+         * @param other swap target
          */
         constexpr void swap(AllocOncePointer &other) noexcept {
             std::swap(data, other.data);
             std::swap(owner, other.owner);
         }
 
+        /**
+         * Move CTor. Takes ownership if other is owning
+         * @param other source
+         */
         constexpr AllocOncePointer(AllocOncePointer &&other) noexcept: AllocOncePointer() {
             swap(other);
         }
 
+        /**
+         * Assignment operator
+         * @param other source
+         * @return reference to this
+         */
         constexpr AllocOncePointer &operator=(AllocOncePointer other) noexcept {
             swap(other);
             return *this;
@@ -140,45 +163,92 @@ namespace bimap::impl {
 
         /**
          * Check if pointer is owner
-         * @return
+         * @return true if owner
          */
         [[nodiscard]] constexpr bool isOwner() const noexcept {
             return owner;
         }
 
+        /**
+         * Dereference operator
+         * @return reference to stored data
+         */
         constexpr T &operator*() noexcept {
             return *data;
         }
 
+        /**
+         * @copydoc operator*
+         */
         constexpr const T &operator*() const noexcept {
             return *data;
         }
 
+        /**
+         * Member access operator
+         * @return stored pointer
+         */
         constexpr T *operator->() noexcept {
             return data;
         }
 
+        /**
+         * @copydoc operator->
+         */
         constexpr const T *operator->() const noexcept {
             return data;
         }
 
         /**
-         * Comparison operator
-         * @param other
+         * Equality comparison operator. Compares data pointers
+         * @param other right hand side
          * @return true if data pointers point to the same object, false otherwise
          */
         constexpr bool operator==(const AllocOncePointer &other) const noexcept {
             return data == other.data;
         }
 
-        constexpr bool operator==(std::nullptr_t) const noexcept {
-            return data == nullptr;
+        /**
+         * @copybrief operator==
+         * @param lhs left hand side
+         * @return true if data is not nullptr
+         */
+        friend constexpr bool operator==(const AllocOncePointer &lhs, std::nullptr_t) noexcept {
+            return lhs.data == nullptr;
         }
 
-        constexpr bool operator!=(std::nullptr_t) const noexcept {
-            return data != nullptr;
+        /**
+         * @copybrief operator==
+         * @param rhs right hande side
+         * @return true if data is not nullptr
+         */
+        friend constexpr bool operator==(std::nullptr_t, const AllocOncePointer &rhs) noexcept {
+            return rhs.data == nullptr;
         }
 
+        /**
+         * Inequality comparison operator. Compares data pointers
+         * @param lhs left hand side
+         * @return true if data is not nullptr
+         */
+        friend constexpr bool operator!=(const AllocOncePointer &lhs, std::nullptr_t) noexcept {
+            return lhs.data != nullptr;
+        }
+
+        /**
+         * @copybrief operator!=
+         * @param rhs right hand side
+         * @return true if data is not nullptr
+         */
+        friend constexpr bool operator!=(std::nullptr_t, const AllocOncePointer &rhs) noexcept {
+            return rhs.data != nullptr;
+        }
+
+        /**
+         * @copybrief operator!=
+         * @param other right hand side
+         * @return true if *this is not equal to other
+         */
         constexpr bool operator!=(const T *other) const noexcept {
             return !(*this == other);
         }
@@ -257,6 +327,9 @@ namespace bimap::impl {
 
 }
 
+/**
+ * @brief namespace containing the bidirectional map class
+ */
 namespace bimap {
     /**
      * Bidirectional associative container that supports efficient lookup in both directions. Neither items of type
