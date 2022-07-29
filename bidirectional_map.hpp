@@ -870,7 +870,7 @@ namespace bimap {
          * Returns the value found by the given key
          * @param key key used for lookup
          * @return reference to found value
-         * @throws out_of_range if ey does not exist
+         * @throws out_of_range if key does not exist
          * @note not available when using multimap as base container
          */
         template<bool UniqueKeys = !impl::traits::is_multimap_v<ForwardMap>>
