@@ -1,23 +1,23 @@
-\hypertarget{namespacebimap_1_1impl}{}\doxysection{bimap\+::impl Namespace Reference}
+\hypertarget{namespacebimap_1_1impl}{}\doxysubsection{bimap\+::impl Namespace Reference}
 \label{namespacebimap_1_1impl}\index{bimap::impl@{bimap::impl}}
 
 
 Namespace containing structures and helpers used to implement the bidirectional map. Normally there is no need to use any of its members directly.  
 
 
-\doxysubsection*{Namespaces}
+\doxysubsubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
  \mbox{\hyperlink{namespacebimap_1_1impl_1_1traits}{traits}}
 \begin{DoxyCompactList}\small\item\em namespace containing type traits used in implementation of \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}} \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Data Structures}
+\doxysubsubsection*{Data Structures}
 \begin{DoxyCompactItemize}
 \item 
 class \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}}
 \begin{DoxyCompactList}\small\item\em Very simple pointer class that can be used to allocate storage once but can also be used as a non owning pointer. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classbimap_1_1impl_1_1Surrogate}{Surrogate}}
 \begin{DoxyCompactList}\small\item\em Non owning pointer to an object. It overloads the equality operators in order to compare the underlying objects instead of the pointer values. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Functions}
+\doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
 {\footnotesize template$<$typename T $>$ }\\constexpr auto \&\& \mbox{\hyperlink{namespacebimap_1_1impl_acf34a33652e1b4bc9e1273930b0c4181}{get\+\_\+first}} (T \&\&val) noexcept
@@ -26,14 +26,14 @@ class \mbox{\hyperlink{classbimap_1_1impl_1_1Surrogate}{Surrogate}}
 \end{DoxyCompactItemize}
 
 
-\doxysubsection{Detailed Description}
+\doxysubsubsection{Detailed Description}
 Namespace containing structures and helpers used to implement the bidirectional map. Normally there is no need to use any of its members directly. 
 
-\doxysubsection{Function Documentation}
+\doxysubsubsection{Function Documentation}
 \mbox{\Hypertarget{namespacebimap_1_1impl_acf34a33652e1b4bc9e1273930b0c4181}\label{namespacebimap_1_1impl_acf34a33652e1b4bc9e1273930b0c4181}} 
 \index{bimap::impl@{bimap::impl}!get\_first@{get\_first}}
 \index{get\_first@{get\_first}!bimap::impl@{bimap::impl}}
-\doxysubsubsection{\texorpdfstring{get\_first()}{get\_first()}}
+\doxyparagraph{\texorpdfstring{get\_first()}{get\_first()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 constexpr auto\&\& bimap\+::impl\+::get\+\_\+first (\begin{DoxyParamCaption}\item[{T \&\&}]{val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
 
@@ -53,11 +53,11 @@ if T is a std\+::pair, selects the first member. Otherwise, val is forwarded
 \mbox{\Hypertarget{namespacebimap_1_1impl_a82959a59c7d7bec8d7a9c53301a678cc}\label{namespacebimap_1_1impl_a82959a59c7d7bec8d7a9c53301a678cc}} 
 \index{bimap::impl@{bimap::impl}!swap@{swap}}
 \index{swap@{swap}!bimap::impl@{bimap::impl}}
-\doxysubsubsection{\texorpdfstring{swap()}{swap()}}
+\doxyparagraph{\texorpdfstring{swap()}{swap()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 constexpr void bimap\+::impl\+::swap (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}}$<$ T $>$ \&}]{a,  }\item[{\mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer}{Alloc\+Once\+Pointer}}$<$ T $>$ \&}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
 
-See member function swap 
+See member function \mbox{\hyperlink{classbimap_1_1impl_1_1AllocOncePointer_ae831a1f4da6b8ea08e82036da142614f}{Alloc\+Once\+Pointer\+::swap}} 
 \begin{DoxyTemplParams}{Template Parameters}
 {\em T} & type of pointer \\
 \hline
