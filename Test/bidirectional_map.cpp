@@ -271,7 +271,7 @@ TEST(BidirectionalMap, return_inverse) {
     using namespace bimap;
     auto generator = []() -> bidirectional_map<int, std::string> {
         bidirectional_map<std::string, int> map = {{"Test", 123}, {"NewItem", 456}, {"Stuff", 789}};
-        return move(map.inverse());
+        return std::move(map.inverse());
     };
 
     auto test = generator();
