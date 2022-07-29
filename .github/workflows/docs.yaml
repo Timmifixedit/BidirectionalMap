@@ -2,7 +2,7 @@ name: documentation
 
 on:
   push:
-    branches: [ "LatexDoc" ]
+    branches: [ "master" ]
   workflow_dispatch:
 
 env:
