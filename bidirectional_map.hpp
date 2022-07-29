@@ -269,7 +269,7 @@ namespace bimap::impl {
     };
 
     /**
-     * See member function swap
+     * See member function AllocOncePointer::swap
      * @tparam T type of pointer
      * @param a left hand side
      * @param b right hand side
