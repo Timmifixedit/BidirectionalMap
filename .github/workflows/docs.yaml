@@ -2,19 +2,19 @@ name: documentation
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "LatexDoc" ]
   workflow_dispatch:
 
 env:
-  DOCS_OUT_DIR: docs/html
+  DOCS_OUT_DIR: docs
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: install doxygen
-        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
+      - name: install dependencies
+        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz texlive texlive-latex-extra
       - name: create output dir
         run: mkdir -p ${{ env.DOCS_OUT_DIR }}
       - name: run doxygen
@@ -23,6 +23,8 @@ jobs:
           cat README.md | sed "s/\`c++/\`{.cpp}/" | sed "s/\`\`\`/~~~/" > README_tmp.md
           mv README_tmp.md README.md
           doxygen .github/workflows/Doxyfile
+      - name: build pdf
+        run: cd ${{ env.DOCS_OUT_DIR }}/latex && make && mv refman.pdf ../BidirectionalMapDocs.pdf && make clean
       - name: deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
