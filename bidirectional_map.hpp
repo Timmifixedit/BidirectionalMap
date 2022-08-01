@@ -704,7 +704,7 @@ namespace bimap {
 
         /**
          * iterator to first element
-         * @note Ordering of objects depends on the underlying container specified by ForwardMpaType and InverseMapType.
+         * @note Ordering of objects depends on the underlying container specified by ForwardMapType and InverseMapType.
          * Ordering of forward access may be different from ordering of inverse access
          * @return iterator to first element of forward lookup map
          */
