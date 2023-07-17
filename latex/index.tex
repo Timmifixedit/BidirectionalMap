@@ -1,4 +1,6 @@
-\href{https://github.com/Timmifixedit/BidirectionalMap/actions/workflows/unit_tests.yml}{\texttt{ }} \hypertarget{index_autotoc_md0}{}\doxysubsection{bidirectional\+\_\+map}\label{index_autotoc_md0}
+\label{index_md_README}%
+\Hypertarget{index_md_README}%
+ \href{https://github.com/Timmifixedit/BidirectionalMap/actions/workflows/unit_tests.yml}{\texttt{ }} \hypertarget{index_autotoc_md0}{}\doxysubsection{bidirectional\+\_\+map}\label{index_autotoc_md0}
 Implementation of a bidirectional associative container in c++. Its goal is to behave similarly to popular stl containers like {\ttfamily std\+::unordered\+\_\+map} while providing efficient lookup from key to value as well as from value to key. \hypertarget{index_autotoc_md1}{}\doxysubsubsection{Properties}\label{index_autotoc_md1}
 The {\ttfamily bidirectional\+\_\+map} container contains pairs of values of type K1 and K2.
 \begin{DoxyItemize}
@@ -8,71 +10,70 @@ The {\ttfamily bidirectional\+\_\+map} container contains pairs of values of typ
 \end{DoxyItemize}\hypertarget{index_autotoc_md2}{}\doxysubsubsection{Doxygen Documentation}\label{index_autotoc_md2}
 
 \begin{DoxyItemize}
-\item \href{https://timmifixedit.github.io/BidirectionalMap/html/index.html}{\texttt{ H\+T\+ML}}
-\item \href{https://timmifixedit.github.io/BidirectionalMap/BidirectionalMapDocs.pdf}{\texttt{ P\+DF}}
+\item \href{https://timmifixedit.github.io/BidirectionalMap/html/index.html}{\texttt{ HTML}}
+\item \href{https://timmifixedit.github.io/BidirectionalMap/BidirectionalMapDocs.pdf}{\texttt{ PDF}}
 \end{DoxyItemize}\hypertarget{index_autotoc_md3}{}\doxysubsubsection{Code Example}\label{index_autotoc_md3}
 An instance of {\ttfamily bidirectional\+\_\+map} can be created similarly to {\ttfamily std\+::unordered\+\_\+map}\+: 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\textcolor{preprocessor}{\#include <string>}}
 \DoxyCodeLine{\textcolor{preprocessor}{\#include <unordered\_map>}}
-\DoxyCodeLine{\textcolor{preprocessor}{\#include "\mbox{\hyperlink{bidirectional__map_8hpp}{bidirectional\_map.hpp}}"}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{bidirectional__map_8hpp}{bidirectional\_map.hpp}}"{}}}
 \DoxyCodeLine{}
 \DoxyCodeLine{\textcolor{comment}{// empty container}}
 \DoxyCodeLine{\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap::bidirectional\_map<std::string, int>}} map;}
 \DoxyCodeLine{}
 \DoxyCodeLine{\textcolor{comment}{// using initializer list}}
-\DoxyCodeLine{\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap::bidirectional\_map<std::string, int>}} map1 = \{\{\textcolor{stringliteral}{"Test"}, 1\}, \{\textcolor{stringliteral}{"Hello"}, 2\}\}; }
+\DoxyCodeLine{\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap::bidirectional\_map<std::string, int>}} map1 = \{\{\textcolor{stringliteral}{"{}Test"{}}, 1\}, \{\textcolor{stringliteral}{"{}Hello"{}}, 2\}\}; }
 \DoxyCodeLine{}
 \DoxyCodeLine{\textcolor{comment}{// from same container type}}
 \DoxyCodeLine{\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap::bidirectional\_map<std::string, int>}} map3(map1.\mbox{\hyperlink{classbimap_1_1bidirectional__map_a7ebfac1450e9aef4926db96a0365fe0c}{begin}}(), map1.\mbox{\hyperlink{classbimap_1_1bidirectional__map_a20d7c9ce77dd7b536dcac6e2eead87fa}{end}}());}
 \DoxyCodeLine{}
 \DoxyCodeLine{\textcolor{comment}{// from different container type}}
-\DoxyCodeLine{std::unordered\_map<std::string, int> values = \{\{\textcolor{stringliteral}{"abc"}, 1\}, \{\textcolor{stringliteral}{"def"}, 2\}\};}
+\DoxyCodeLine{std::unordered\_map<std::string, int> values = \{\{\textcolor{stringliteral}{"{}abc"{}}, 1\}, \{\textcolor{stringliteral}{"{}def"{}}, 2\}\};}
 \DoxyCodeLine{\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap::bidirectional\_map<std::string, int>}} map2(values.begin(), values.end());}
+
 \end{DoxyCode}
-
-
-From the items used for initialization only unique ones are inserted (see properties). Further items can be inserted using the {\ttfamily emplace} method 
+ From the items used for initialization only unique ones are inserted (see properties). Further items can be inserted using the {\ttfamily emplace} method 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap::bidirectional\_map<std::string, int>}} map;}
-\DoxyCodeLine{map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_adeb2087b3fdd54c9eb0597af8a28c6aa}{emplace}}(\textcolor{stringliteral}{"NewItem"}, 17); \textcolor{comment}{// constructs new item in place}}
+\DoxyCodeLine{map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_adeb2087b3fdd54c9eb0597af8a28c6aa}{emplace}}(\textcolor{stringliteral}{"{}NewItem"{}}, 17); \textcolor{comment}{// constructs new item in place}}
 \DoxyCodeLine{}
-\DoxyCodeLine{\textcolor{comment}{// no insertion. 17 already exists in the container. Returns iterator to ("NewItem", 17)}}
-\DoxyCodeLine{\textcolor{keyword}{auto} [iterator, inserted] = map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_adeb2087b3fdd54c9eb0597af8a28c6aa}{emplace}}(\textcolor{stringliteral}{"AnotherItem"}, 17);}
+\DoxyCodeLine{\textcolor{comment}{// no insertion. 17 already exists in the container. Returns iterator to ("{}NewItem"{}, 17)}}
+\DoxyCodeLine{\textcolor{keyword}{auto} [iterator, inserted] = map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_adeb2087b3fdd54c9eb0597af8a28c6aa}{emplace}}(\textcolor{stringliteral}{"{}AnotherItem"{}}, 17);}
+
 \end{DoxyCode}
-
-
-Item lookup\+: 
+ Item lookup\+: 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap::bidirectional\_map<std::string, int>}} map\{\{\textcolor{stringliteral}{"NewItem"}, 12\}, \{\textcolor{stringliteral}{"Stuff"}, 17\}\};}
-\DoxyCodeLine{\textcolor{keyword}{auto} location = map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_a0947502711494ca13e834d07728d42dd}{find}}(\textcolor{stringliteral}{"NewItem"});}
+\DoxyCodeLine{\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap::bidirectional\_map<std::string, int>}} map\{\{\textcolor{stringliteral}{"{}NewItem"{}}, 12\}, \{\textcolor{stringliteral}{"{}Stuff"{}}, 17\}\};}
+\DoxyCodeLine{\textcolor{keyword}{auto} location = map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_a0947502711494ca13e834d07728d42dd}{find}}(\textcolor{stringliteral}{"{}NewItem"{}});}
 \DoxyCodeLine{\textcolor{keywordflow}{if} (location != map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_a20d7c9ce77dd7b536dcac6e2eead87fa}{end}}()) \{}
 \DoxyCodeLine{    std::cout << location-\/>first << std::endl;}
 \DoxyCodeLine{\}}
 \DoxyCodeLine{}
-\DoxyCodeLine{\textcolor{keywordflow}{if} (map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_a1545d66d8b6ad045c54ba8e0df542f36}{contains}}(\textcolor{stringliteral}{"Stuff"})) \{}
-\DoxyCodeLine{    std::cout << map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_a40c1e68b6431da986028fb5d9d7a2b41}{at}}(\textcolor{stringliteral}{"Stuff"}) << std::endl; \textcolor{comment}{// at is only available when using underlying container that enforces}}
+\DoxyCodeLine{\textcolor{keywordflow}{if} (map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_a1545d66d8b6ad045c54ba8e0df542f36}{contains}}(\textcolor{stringliteral}{"{}Stuff"{}})) \{}
+\DoxyCodeLine{    std::cout << map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_a40c1e68b6431da986028fb5d9d7a2b41}{at}}(\textcolor{stringliteral}{"{}Stuff"{}}) << std::endl; \textcolor{comment}{// at is only available when using underlying container that enforces}}
 \DoxyCodeLine{                                               \textcolor{comment}{// unique keys}}
 \DoxyCodeLine{\}}
+
 \end{DoxyCode}
 \hypertarget{index_autotoc_md4}{}\doxyparagraph{Inverse Access}\label{index_autotoc_md4}
 Using the {\ttfamily inverse()} member, inverse lookup and insertion is possible\+: 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap::bidirectional\_map<std::string, int>}} map;}
-\DoxyCodeLine{map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_aa2c2540101bed9d42a489313af5fb8df}{inverse}}().emplace(123, \textcolor{stringliteral}{"one two three"}); \textcolor{comment}{// inverse insertion}}
+\DoxyCodeLine{map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_aa2c2540101bed9d42a489313af5fb8df}{inverse}}().emplace(123, \textcolor{stringliteral}{"{}one two three"{}}); \textcolor{comment}{// inverse insertion}}
 \DoxyCodeLine{\textcolor{keyword}{auto} invLocation = map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_aa2c2540101bed9d42a489313af5fb8df}{inverse}}().find(123); \textcolor{comment}{// inverse lookup}}
 \DoxyCodeLine{std::cout << invLocation-\/>first << std::endl; \textcolor{comment}{// prints '123'}}
 \DoxyCodeLine{}
 \DoxyCodeLine{\textcolor{comment}{// inverse of inverse() is again the original}}
-\DoxyCodeLine{\textcolor{keyword}{auto} location = map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_aa2c2540101bed9d42a489313af5fb8df}{inverse}}().inverse().find(\textcolor{stringliteral}{"one two three"});}
+\DoxyCodeLine{\textcolor{keyword}{auto} location = map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_aa2c2540101bed9d42a489313af5fb8df}{inverse}}().inverse().find(\textcolor{stringliteral}{"{}one two three"{}});}
+
 \end{DoxyCode}
-
-
-{\ttfamily inverse()} returns a reference to {\ttfamily bidirectional\+\_\+map} where the template types K1 and K2 are reversed. It behaves exactly like the original map except... well the other way around. Even the iterator members are reversed. Copying the {\ttfamily inverse()} container is allowed and will copy the container contents. Moving from {\ttfamily inverse()} is also allowed and behaves as expected. 
+ {\ttfamily inverse()} returns a reference to {\ttfamily bidirectional\+\_\+map} where the template types K1 and K2 are reversed. It behaves exactly like the original map except... well the other way around. Even the iterator members are reversed. Copying the {\ttfamily inverse()} container is allowed and will copy the container contents. Moving from {\ttfamily inverse()} is also allowed and behaves as expected. 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap::bidirectional\_map<std::string, int>}} map; \textcolor{comment}{// map from std::string -\/> int}}
 \DoxyCodeLine{\textcolor{keyword}{auto} inverse = map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_aa2c2540101bed9d42a489313af5fb8df}{inverse}}(); \textcolor{comment}{// independent (copied) container of reversed type (int -\/> string)}}
 \DoxyCodeLine{\textcolor{keyword}{auto} \&inverseRef = map.\mbox{\hyperlink{classbimap_1_1bidirectional__map_aa2c2540101bed9d42a489313af5fb8df}{inverse}}(); \textcolor{comment}{// inverse access to the same container}}
+
 \end{DoxyCode}
 \hypertarget{index_autotoc_md5}{}\doxyparagraph{Custom Map Base Container}\label{index_autotoc_md5}
 It is possible to specify a custom map base container for forward lookup as well as for inverse lookup. The default map base type is {\ttfamily std\+::unordered\+\_\+map} for forward access as well as for inverse access. Another possible map base type is {\ttfamily std\+::map}\+: 
@@ -83,10 +84,9 @@ It is possible to specify a custom map base container for forward lookup as well
 \DoxyCodeLine{}
 \DoxyCodeLine{\textcolor{comment}{// Both forward and inverse access use std::map}}
 \DoxyCodeLine{\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap::bidirectional\_map<std::string, int, std::map, std::map>}} map1;}
+
 \end{DoxyCode}
-
-
-Another scenario for using a different map base type is when you need to specify for example a custom hash function\+: 
+ Another scenario for using a different map base type is when you need to specify for example a custom hash function\+: 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\textcolor{keyword}{struct }MyString \{...\}; \textcolor{comment}{// Custom data structure with no default std::hash specialization}}
 \DoxyCodeLine{\textcolor{keyword}{struct }MyHash \{...\}; \textcolor{comment}{// Custom hash struct}}
@@ -97,5 +97,6 @@ Another scenario for using a different map base type is when you need to specify
 \DoxyCodeLine{}
 \DoxyCodeLine{\textcolor{comment}{// for inverse access the default std::unordered\_map is sufficient}}
 \DoxyCodeLine{\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap::bidirectional\_map<MyString, int, BaseMap>}} map;}
+
 \end{DoxyCode}
  

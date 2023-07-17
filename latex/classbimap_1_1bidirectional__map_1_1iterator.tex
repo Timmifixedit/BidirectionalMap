@@ -18,8 +18,8 @@ using {\bfseries value\+\_\+type} = std\+::pair$<$ const Forward\+Key \&, const 
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_a79a9966773028a1052fb4b1f1de03906}\label{classbimap_1_1bidirectional__map_1_1iterator_a79a9966773028a1052fb4b1f1de03906}} 
 using {\bfseries reference} = value\+\_\+type
 \item 
-\mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_a309451b73ca571f4abed0ccd80db2b25}\label{classbimap_1_1bidirectional__map_1_1iterator_a309451b73ca571f4abed0ccd80db2b25}} 
-using {\bfseries pointer} = std\+::add\+\_\+pointer\+\_\+t$<$ std\+::add\+\_\+const\+\_\+t$<$ value\+\_\+type $>$ $>$
+\mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_a1a4c02c48fc706ae903ca35d418e088b}\label{classbimap_1_1bidirectional__map_1_1iterator_a1a4c02c48fc706ae903ca35d418e088b}} 
+using {\bfseries pointer} = impl\+::arrow\+\_\+proxy$<$ value\+\_\+type $>$
 \item 
 \mbox{\Hypertarget{classbimap_1_1bidirectional__map_1_1iterator_ac61a60ca6f1b4c41b7c8f2fec3a3af52}\label{classbimap_1_1bidirectional__map_1_1iterator_ac61a60ca6f1b4c41b7c8f2fec3a3af52}} 
 using {\bfseries diference\+\_\+type} = typename std\+::iterator\+\_\+traits$<$ Iterator\+Type $>$\+::difference\+\_\+type
@@ -80,7 +80,7 @@ class bimap\+::bidirectional\+\_\+map$<$ Forward\+Key, Inverse\+Key, Forward\+Ma
 {\footnotesize\ttfamily template$<$typename Forward\+Key , typename Inverse\+Key , template$<$ typename ... $>$ typename Forward\+Map\+Type = std\+::unordered\+\_\+map, template$<$ typename ... $>$ typename Inverse\+Map\+Type = std\+::unordered\+\_\+map$>$ \\
 constexpr \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::iterator\+::iterator (\begin{DoxyParamCaption}\item[{const Iterator\+Type \&}]{it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
 
-C\+Tor 
+CTor 
 \begin{DoxyParams}{Parameters}
 {\em it} & iterator to underlying map element \\
 \hline
@@ -104,7 +104,7 @@ Copy ctor
 {\footnotesize\ttfamily template$<$typename Forward\+Key , typename Inverse\+Key , template$<$ typename ... $>$ typename Forward\+Map\+Type = std\+::unordered\+\_\+map, template$<$ typename ... $>$ typename Inverse\+Map\+Type = std\+::unordered\+\_\+map$>$ \\
 constexpr \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::iterator\+::iterator (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \&\&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
 
-Move C\+Tor 
+Move CTor 
 \begin{DoxyParams}{Parameters}
 {\em other} & source \\
 \hline
@@ -144,6 +144,7 @@ when using structured bindings, map elements are captured by const reference
 \DoxyCodeLine{\textcolor{keyword}{auto} \mbox{\hyperlink{classbimap_1_1bidirectional__map_a7ebfac1450e9aef4926db96a0365fe0c}{begin}} = map.begin();}
 \DoxyCodeLine{\textcolor{keyword}{auto} [num, c] = *\mbox{\hyperlink{classbimap_1_1bidirectional__map_a7ebfac1450e9aef4926db96a0365fe0c}{begin}}; \textcolor{comment}{// num and c are const references, no additional reference binding is necessary}}
 \DoxyCodeLine{num = 3; \textcolor{comment}{// error}}
+
 \end{DoxyCode}
  
 \end{DoxyNote}
@@ -177,7 +178,7 @@ constexpr auto \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidir
 
 Decrements underlying iterator by one. Only available if base iterator supports bidirectional iteration 
 \begin{DoxyTemplParams}{Template Parameters}
-{\em Is\+Bidirectional} & S\+F\+I\+N\+AE guard. Do not specify \\
+{\em Is\+Bidirectional} & SFINAE guard. Do not specify \\
 \hline
 \end{DoxyTemplParams}
 \begin{DoxyReturn}{Returns}
@@ -193,7 +194,7 @@ constexpr auto \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidir
 
 Post decrement. Only available if base iterator supports bidirectional iteration 
 \begin{DoxyTemplParams}{Template Parameters}
-{\em Is\+Bidirectional} & S\+F\+I\+N\+AE guard. Do not specify \\
+{\em Is\+Bidirectional} & SFINAE guard. Do not specify \\
 \hline
 \end{DoxyTemplParams}
 \begin{DoxyReturn}{Returns}

@@ -31,7 +31,7 @@ void \mbox{\hyperlink{classbimap_1_1bidirectional__map_a7bf8224a3833942f396c0aa3
 \item 
 \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}} \& \mbox{\hyperlink{classbimap_1_1bidirectional__map_aece03979801b20b2e770cebf17d36901}{operator=}} (\mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}} other) noexcept(noexcept(std\+::declval$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bidirectional\+\_\+map}} $>$().\mbox{\hyperlink{classbimap_1_1bidirectional__map_a7bf8224a3833942f396c0aa3e3387146}{swap}}(other)))
 \item 
-{\footnotesize template$<$typename ... A\+R\+GS$>$ }\\auto \mbox{\hyperlink{classbimap_1_1bidirectional__map_adeb2087b3fdd54c9eb0597af8a28c6aa}{emplace}} (A\+R\+GS \&\&...args) -\/$>$ std\+::pair$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}, bool $>$
+{\footnotesize template$<$typename ... ARGS$>$ }\\auto \mbox{\hyperlink{classbimap_1_1bidirectional__map_adeb2087b3fdd54c9eb0597af8a28c6aa}{emplace}} (ARGS \&\&...args) -\/$>$ std\+::pair$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}, bool $>$
 \item 
 auto \mbox{\hyperlink{classbimap_1_1bidirectional__map_aaf83f9f01ac48219ef7204e7df42c0aa}{size}} () const noexcept(noexcept(std\+::declval$<$ Forward\+Map $>$().size()))
 \item 
@@ -47,9 +47,9 @@ constexpr auto \mbox{\hyperlink{classbimap_1_1bidirectional__map_ab528b91dfee607
 \item 
 \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \mbox{\hyperlink{classbimap_1_1bidirectional__map_a0947502711494ca13e834d07728d42dd}{find}} (const Forward\+Key \&key) const noexcept(noexcept(std\+::declval$<$ Forward\+Map $>$().find(key)) \&\&iterator\+\_\+ctor\+\_\+nothrow)
 \item 
-{\footnotesize template$<$R\+E\+Q\+U\+I\+R\+E\+S\+\_\+\+T\+H\+A\+T(\+Forward\+Map, std\+::declval$<$ \+\_\+\+T\+\_\+ $>$().\+lower\+\_\+bound(std\+::declval$<$ Forward\+Key $>$())) $>$ }\\auto \mbox{\hyperlink{classbimap_1_1bidirectional__map_aea0458ff3f2052cb76a9f84b0c816c14}{lower\+\_\+bound}} (const Forward\+Key \&key) const noexcept(noexcept(std\+::declval$<$ Forward\+Map $>$().lower\+\_\+bound(key)) \&\&iterator\+\_\+ctor\+\_\+nothrow) -\/$>$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}
+{\footnotesize template$<$REQUIRES\+\_\+\+THAT(\+Forward\+Map, std\+::declval$<$ \+\_\+\+T\+\_\+ $>$().\+lower\+\_\+bound(std\+::declval$<$ Forward\+Key $>$())) $>$ }\\auto \mbox{\hyperlink{classbimap_1_1bidirectional__map_aea0458ff3f2052cb76a9f84b0c816c14}{lower\+\_\+bound}} (const Forward\+Key \&key) const noexcept(noexcept(std\+::declval$<$ Forward\+Map $>$().lower\+\_\+bound(key)) \&\&iterator\+\_\+ctor\+\_\+nothrow) -\/$>$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}
 \item 
-{\footnotesize template$<$R\+E\+Q\+U\+I\+R\+E\+S\+\_\+\+T\+H\+A\+T(\+Forward\+Map, std\+::declval$<$ \+\_\+\+T\+\_\+ $>$().\+upper\+\_\+bound(std\+::declval$<$ Forward\+Key $>$())) $>$ }\\auto \mbox{\hyperlink{classbimap_1_1bidirectional__map_a3a0e37ee3471fd2f82ba587e9ca1a598}{upper\+\_\+bound}} (const Forward\+Key \&key) const noexcept(noexcept(std\+::declval$<$ Forward\+Map $>$().upper\+\_\+bound(key)) \&\&iterator\+\_\+ctor\+\_\+nothrow) -\/$>$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}
+{\footnotesize template$<$REQUIRES\+\_\+\+THAT(\+Forward\+Map, std\+::declval$<$ \+\_\+\+T\+\_\+ $>$().\+upper\+\_\+bound(std\+::declval$<$ Forward\+Key $>$())) $>$ }\\auto \mbox{\hyperlink{classbimap_1_1bidirectional__map_a3a0e37ee3471fd2f82ba587e9ca1a598}{upper\+\_\+bound}} (const Forward\+Key \&key) const noexcept(noexcept(std\+::declval$<$ Forward\+Map $>$().upper\+\_\+bound(key)) \&\&iterator\+\_\+ctor\+\_\+nothrow) -\/$>$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}
 \item 
 auto \mbox{\hyperlink{classbimap_1_1bidirectional__map_a3a479cc29a7fa411086c7b8c81b74068}{equal\+\_\+range}} (const Forward\+Key \&key) const noexcept(noexcept(std\+::declval$<$ Forward\+Map $>$().equal\+\_\+range(key)) \&\&iterator\+\_\+ctor\+\_\+nothrow) -\/$>$ std\+::pair$<$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}, \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} $>$
 \item 
@@ -170,7 +170,7 @@ Move constructor. Moves objects from other. If Forward\+Map\+Type and Inverse\+M
 \hline
 \end{DoxyParams}
 \begin{DoxyNote}{Note}
-this move C\+Tor may throw exceptions if memory allocation fails 
+this move CTor may throw exceptions if memory allocation fails 
 \end{DoxyNote}
 Here is the call graph for this function\+:
 \nopagebreak
@@ -223,7 +223,7 @@ Here is the call graph for this function\+:
 \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
 iterator to first element \begin{DoxyNote}{Note}
-Ordering of objects depends on the underlying container specified by Forward\+Mpa\+Type and Inverse\+Map\+Type. Ordering of forward access may be different from ordering of inverse access 
+Ordering of objects depends on the underlying container specified by Forward\+Map\+Type and Inverse\+Map\+Type. Ordering of forward access may be different from ordering of inverse access 
 \end{DoxyNote}
 \begin{DoxyReturn}{Returns}
 iterator to first element of forward lookup map 
@@ -263,12 +263,12 @@ Here is the call graph for this function\+:
 \index{emplace@{emplace}!bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$}}
 \doxyparagraph{\texorpdfstring{emplace()}{emplace()}}
 {\footnotesize\ttfamily template$<$typename Forward\+Key , typename Inverse\+Key , template$<$ typename ... $>$ typename Forward\+Map\+Type = std\+::unordered\+\_\+map, template$<$ typename ... $>$ typename Inverse\+Map\+Type = std\+::unordered\+\_\+map$>$ \\
-template$<$typename ... A\+R\+GS$>$ \\
-auto \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::emplace (\begin{DoxyParamCaption}\item[{A\+R\+GS \&\&...}]{args }\end{DoxyParamCaption}) -\/$>$ std\+::pair$<$\mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}, bool$>$ \hspace{0.3cm}{\ttfamily [inline]}}
+template$<$typename ... ARGS$>$ \\
+auto \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::emplace (\begin{DoxyParamCaption}\item[{ARGS \&\&...}]{args }\end{DoxyParamCaption}) -\/$>$ std\+::pair$<$\mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}}, bool$>$ \hspace{0.3cm}{\ttfamily [inline]}}
 
 Constructs elements in place. If a pair of values with same Forward\+Key or same Inverse\+Key already exists and the corresponding container requires unique keys, then no insertion happens. For example, if std\+::multiset is used for forward lookup and the map contains the following pair \+:(a, b) then inserting (a, b\textquotesingle{}) is possible whereas (a\textquotesingle{}, b) will not be inserted since the inverse lookup is carried out by std\+::unordered\+\_\+map 
 \begin{DoxyTemplParams}{Template Parameters}
-{\em A\+R\+GS} & argument types \\
+{\em ARGS} & argument types \\
 \hline
 \end{DoxyTemplParams}
 
@@ -457,7 +457,7 @@ Reference to inverted map
 \index{lower\_bound@{lower\_bound}!bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$}}
 \doxyparagraph{\texorpdfstring{lower\_bound()}{lower\_bound()}}
 {\footnotesize\ttfamily template$<$typename Forward\+Key , typename Inverse\+Key , template$<$ typename ... $>$ typename Forward\+Map\+Type = std\+::unordered\+\_\+map, template$<$ typename ... $>$ typename Inverse\+Map\+Type = std\+::unordered\+\_\+map$>$ \\
-template$<$R\+E\+Q\+U\+I\+R\+E\+S\+\_\+\+T\+H\+A\+T(\+Forward\+Map, std\+::declval$<$ \+\_\+\+T\+\_\+ $>$().\+lower\+\_\+bound(std\+::declval$<$ Forward\+Key $>$())) $>$ \\
+template$<$REQUIRES\+\_\+\+THAT(\+Forward\+Map, std\+::declval$<$ \+\_\+\+T\+\_\+ $>$().\+lower\+\_\+bound(std\+::declval$<$ Forward\+Key $>$())) $>$ \\
 auto \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::lower\+\_\+bound (\begin{DoxyParamCaption}\item[{const Forward\+Key \&}]{key }\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
 Calls lower\+\_\+bound on the underlying container. For more information see documentation of the respective container type. Only available when using sorted containers like std\+::map 
@@ -559,7 +559,7 @@ Here is the caller graph for this function\+:
 \index{upper\_bound@{upper\_bound}!bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$@{bimap::bidirectional\_map$<$ ForwardKey, InverseKey, ForwardMapType, InverseMapType $>$}}
 \doxyparagraph{\texorpdfstring{upper\_bound()}{upper\_bound()}}
 {\footnotesize\ttfamily template$<$typename Forward\+Key , typename Inverse\+Key , template$<$ typename ... $>$ typename Forward\+Map\+Type = std\+::unordered\+\_\+map, template$<$ typename ... $>$ typename Inverse\+Map\+Type = std\+::unordered\+\_\+map$>$ \\
-template$<$R\+E\+Q\+U\+I\+R\+E\+S\+\_\+\+T\+H\+A\+T(\+Forward\+Map, std\+::declval$<$ \+\_\+\+T\+\_\+ $>$().\+upper\+\_\+bound(std\+::declval$<$ Forward\+Key $>$())) $>$ \\
+template$<$REQUIRES\+\_\+\+THAT(\+Forward\+Map, std\+::declval$<$ \+\_\+\+T\+\_\+ $>$().\+upper\+\_\+bound(std\+::declval$<$ Forward\+Key $>$())) $>$ \\
 auto \mbox{\hyperlink{classbimap_1_1bidirectional__map}{bimap\+::bidirectional\+\_\+map}}$<$ Forward\+Key, Inverse\+Key, Forward\+Map\+Type, Inverse\+Map\+Type $>$\+::upper\+\_\+bound (\begin{DoxyParamCaption}\item[{const Forward\+Key \&}]{key }\end{DoxyParamCaption}) const -\/$>$ \mbox{\hyperlink{classbimap_1_1bidirectional__map_1_1iterator}{iterator}} \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [noexcept]}}
 
 Calls upper\+\_\+bound on the underlying container. For more information see documentation of the respective container type. Only available when using sorted containers like std\+::map 
