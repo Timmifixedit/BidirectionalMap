@@ -12,7 +12,6 @@
 
 #include <unordered_map>
 #include <map>
-#include <optional>
 #include <stdexcept>
 #include <cassert>
 
@@ -362,6 +361,19 @@ namespace bimap::impl {
     private:
         T * data;
     };
+
+    // stolen from here https://quuxplusone.github.io/blog/2019/02/06/arrow-proxy/
+    template<typename T>
+    struct arrow_proxy {
+        T t;
+        constexpr const T *operator->() const noexcept {
+            return &t;
+        }
+
+        constexpr T *operator->() noexcept {
+            return &t;
+        }
+    };
 }
 
 /**
@@ -424,7 +436,7 @@ namespace bimap {
         public:
             using value_type = std::pair<const ForwardKey &, const InverseKey &>;
             using reference = value_type;
-            using pointer = std::add_pointer_t<std::add_const_t<value_type>>;
+            using pointer = impl::arrow_proxy<value_type>;
             using diference_type = typename std::iterator_traits<IteratorType>::difference_type;
             using iterator_category = typename std::iterator_traits<IteratorType>::iterator_category;
 
@@ -554,13 +566,11 @@ namespace bimap {
              * @return pointer to reference pair
              */
             constexpr pointer operator->() const {
-                val.emplace(it->first, *it->second);
-                return &*val;
+                return pointer{**this};
             }
 
         private:
             IteratorType it;
-            mutable std::optional<value_type> val{};
         };
 
     private:
@@ -704,7 +714,7 @@ namespace bimap {
 
         /**
          * iterator to first element
-         * @note Ordering of objects depends on the underlying container specified by ForwardMpaType and InverseMapType.
+         * @note Ordering of objects depends on the underlying container specified by ForwardMapType and InverseMapType.
          * Ordering of forward access may be different from ordering of inverse access
          * @return iterator to first element of forward lookup map
          */
